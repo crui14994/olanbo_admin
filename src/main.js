@@ -3,9 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+
+Vue.prototype.axios= axios
 
 // 引入样式文件
 import "./assets/css/reset.css"
+
 
 
 // 引入ElementUI
