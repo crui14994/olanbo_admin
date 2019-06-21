@@ -4,7 +4,11 @@
     <div class="home-classify">
       <el-row :gutter="30">
         <el-col :span="5">
-          <div class="grid-content bg-purple" @click="classifyToggle('banner')">
+          <div
+            class="grid-content bg-purple"
+            @click="classifyToggle('banner')"
+            :class="{'active':currentTabComponent=='banner'}"
+          >
             <p>banner</p>
             <p>图片管理</p>
             <p>
@@ -13,7 +17,11 @@
           </div>
         </el-col>
         <el-col :span="5">
-          <div class="grid-content bg-purple" @click="classifyToggle('videoBox')">
+          <div
+            class="grid-content bg-purple"
+            @click="classifyToggle('videoBox')"
+            :class="{'active':currentTabComponent=='videoBox'}"
+          >
             <p>视频</p>
             <p>视频管理</p>
             <p>
@@ -22,7 +30,11 @@
           </div>
         </el-col>
         <el-col :span="5">
-          <div class="grid-content bg-purple" @click="classifyToggle('itemBox')">
+          <div
+            class="grid-content bg-purple"
+            @click="classifyToggle('itemBox')"
+            :class="{'active':currentTabComponent=='itemBox'}"
+          >
             <p>优质单品推荐</p>
             <p>推荐单品选择</p>
             <p>
@@ -31,7 +43,11 @@
           </div>
         </el-col>
         <el-col :span="5">
-          <div class="grid-content bg-purple" @click="classifyToggle('graphicBox')">
+          <div
+            class="grid-content bg-purple"
+            @click="classifyToggle('graphicBox')"
+            :class="{'active':currentTabComponent=='graphicBox'}"
+          >
             <p>图文推送</p>
             <p>相关文案管理</p>
             <p>
@@ -40,7 +56,11 @@
           </div>
         </el-col>
         <el-col :span="5">
-          <div class="grid-content bg-purple" @click="classifyToggle('caseBox')">
+          <div
+            class="grid-content bg-purple"
+            @click="classifyToggle('caseBox')"
+            :class="{'active':currentTabComponent=='caseBox'}"
+          >
             <p>成功案例</p>
             <p>图文编辑</p>
             <p>
@@ -50,9 +70,7 @@
         </el-col>
       </el-row>
     </div>
-
     <component v-bind:is="currentTabComponent"></component>
-    
   </div>
 </template>
 
@@ -74,13 +92,13 @@ export default {
   },
   data() {
     return {
-      currentTabComponent:"banner"
+      currentTabComponent: "banner"
     };
   },
-  methods:{
+  methods: {
     // 栏目分类
-    classifyToggle(componentName){
-      this.currentTabComponent=componentName;
+    classifyToggle(componentName) {
+      this.currentTabComponent = componentName;
     }
   }
 };
@@ -91,17 +109,18 @@ export default {
 $color1: #7670d9;
 $color2: #4c9ecd;
 $color3: #d970d0;
-$color4: #5AC4B6;
+$color4: #5ac4b6;
 $color5: #d9707f;
 
 .home {
   .home-classify {
-    .el-col-5{
+    .el-col-5 {
       width: 20%;
     }
     .grid-content {
       background-color: #fff;
       padding: 20px 30px;
+      cursor: pointer;
       > p:first-child {
         color: #6b6b6b;
         font-size: 14px;
@@ -120,6 +139,7 @@ $color5: #d9707f;
           line-height: 40px;
           border-radius: 10px;
           font-size: 30px;
+          box-shadow: 0px 0px 5px 0px transparent;
         }
       }
     }
@@ -136,6 +156,15 @@ $color5: #d9707f;
             }
           }
         }
+        > .active {
+          > p:last-child {
+            > span {
+              background-color: $color1;
+              color: #fff;
+              box-shadow: 0px 0px 5px 0px $color1;
+            }
+          }
+        }
       }
       > div:nth-child(2) {
         .grid-content {
@@ -146,6 +175,15 @@ $color5: #d9707f;
             > span {
               border: solid 1px $color2;
               color: $color2;
+            }
+          }
+        }
+        > .active {
+          > p:last-child {
+            > span {
+              background-color: $color2;
+              color: #fff;
+              box-shadow: 0px 0px 5px 0px $color2;
             }
           }
         }
@@ -162,6 +200,15 @@ $color5: #d9707f;
             }
           }
         }
+        > .active {
+          > p:last-child {
+            > span {
+              background-color: $color3;
+              color: #fff;
+              box-shadow: 0px 0px 5px 0px $color3;
+            }
+          }
+        }
       }
       > div:nth-child(4) {
         .grid-content {
@@ -172,6 +219,15 @@ $color5: #d9707f;
             > span {
               border: solid 1px $color4;
               color: $color4;
+            }
+          }
+        }
+        > .active {
+          > p:last-child {
+            > span {
+              background-color: $color4;
+              color: #fff;
+              box-shadow: 0px 0px 5px 0px $color4;
             }
           }
         }
@@ -188,9 +244,17 @@ $color5: #d9707f;
             }
           }
         }
+        > .active {
+          > p:last-child {
+            > span {
+              background-color: $color5;
+              color: #fff;
+              box-shadow: 0px 0px 5px 0px $color5;
+            }
+          }
+        }
       }
     }
   }
-  
 }
 </style>

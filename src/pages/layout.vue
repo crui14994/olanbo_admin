@@ -80,10 +80,10 @@ export default {
           children: [
             { path: "/home", title: "首页管理" },
             { path: "/product", title: "智能产品" },
-            { path: "/plan", title: "解决方案" },
+            // { path: "/plan", title: "解决方案" },
             { path: "/case", title: "成功案例" },
             { path: "/cooperate", title: "招商合作" },
-            { path: "/about", title: "关于我们" }
+            // { path: "/about", title: "关于我们" }
           ]
         },
         {
