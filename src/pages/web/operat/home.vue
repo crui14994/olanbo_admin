@@ -95,6 +95,9 @@ export default {
       currentTabComponent: "banner"
     };
   },
+  created(){
+    
+  },
   methods: {
     // 栏目分类
     classifyToggle(componentName) {

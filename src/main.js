@@ -4,11 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import utils from "./utils/index" //导入工具函数
+
+import "./assets/css/reset.css" // 引入样式文件
+
+Vue.config.productionTip = false
+
+// 把通用方法挂载到Vue原型上
+Vue.prototype.$formatDate = utils.formatDate
 
 Vue.prototype.axios= axios
 
-// 引入样式文件
-import "./assets/css/reset.css"
 
 
 
@@ -19,7 +25,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
 
-Vue.config.productionTip = false
+
 
 
 /* eslint-disable no-new */

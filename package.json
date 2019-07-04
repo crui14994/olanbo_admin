@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "element-ui": "^2.9.1",
+    "mqtt": "^3.0.0",
     "plupload": "^2.3.6",
     "qiniu-js": "^2.5.4",
     "vue": "^2.5.2",

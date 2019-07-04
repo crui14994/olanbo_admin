@@ -171,6 +171,7 @@
 
 <script>
 import pagination from "@/components/pagination";
+import { mock } from "@/api/main.js";
 
 export default {
   name: "banner",
@@ -321,6 +322,19 @@ export default {
         }
       ]
     };
+  },
+  created() {
+    let paramsObj = {
+      fileName: "key",
+      userId: 1
+    };
+    mock(paramsObj)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
     //切换栏目点击事件
