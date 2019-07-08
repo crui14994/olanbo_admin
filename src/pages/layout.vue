@@ -7,9 +7,37 @@
           <el-col :span="24">
             <!-- logo -->
             <div class="logo-wrapper">
-              <img src="@/assets/logo.png">
+              <img src="@/assets/logo.png" />
             </div>
             <el-menu
+              default-active="/web/home"
+              class="el-menu-vertical-demo layout-menu"
+              @open="handleOpen"
+              @close="handleClose"
+              background-color="#3C3C50"
+              text-color="#b6b6b6"
+              active-text-color="#96BEFF"
+              unique-opened
+              router
+            >
+              <el-submenu class="menu-box01" :index="item.path" v-for="(item,index) in operatMenu" :key="index">
+                <template slot="title">
+                  <i class="iconfont" :class="item.icon"></i>
+                  <span>{{item.title}}</span>
+                </template>
+                <el-submenu :index="item02.path" class="menu-box02" v-for="(item02,index) in item.childrenMenu" :key="index">
+                  <template slot="title">{{item02.title}}</template>
+                  <el-menu-item :index="item03.path" v-for="(item03,index) in item02.menuList" :key="index">{{item03.title}}</el-menu-item>
+                </el-submenu>
+              </el-submenu>
+
+           
+              <!-- <el-menu-item index="2">
+                <i class="el-icon-menu"></i>
+                <span slot="title">导航二</span>
+              </el-menu-item>-->
+            </el-menu>
+            <!-- <el-menu
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
@@ -18,7 +46,7 @@
               active-text-color="#96BEFF"
               router
               unique-opened
-              default-active="/home"
+              default-active="/web/home"
             >
               <el-submenu :index="item.path" v-for="(item,index) in operatMenu" :key="index">
                 <template slot="title">
@@ -29,16 +57,18 @@
                   :index="sub_item.path"
                   v-for="(sub_item,sub_index) in item.children"
                   :key="sub_index"
-                >{{sub_item.title}}</el-menu-item>
+                >
+                  {{sub_item.title}}
+                </el-menu-item>
               </el-submenu>
-            </el-menu>
+            </el-menu>-->
           </el-col>
         </el-row>
       </el-aside>
       <el-container class="container">
         <!-- 头部 -->
         <el-header class="header-box">
-            <header-nav></header-nav>
+          <header-nav></header-nav>
         </el-header>
         <!-- 主体 -->
         <el-main>
@@ -62,11 +92,11 @@
 </template>
 
 <script>
-import headerNav from '@/components/header';
+import headerNav from "@/components/header";
 
 export default {
   name: "layout",
-  components:{
+  components: {
     headerNav
   },
   data() {
@@ -77,14 +107,33 @@ export default {
           path: "/operat",
           title: "网站文案管理",
           icon: "icon-wenjian",
-          children: [
-            { path: "/home", title: "首页管理" },
-            { path: "/product", title: "智能产品" },
-            // { path: "/plan", title: "解决方案" },
-            { path: "/case", title: "成功案例" },
-            { path: "/cooperate", title: "招商合作" },
-            // { path: "/about", title: "关于我们" }
-          ]
+          // 二级菜单
+          childrenMenu: [
+            {
+              path: "/web/home",
+              title: "首页管理",
+              menuList: [
+                { path: "/web/home", title: "banner管理" },
+                { path: "/web/product", title: "视频管理" },
+                { path: "/web/product", title: "推荐单品选择" },
+              ]
+            },
+            {
+              title: "智能产品",
+              menuList: [
+              ]
+            },
+            {
+              title: "成功案例",
+              menuList: [
+              ]
+            },
+            {
+              title: "用户留言",
+              menuList: [
+              ]
+            }
+          ],
         },
         {
           path: "/order",
@@ -140,11 +189,10 @@ export default {
       .logo-wrapper {
         padding: 25px 0;
       }
-      .el-menu-vertical-demo {
-        border: none;
-        > li {
+      .layout-menu {
+        .menu-box01 {
           padding-left: 10px;
-          .el-submenu__title {
+          > .el-submenu__title {
             font-size: 16px;
             border-radius: 50px 0 0 50px;
             text-align: left;
@@ -154,20 +202,44 @@ export default {
               color: #fff;
             }
             > span {
-              /* padding: 0 0px 0 20px; */
               color: #fff;
             }
           }
-          .el-submenu__title:hover {
+          > .el-submenu__title:hover {
             background-color: rgba(255, 255, 255, 0.1) !important;
           }
-          > ul {
-            > li {
-              padding-left: 60px !important;
+          .menu-box02 {
+            > .el-submenu__title {
+              font-size: 14px;
+              padding-left: 85px !important;
+              text-align: left;
+              height: 40px;
+              line-height: 40px;
+              > i:first-child {
+                display: none;
+              }
             }
-            > li:hover {
-              background-color: #3c3c50 !important;
-              color: #96beff !important;
+            > .el-submenu__title:hover {
+              background: none !important;
+            }
+            > ul {
+              > li {
+                height: 30px;
+                line-height: 30px;
+                padding-left: 100px !important;
+                text-align: left;
+                font-size: 12px;
+              }
+              > li:hover {
+                background: none !important;
+              }
+              > li:before {
+                content: "·";
+                display: inline-block;
+                font-size: 30px;
+                vertical-align: middle;
+                padding-right: 5px;
+              }
             }
           }
         }
@@ -190,9 +262,9 @@ export default {
       top: 0;
       right: 0;
     }
-    .el-main{
-      padding: 0px  70px 0;
-      .breadcrumb{
+    .el-main {
+      padding: 0px 70px 0;
+      .breadcrumb {
         padding: 30px 0;
       }
     }

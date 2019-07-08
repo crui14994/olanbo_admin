@@ -1,6 +1,6 @@
 import service from "./../utils/axios";
 
-export function mock(paramsObj) {
+export function qiniu(paramsObj) {
     return service({
         url: "/api/get7Token",
         method: "get",

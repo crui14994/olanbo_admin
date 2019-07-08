@@ -2,43 +2,41 @@
 export const operatRouter = [
     {
         path:"/",
-        redirect:"/operat/home"
+        redirect:"/web"
     },
     {
-        path: '/operat',
-        name: '运营系统',
+        path: '/web',
+        name: '网站文案管理营系统',
         component: () => import('@/pages/layout'),
         children: [
-            {
-                path: 'home',
-                name: '首页管理',
-                component: () => import('@/pages/web/operat/home')
-            },
-            {
-                path: 'product',
-                name: '智能产品',
-                component: () => import('@/pages/web/operat/product')
-            },
             // {
-            //     path: '/plan',
+            //     path: 'home',
+            //     name: '首页管理',
+            //     component: () => import('@/pages/web/operat/home')
+            // },
+            // {
+            //     path: 'product',
+            //     name: '智能产品',
+            //     component: () => import('@/pages/web/operat/product')
+            // },
+            // {
+            //     path: 'case',
             //     name: '成功案例',
-            //     component: () => import('@/pages/web/operat/plan')
+            //     component: () => import('@/pages/web/operat/case')
             // },
-            {
-                path: 'case',
-                name: '成功案例',
-                component: () => import('@/pages/web/operat/case')
-            },
-            {
-                path: 'cooperate',
-                name: '招商合作',
-                component: () => import('@/pages/web/operat/cooperate')
-            },
             // {
-            //     path: '/about',
-            //     name: 'about',
-            //     component: () => import('@/pages/web/operat/about')
+            //     path: 'cooperate',
+            //     name: '招商合作',
+            //     component: () => import('@/pages/web/operat/cooperate')
             // },
+        ]
+    },
+    {
+        path: '/order',
+        name: '订单物流管理',
+        component: () => import('@/pages/layout'),
+        children: [
+            
         ]
     }
 ];
