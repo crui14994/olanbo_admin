@@ -1,50 +1,70 @@
+// 登陆
+export const loginRouter = {
+    path:'/login',
+    name:"login",
+    component: () => import('@/pages/login'),
+}
+
+// 注册
+export const registRouter = {
+    path:'/regist',
+    name:"regist",
+    component: () => import('@/pages/regist'),
+}
+
+
 // 运营系统路由
 export const operatRouter = [
     {
-        path:"/",
-        redirect:"/web"
-    },
-    {
-        path: '/web',
-        name: '网站文案管理营系统',
+        path: '/operat',
+        name: 'operat',
         component: () => import('@/pages/layout'),
         children: [
-            // {
-            //     path: 'home',
-            //     name: '首页管理',
-            //     component: () => import('@/pages/web/operat/home')
-            // },
-            // {
-            //     path: 'product',
-            //     name: '智能产品',
-            //     component: () => import('@/pages/web/operat/product')
-            // },
-            // {
-            //     path: 'case',
-            //     name: '成功案例',
-            //     component: () => import('@/pages/web/operat/case')
-            // },
-            // {
-            //     path: 'cooperate',
-            //     name: '招商合作',
-            //     component: () => import('@/pages/web/operat/cooperate')
-            // },
-        ]
-    },
-    {
-        path: '/order',
-        name: '订单物流管理',
-        component: () => import('@/pages/layout'),
-        children: [
-            
+            {
+                path: "web/banner",
+                name: 'operat',
+                component: () => import('@/pages/operat/web/banner'),
+            },
+            {
+                path: "web/video",
+                name: 'video',
+                component: () => import('@/pages/operat/web/video'),
+            },
+            {
+                path: "web/recommend",
+                name: 'recommend',
+                component: () => import('@/pages/operat/web/recommend'),
+            },
         ]
     }
 ];
+// 报表统计路由
+// export const reportRouter = [
+//     {
+//         path:"/report",
+//     },
+//     {
+//         path: '/report',
+//         name: 'report',
+//         component: () => import('@/pages/layout'),
+//         children: [
+//         ]
+//     },
+//     {
+//         path: '/order',
+//         name: 'order',
+//         component: () => import('@/pages/layout'),
+//         children: [
 
+//         ]
+//     }
+// ];
 
 export const routers = [
-    // loginRouter,
+    loginRouter,
+    registRouter,
     // errorRouter,
     // otherRouter,
+    // ...reportRouter,
     ...operatRouter
 ];

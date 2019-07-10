@@ -24,12 +24,12 @@ service.interceptors.request.use(config => {
 
     // Tip: 3
     // 根据请求方法，序列化传来的参数，根据后端需求是否序列化
-    if (config.method.toLocaleLowerCase() === 'post'
-        || config.method.toLocaleLowerCase() === 'put'
-        || config.method.toLocaleLowerCase() === 'delete') {
+    // if (config.method.toLocaleLowerCase() === 'post'
+    //     || config.method.toLocaleLowerCase() === 'put'
+    //     || config.method.toLocaleLowerCase() === 'delete') {
 
-        config.data = qs.stringify(config.data)
-    }
+    //     config.data = qs.stringify(config.data)
+    // }
     return config
 }, error => {
     // 请求错误时做些事(接口错误、超时等)

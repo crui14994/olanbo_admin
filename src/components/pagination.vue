@@ -41,6 +41,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style  lang = "scss">
 .pagination {
+  
   .el-pager {
     > li {
       width: 40px;

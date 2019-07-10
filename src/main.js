@@ -15,7 +15,8 @@ Vue.prototype.$formatDate = utils.formatDate
 
 Vue.prototype.axios= axios
 
-
+//sotre
+import store from "./store/index";
 
 
 // 引入ElementUI
@@ -32,6 +33,7 @@ Vue.use(ElementUI)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

@@ -2,7 +2,7 @@
   <div class="layout">
     <el-container>
       <!-- 侧边导航 -->
-      <el-aside width="250px">
+      <el-aside width="250px" style="z-index:2003">
         <el-row class="tac">
           <el-col :span="24">
             <!-- logo -->
@@ -25,43 +25,17 @@
                   <i class="iconfont" :class="item.icon"></i>
                   <span>{{item.title}}</span>
                 </template>
-                <el-submenu :index="item02.path" class="menu-box02" v-for="(item02,index) in item.childrenMenu" :key="index">
+                <el-submenu :index="item02.path" class="menu-box02" v-for="(item02,index2) in item.childrenMenu" :key="index2">
                   <template slot="title">{{item02.title}}</template>
-                  <el-menu-item :index="item03.path" v-for="(item03,index) in item02.menuList" :key="index">{{item03.title}}</el-menu-item>
+                  <el-menu-item :index="item03.path" v-for="(item03,index3) in item02.menuList" :key="index3">{{item03.title}}</el-menu-item>
                 </el-submenu>
               </el-submenu>
-
-           
               <!-- <el-menu-item index="2">
                 <i class="el-icon-menu"></i>
                 <span slot="title">导航二</span>
               </el-menu-item>-->
             </el-menu>
-            <!-- <el-menu
-              class="el-menu-vertical-demo"
-              @open="handleOpen"
-              @close="handleClose"
-              background-color="#3C3C50"
-              text-color="#b6b6b6"
-              active-text-color="#96BEFF"
-              router
-              unique-opened
-              default-active="/web/home"
-            >
-              <el-submenu :index="item.path" v-for="(item,index) in operatMenu" :key="index">
-                <template slot="title">
-                  <i class="iconfont" :class="item.icon"></i>
-                  <span>{{item.title}}</span>
-                </template>
-                <el-menu-item
-                  :index="sub_item.path"
-                  v-for="(sub_item,sub_index) in item.children"
-                  :key="sub_index"
-                >
-                  {{sub_item.title}}
-                </el-menu-item>
-              </el-submenu>
-            </el-menu>-->
+            
           </el-col>
         </el-row>
       </el-aside>
@@ -119,17 +93,20 @@ export default {
               ]
             },
             {
+              path: "",
               title: "智能产品",
               menuList: [
               ]
             },
             {
               title: "成功案例",
+              path: "",
               menuList: [
               ]
             },
             {
               title: "用户留言",
+              path: "",
               menuList: [
               ]
             }
@@ -188,6 +165,9 @@ export default {
     .tac {
       .logo-wrapper {
         padding: 25px 0;
+      }
+      .el-menu{
+        border: none;
       }
       .layout-menu {
         .menu-box01 {
@@ -261,6 +241,7 @@ export default {
       position: fixed;
       top: 0;
       right: 0;
+      z-index: 2002;
     }
     .el-main {
       padding: 0px 70px 0;
