@@ -14,12 +14,13 @@ export function bannerList() {
     })
 }
 //更新单条banner信息
-export function updateBanner(bannerTitle,userId, id, pcDataUrl,mobileDataUrl, linkUrl,keys) {
+export function updateBanner(options) {
     return axios({
         url: "/api/updateBanner",
         method: "POST",
         data: {
-            bannerTitle,userId,id,type: 1, pcDataUrl,mobileDataUrl,linkUrl,keys
+            type: 1,
+            ...options
         }
     })
 }

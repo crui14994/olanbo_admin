@@ -139,7 +139,9 @@ export default {
       ]
     };
   },
-  created() {},
+  created() {
+    console.log(this.$route.matched)
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);

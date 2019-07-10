@@ -39,12 +39,6 @@
     <!-- 弹窗 -->
     <div class="dialog">
       <banner-dialog :DialogVisible="dialogVisible" :updata="updata" @dialogClose="dialogShow"></banner-dialog>
-      <confirm-box
-        :deleteId="deleteId"
-        :deleteDialogVisible="deleteDialogVisible"
-        @cancel="cancelEvent"
-        @confirm="confirmEvent"
-      ></confirm-box>
     </div>
   </div>
 </template>
@@ -52,15 +46,18 @@
 <script>
 import pagination from "@/components/pagination";
 import bannerDialog from "@/components/bannerDialog";
-import confirmBox from "@/components/confirmBox";
 import { bannerList, deleteBanner } from "@/api/banner.js";
 
 export default {
   name: "banner",
   components: {
     pagination,
-    bannerDialog,
-    confirmBox
+    bannerDialog
+  },
+  computed: {
+    userId() {
+      return this.$store.state.user.userId;
+    }
   },
   data() {
     return {
@@ -68,10 +65,8 @@ export default {
       // pagerCount: 5,
       //表格数据
       tableData: null,
-      //是否显示添加弹窗
+      //是否显示添加和编辑弹窗
       dialogVisible: false,
-      //是否显示删除提示弹窗
-      deleteDialogVisible: false,
       //当前要删除的banner的id
       deleteId: 0,
       //当前删除banner的key
@@ -85,38 +80,44 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      // console.log(index, row);
       this.updata = row;
       this.dialogVisible = !this.dialogVisible;
     },
-    //显示删除弹窗
+    //删除
     handleDelete(index, row) {
       this.deleteId = row.id;
       let key1 = row.mobileDataUrl.split("/").pop();
       this.keys.push(key1);
       let key2 = row.pcDataUrl.split("/").pop();
       this.keys.push(key2);
-      this.deleteDialogVisible = !this.deleteDialogVisible;
-    },
-    //隐藏删除弹窗
-    cancelEvent() {
-      this.deleteId = 0;
-      this.keys = [];
-      this.deleteDialogVisible = !this.deleteDialogVisible;
-    },
-    //确认删除
-    confirmEvent() {
-      //删除banner
-      deleteBanner(
-        "b2b94188a3d56deb3031bd4c11221fa6",
-        this.deleteId,
-        this.keys
-      ).then(res => {
-        if (res.data.code == 200) {
-          this.cancelEvent();
-          this.getBannerList();
+
+      this.$confirm(
+        `此操作将删除该id为${this.deleteId}的图片, 是否继续?`,
+        "温馨提示！",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
         }
-      });
+      )
+        .then(() => {
+          //删除banner
+          deleteBanner(this.userId, this.deleteId, this.keys).then(res => {
+            if (res.data.code == 200) {
+              this.getBannerList();
+              this.$message({
+                message: "删除成功！",
+                type: "success"
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
     //获取banner列表
     getBannerList() {

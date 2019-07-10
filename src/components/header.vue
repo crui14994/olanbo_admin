@@ -5,7 +5,7 @@
         <img src="https://www.olanboa.com/images/logo@2x.png" alt>
       </div>
       <span>
-        user****
+        {{userId}}
       </span>
     </div>
     <ul class="header-nav">
@@ -42,7 +42,12 @@ export default {
   name: "headerNav",
   data() {
     return {};
-  }
+  },
+  computed: {
+    userId() {
+      return this.$store.state.user.userId;
+    }
+  },
 };
 </script>
 

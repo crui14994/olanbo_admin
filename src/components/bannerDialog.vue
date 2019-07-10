@@ -92,6 +92,8 @@ export default {
   },
   watch: {
     updata: function(val) {
+      //克隆传入的数据
+      this.cloneData = JSON.parse(JSON.stringify(val));
       if (val) {
         this.isAdd = false;
         this.imageUrl.pc = val.pcDataUrl;
@@ -101,6 +103,16 @@ export default {
       } else {
         this.isAdd = true;
       }
+    },
+    //当弹窗关闭时重置表单
+    DialogVisible: function(val) {
+      // this.resetForm("ruleForm");
+    }
+  },
+  computed: {
+    //用户id
+    userId() {
+      return this.$store.state.user.userId;
     }
   },
   data() {
@@ -141,58 +153,95 @@ export default {
       //是否是添加banner
       isAdd: true,
       //深度拷贝传入的数据对象
-      cloneData:null
+      cloneData: null
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           //提交表单
           let linkUrl = this.ruleForm.address;
-          let userId = "b2b94188a3d56deb3031bd4c11221fa6";
           let pcDataUrl = this.imageUrl.pc;
           let mobileDataUrl = this.imageUrl.mobile;
           let bannerTitle = this.ruleForm.title;
+
           if (pcDataUrl == "" || mobileDataUrl == "") {
+            this.$message({
+              message: "图片未上传！",
+              type: "warning"
+            });
             return false;
           }
           //如果isAdd为true则为添加banner，否则为更新banner
-          if (this.isAdd) {
-            addBanner(
-              linkUrl,
-              userId,
-              pcDataUrl,
-              mobileDataUrl,
-              bannerTitle
-            ).then(res => {
-              if (res.data.code == 200) {
-                this.handleClose();
-              }
-            });
-          } else {
-            let id = this.updata.id;
-            let keys = [];
-            keys.push(this.updata.mobileDataUrl.split("/").pop());
-            keys.push(this.updata.pcDataUrl.split("/").pop());
-            updateBanner(
-              bannerTitle,
-              userId,
-              id,
-              pcDataUrl,
-              mobileDataUrl,
-              linkUrl,
-              keys
-            ).then(res => {
-              if (res.data.code == 200) {
-                this.handleClose();
-              }
-            });
-          }
+          this.isAdd
+            ? this.addInit(linkUrl, pcDataUrl, mobileDataUrl, bannerTitle)
+            : this.updateInit(linkUrl, pcDataUrl, mobileDataUrl, bannerTitle);
         } else {
           return false;
+        }
+      });
+    },
+    //添加banner
+    addInit(linkUrl, pcDataUrl, mobileDataUrl, bannerTitle) {
+      addBanner(
+        linkUrl,
+        this.userId,
+        pcDataUrl,
+        mobileDataUrl,
+        bannerTitle
+      ).then(res => {
+        if (res.data.code == 200) {
+          this.handleClose();
+          this.$message({
+            message: "添加成功！",
+            type: "success"
+          });
+        }
+      });
+    },
+    //修改banner
+    updateInit(linkUrl, pcDataUrl, mobileDataUrl, bannerTitle) {
+      //optinos用户验证有没有更改，如果有更改则把更改的参数内容添加到options中
+      let options = {};
+
+      let id = this.updata.id;
+      let keys = [];
+
+      // *****
+      keys.push(this.updata.mobileDataUrl.split("/").pop());
+      keys.push(this.updata.pcDataUrl.split("/").pop());
+
+      this.isUpdata(this.cloneData.linkUrl, linkUrl) &&
+        (options.linkUrl = linkUrl || (options.keys = keys));
+      this.isUpdata(this.cloneData.pcDataUrl, pcDataUrl) &&
+        (options.pcDataUrl = pcDataUrl || (options.keys = keys));
+      this.isUpdata(this.cloneData.mobileDataUrl, mobileDataUrl) &&
+        (options.mobileDataUrl = mobileDataUrl);
+      this.isUpdata(this.cloneData.bannerTitle, bannerTitle) &&
+        (options.bannerTitle = bannerTitle);
+
+      options.userId = this.userId;
+      options.id = id;
+
+      //获取对象中的个数，判断是否有修改内容
+      let i = Object.getOwnPropertyNames(options).length;
+      if (i === 2) {
+        this.$message({
+          message: "没有修改内容！",
+          type: "warning"
+        });
+        return false;
+      }
+      //修改banner
+      updateBanner(options).then(res => {
+        if (res.data.code == 200) {
+          this.handleClose();
+          this.$message({
+            message: "修改成功！",
+            type: "success"
+          });
         }
       });
     },
@@ -206,6 +255,8 @@ export default {
       this.resetForm("ruleForm");
       this.imageUrl.pc = "";
       this.imageUrl.mobile = "";
+      this.ruleForm.title= "";
+      this.ruleForm.address= "";
     },
     // 上传pc图片到七牛云
     upqiniu(req) {
@@ -227,7 +278,7 @@ export default {
           Math.floor(Math.random() * 100) +
           "." +
           filetype,
-        userId: "b2b94188a3d56deb3031bd4c11221fa6"
+        userId: this.userId
       };
       //获取token
       getToken(paramsObj).then(res => {
@@ -261,7 +312,7 @@ export default {
           Math.floor(Math.random() * 100) +
           "." +
           filetype,
-        userId: "b2b94188a3d56deb3031bd4c11221fa6"
+        userId: this.userId
       };
       //获取token
       getToken(paramsObj).then(res => {
@@ -287,10 +338,16 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    //判断数据中的值是否更改
+    isUpdata(d1, d2) {
+      if (d1 == d2) {
+        return false;
+      }
+      return true;
     }
   }
 };
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
