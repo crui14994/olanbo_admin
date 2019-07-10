@@ -19,7 +19,11 @@
           <el-image :lazy="true" :src="scope.row.mobileDataUrl" fit="scale-down"></el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="timeStamp" label="更新时间" width="200"></el-table-column>
+      <el-table-column prop="timeStamp" label="更新时间" width="200">
+        <template slot-scope="scope">
+          <span>{{scope.row.timeStamp | filterFun}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="user" label="发布人" width="140">
         <template>
           <span>admin</span>
@@ -47,6 +51,7 @@
 import pagination from "@/components/pagination";
 import bannerDialog from "@/components/bannerDialog";
 import { bannerList, deleteBanner } from "@/api/banner.js";
+import utils from "@/utils/index" //导入工具函数
 
 export default {
   name: "banner",
@@ -57,6 +62,11 @@ export default {
   computed: {
     userId() {
       return this.$store.state.user.userId;
+    }
+  },
+  filters: {
+    filterFun: function (value) {
+      return utils.formatDate('YYYY-mm-dd hh:ff:ss',new Date(value))
     }
   },
   data() {

@@ -1,20 +1,17 @@
 <template>
   <div class="login">
-      {{userId}}
+      {{$store.state.user.userId}}
   </div>
 </template>
 
 <script>
-import {userLogin } from "@/api/user.js";
 
 export default {
   name: "login",
   components: {
   },
   computed:{
-    userId(){
-      return this.$store.state.userId;
-    }
+  
   },
   data() {
     return {
@@ -22,13 +19,20 @@ export default {
   },
   created() {
     this.login();
-    console.log(this.userId)
   },
   methods: {
     //登陆
     login(){
-      userLogin("admin","17341055894","admin").then(res=>{
-        console.log(res)
+      let userInfo = {
+        userName:"admin",
+        mobile:"17654265875",
+        passWord:"admin"
+      }
+      this.$store.dispatch("login",userInfo).then(res=>{
+        this.$message({
+          message: '登录成功！',
+          type: 'success'
+        });
       })
     }
   }

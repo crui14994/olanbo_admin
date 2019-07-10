@@ -1,14 +1,14 @@
 // 登陆
 export const loginRouter = {
-    path:'/login',
-    name:"login",
+    path: '/login',
+    name: "login",
     component: () => import('@/pages/login'),
 }
 
 // 注册
 export const registRouter = {
-    path:'/regist',
-    name:"regist",
+    path: '/regist',
+    name: "regist",
     component: () => import('@/pages/regist'),
 }
 
@@ -17,12 +17,12 @@ export const registRouter = {
 export const operatRouter = [
     {
         path: '/operat',
-        name: 'operat',
+        name: '运营系统',
         component: () => import('@/pages/layout'),
         children: [
             {
                 path: "web/banner",
-                name: 'operat',
+                name: 'banner管理',
                 component: () => import('@/pages/operat/web/banner'),
             },
             {
@@ -36,6 +36,7 @@ export const operatRouter = [
                 component: () => import('@/pages/operat/web/recommend'),
             },
         ]
+
     }
 ];
 // 报表统计路由

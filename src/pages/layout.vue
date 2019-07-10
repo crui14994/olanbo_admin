@@ -48,12 +48,13 @@
         <el-main>
           <!-- //面包屑 -->
           <div class="breadcrumb">
-            <el-breadcrumb separator-class="el-icon-arrow-right">
+            <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
               <el-breadcrumb-item>当前位置：</el-breadcrumb-item>
               <el-breadcrumb-item :to="{ path: '/' }">运营系统</el-breadcrumb-item>
               <el-breadcrumb-item>网站文案管理</el-breadcrumb-item>
               <el-breadcrumb-item>首页管理</el-breadcrumb-item>
-            </el-breadcrumb>
+            </el-breadcrumb> -->
+            <breadcrumb :list="list"></breadcrumb>
           </div>
 
           <div class="main-container">
@@ -67,11 +68,13 @@
 
 <script>
 import headerNav from "@/components/header";
+import breadcrumb from "@/components/breadcrumb";
 
 export default {
   name: "layout",
   components: {
-    headerNav
+    headerNav,
+    breadcrumb
   },
   data() {
     return {
@@ -139,8 +142,12 @@ export default {
       ]
     };
   },
+  computed:{
+    list () {
+      return this.$route.matched
+    }
+  },
   created() {
-    console.log(this.$route.matched)
   },
   methods: {
     handleOpen(key, keyPath) {
