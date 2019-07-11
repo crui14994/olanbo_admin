@@ -10,10 +10,11 @@
               <img src="@/assets/logo.png" />
             </div>
             <el-menu
-              default-active="/web/home"
+              default-active="/operat/web/banner"
               class="el-menu-vertical-demo layout-menu"
               @open="handleOpen"
               @close="handleClose"
+              @select="handleSelect"
               background-color="#3C3C50"
               text-color="#b6b6b6"
               active-text-color="#96BEFF"
@@ -48,17 +49,14 @@
         <el-main>
           <!-- //面包屑 -->
           <div class="breadcrumb">
-            <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item>当前位置：</el-breadcrumb-item>
-              <el-breadcrumb-item :to="{ path: '/' }">运营系统</el-breadcrumb-item>
-              <el-breadcrumb-item>网站文案管理</el-breadcrumb-item>
-              <el-breadcrumb-item>首页管理</el-breadcrumb-item>
-            </el-breadcrumb> -->
             <breadcrumb :list="list"></breadcrumb>
           </div>
 
           <div class="main-container">
-            <router-view></router-view>
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
+            
           </div>
         </el-main>
       </el-container>
@@ -87,12 +85,12 @@ export default {
           // 二级菜单
           childrenMenu: [
             {
-              path: "/web/home",
+              path: "/operat/web",
               title: "首页管理",
               menuList: [
-                { path: "/web/home", title: "banner管理" },
-                { path: "/web/product", title: "视频管理" },
-                { path: "/web/product", title: "推荐单品选择" },
+                { path: "/operat/web/banner", title: "banner管理" },
+                { path: "/operat/web/video", title: "视频管理" },
+                { path: "/operat/web/recommend", title: "推荐单品选择" },
               ]
             },
             {
@@ -139,22 +137,26 @@ export default {
           icon: "icon-ziyuan",
           children: []
         }
-      ]
+      ],
+      list:[],//面包屑数组
     };
   },
   computed:{
-    list () {
-      return this.$route.matched
-    }
+    // list () {
+    //   return this.$route.matched
+    // }
   },
   created() {
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+      // console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      // console.log(key, keyPath);
+    },
+    handleSelect(key,keyPath){
+     
     }
   }
 };

@@ -88,6 +88,8 @@ export default {
   created() {
     this.getBannerList();
   },
+  mounted(){
+  },
   methods: {
     handleEdit(index, row) {
       this.updata = row;
