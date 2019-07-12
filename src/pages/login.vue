@@ -1,6 +1,7 @@
 <template>
   <div class="login">
       {{$store.state.user.userId}}
+      <router-link to="/operat/web/banner">123</router-link>
   </div>
 </template>
 

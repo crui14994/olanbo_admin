@@ -16,6 +16,10 @@ export const registRouter = {
 // 运营系统路由
 export const operatRouter = [
     {
+        path: '/',
+        redirect:"/operat/web/banner"
+    },
+    {
         path: '/operat',
         name: '运营系统',
         component: () => import('@/pages/layout'),

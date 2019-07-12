@@ -9,7 +9,7 @@ const types = {
 
 const state = {
     //userId
-    userId: "",  // 用户id
+    userId: "b2b94188a3d56deb3031bd4c11221fa6",  // 用户id
     userName: "",//用户登录名
     nickName: "",//用户昵称
     userType: null, //用户类型

@@ -252,7 +252,7 @@ export default {
       position: fixed;
       top: 0;
       right: 0;
-      z-index: 2002;
+      z-index: 2000;
     }
     .el-main {
       padding: 0px 70px 0;
