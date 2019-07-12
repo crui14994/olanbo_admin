@@ -1,5 +1,7 @@
 <template>
-  <div class="layout">
+  <div
+    class="layout"
+  >
     <el-container>
       <!-- 侧边导航 -->
       <el-aside width="250px" style="z-index:2003">
@@ -21,14 +23,28 @@
               unique-opened
               router
             >
-              <el-submenu class="menu-box01" :index="item.path" v-for="(item,index) in operatMenu" :key="index">
+              <el-submenu
+                class="menu-box01"
+                :index="item.path"
+                v-for="(item,index) in operatMenu"
+                :key="index"
+              >
                 <template slot="title">
                   <i class="iconfont" :class="item.icon"></i>
                   <span>{{item.title}}</span>
                 </template>
-                <el-submenu :index="item02.path" class="menu-box02" v-for="(item02,index2) in item.childrenMenu" :key="index2">
+                <el-submenu
+                  :index="item02.path"
+                  class="menu-box02"
+                  v-for="(item02,index2) in item.childrenMenu"
+                  :key="index2"
+                >
                   <template slot="title">{{item02.title}}</template>
-                  <el-menu-item :index="item03.path" v-for="(item03,index3) in item02.menuList" :key="index3">{{item03.title}}</el-menu-item>
+                  <el-menu-item
+                    :index="item03.path"
+                    v-for="(item03,index3) in item02.menuList"
+                    :key="index3"
+                  >{{item03.title}}</el-menu-item>
                 </el-submenu>
               </el-submenu>
               <!-- <el-menu-item index="2">
@@ -36,7 +52,6 @@
                 <span slot="title">导航二</span>
               </el-menu-item>-->
             </el-menu>
-            
           </el-col>
         </el-row>
       </el-aside>
@@ -54,9 +69,8 @@
 
           <div class="main-container">
             <keep-alive>
-                <router-view></router-view>
+              <router-view></router-view>
             </keep-alive>
-            
           </div>
         </el-main>
       </el-container>
@@ -90,28 +104,25 @@ export default {
               menuList: [
                 { path: "/operat/web/banner", title: "banner管理" },
                 { path: "/operat/web/video", title: "视频管理" },
-                { path: "/operat/web/recommend", title: "推荐单品选择" },
+                { path: "/operat/web/recommend", title: "推荐单品选择" }
               ]
             },
             {
               path: "",
               title: "智能产品",
-              menuList: [
-              ]
+              menuList: []
             },
             {
               title: "成功案例",
               path: "",
-              menuList: [
-              ]
+              menuList: []
             },
             {
               title: "用户留言",
               path: "",
-              menuList: [
-              ]
+              menuList: []
             }
-          ],
+          ]
         },
         {
           path: "/order",
@@ -138,16 +149,15 @@ export default {
           children: []
         }
       ],
-      list:[],//面包屑数组
+      list: [] //面包屑数组
     };
   },
-  computed:{
+  computed: {
     // list () {
     //   return this.$route.matched
     // }
   },
-  created() {
-  },
+  created() {},
   methods: {
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
@@ -155,9 +165,7 @@ export default {
     handleClose(key, keyPath) {
       // console.log(key, keyPath);
     },
-    handleSelect(key,keyPath){
-     
-    }
+    handleSelect(key, keyPath) {}
   }
 };
 </script>
@@ -177,7 +185,7 @@ export default {
       .logo-wrapper {
         padding: 25px 0;
       }
-      .el-menu{
+      .el-menu {
         border: none;
       }
       .layout-menu {
@@ -261,5 +269,8 @@ export default {
       }
     }
   }
+}
+.el-loading-mask{
+  z-index: 2010!important;
 }
 </style>
