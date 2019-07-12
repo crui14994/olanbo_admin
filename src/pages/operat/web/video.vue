@@ -13,7 +13,11 @@
             <a :href="scope.row.url" target="_blank">{{scope.row.url}}</a>
           </template>
         </el-table-column>
-        <el-table-column prop="timeStamp" label="更新时间" width="200"></el-table-column>
+        <el-table-column prop="timeStamp" label="更新时间" width="200">
+          <template slot-scope="scope">
+            <span>{{scope.row.timeStamp | timeFormat}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="userName" label="发布人" width="170">
           <template>
             <span>admin</span>

@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column prop="timeStamp" label="更新时间" width="200">
         <template slot-scope="scope">
-          <span>{{scope.row.timeStamp | filterFun}}</span>
+          <span>{{scope.row.timeStamp | timeFormat}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="user" label="发布人" width="140">
@@ -64,11 +64,6 @@ export default {
   computed: {
     userId() {
       return this.$store.state.user.userId;
-    }
-  },
-  filters: {
-    filterFun: function(value) {
-      return utils.formatDate("YYYY-mm-dd hh:ff:ss", new Date(value));
     }
   },
   data() {

@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import utils from "./utils/index" //导入工具函数
+import * as filters from './filters' // 全局过滤器
 
 import "./assets/css/reset.css" // 引入样式文件
 
@@ -25,6 +26,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
 
+
+// 全局注册过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 
 
