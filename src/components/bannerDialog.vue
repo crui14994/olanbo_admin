@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { getToken, uploadFile } from "@/api/qiniu.js";
+import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
 import { addBanner, updateBanner } from "@/api/banner.js";
 
 export default {
@@ -147,9 +147,9 @@ export default {
         mobile: ""
       },
       // 七牛云的上传地址，根据自己所在地区选择
-      domain: "http://upload-z0.qiniu.com",
+      domain: QINIU_PARAMS.domain,
       // 这是七牛云空间的外链默认域名
-      qiniuaddr: "static.52pkmir.cn",
+      qiniuaddr: QINIU_PARAMS.qiniuaddr,
       //是否是添加banner
       isAdd: true,
       //深度拷贝传入的数据对象
@@ -198,6 +198,7 @@ export default {
             message: "添加成功！",
             type: "success"
           });
+          this.$emit("succBanner");
         }
       });
     },
@@ -242,6 +243,7 @@ export default {
             message: "修改成功！",
             type: "success"
           });
+          this.$emit("succBanner");
         }
       });
     },
@@ -278,7 +280,8 @@ export default {
           Math.floor(Math.random() * 100) +
           "." +
           filetype,
-        userId: this.userId
+        userId: this.userId,
+        deleteKey: this.imageUrl.pc.split("/").pop()
       };
       //获取token
       getToken(paramsObj).then(res => {
@@ -312,7 +315,8 @@ export default {
           Math.floor(Math.random() * 100) +
           "." +
           filetype,
-        userId: this.userId
+        userId: this.userId,
+        deleteKey: this.imageUrl.mobile.split("/").pop()
       };
       //获取token
       getToken(paramsObj).then(res => {

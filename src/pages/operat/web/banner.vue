@@ -42,7 +42,9 @@
     </div>-->
     <!-- 弹窗 -->
     <div class="dialog">
-      <banner-dialog :DialogVisible="dialogVisible" :updata="updata" @dialogClose="dialogShow"></banner-dialog>
+      <banner-dialog 
+      :DialogVisible="dialogVisible" :updata="updata" @dialogClose="dialogShow"
+      @succBanner="getBannerList"></banner-dialog>
     </div>
   </div>
 </template>
@@ -51,7 +53,7 @@
 import pagination from "@/components/pagination";
 import bannerDialog from "@/components/bannerDialog";
 import { bannerList, deleteBanner } from "@/api/banner.js";
-import utils from "@/utils/index" //导入工具函数
+import utils from "@/utils/index"; //导入工具函数
 
 export default {
   name: "banner",
@@ -65,8 +67,8 @@ export default {
     }
   },
   filters: {
-    filterFun: function (value) {
-      return utils.formatDate('YYYY-mm-dd hh:ff:ss',new Date(value))
+    filterFun: function(value) {
+      return utils.formatDate("YYYY-mm-dd hh:ff:ss", new Date(value));
     }
   },
   data() {
@@ -88,8 +90,7 @@ export default {
   created() {
     this.getBannerList();
   },
-  mounted(){
-  },
+  mounted() {},
   methods: {
     handleEdit(index, row) {
       this.updata = row;
@@ -145,7 +146,7 @@ export default {
     dialogShow() {
       this.updata = null;
       this.dialogVisible = !this.dialogVisible;
-      this.getBannerList();
+      // this.getBannerList();
     }
   }
 };
