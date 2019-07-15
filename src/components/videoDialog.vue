@@ -24,7 +24,7 @@
             :show-file-list="false"
             :before-upload="beforeUpload"
           >
-            <span class="check-file">选择文件</span>
+            <span class="check-file">{{videoBtnTexe}}</span>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
+import { getToken,uploadQiniu, QINIU_PARAMS } from "@/api/qiniu.js";
 import { addHomeVideo, getHomeVideo, updateHomeVideo } from "@/api/video.js";
 
 export default {
@@ -82,6 +82,14 @@ export default {
         }
       } else {
         return this.form.videoUrl.split("_").pop();
+      }
+    },
+    //视频上传按钮文字
+    videoBtnTexe(){
+      if(this.form.videoUrl==""){
+        return "选择文件"
+      }else{
+        return "重新上传视频"
       }
     }
   },
@@ -154,8 +162,10 @@ export default {
         formdata.append("file", req.file);
         formdata.append("token", res.data.data);
         formdata.append("key", paramsObj.fileName);
-        //上传到七牛
-        this.axios.post(this.domain, formdata, config).then(res => {
+
+        
+        // 上传到七牛
+        uploadQiniu(this.domain, formdata, config).then(res => {
           this.form.videoUrl = "http://" + this.qiniuaddr + "/" + res.data.key;
         });
       });

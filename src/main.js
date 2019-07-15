@@ -12,9 +12,10 @@ import "./assets/css/reset.css" // 引入样式文件
 Vue.config.productionTip = false
 
 // 把通用方法挂载到Vue原型上
-Vue.prototype.$formatDate = utils.formatDate
+Vue.prototype.$formatDate = utils.formatDate;
+Vue.prototype.getFilePreview = utils.getFilePreview;
 
-Vue.prototype.axios= axios
+Vue.prototype.axios= axios;
 
 //sotre
 import store from "./store/index";

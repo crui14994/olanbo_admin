@@ -1,7 +1,7 @@
 <template>
-  <div class="recommend">
+  <div class="product">
     <!-- //顶部操作 -->
-    <el-row class="recommend-edit">
+    <el-row class="product-edit">
       <!-- search -->
       <el-col :span="9">
         <div class="grid-content bg-purple">
@@ -30,7 +30,7 @@
       </el-col>
       <!-- add -->
       <el-col :span="3" :offset="2">
-        <div class="recommend-add">
+        <div class="product-add">
           <el-button class="edit-add" icon="iconfont icon-xinzeng">&nbsp;新增推荐</el-button>
         </div>
       </el-col>
@@ -58,7 +58,7 @@
 
 <script>
 export default {
-  name: "recommend",
+  name: "product",
   data() {
     return {
       input3: "",
@@ -84,14 +84,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style  lang = "scss" >
-.recommend {
+.product {
   padding: 0 40px;
-  .recommend-edit {
+  .product-edit {
     padding: 25px 0;
     .el-input__inner:focus {
       border-color: rgba(118, 112, 217, 1) !important;
     }
-    .recommend-add {
+    .product-add {
       text-align: right;
     }
     .edit-select{

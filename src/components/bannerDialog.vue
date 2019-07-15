@@ -52,7 +52,7 @@
               :show-file-list="false"
               :before-upload="beforeUpload"
             >
-              <span class="check-file">上传pc文件</span>
+              <span class="check-file">{{pcBtnText}}</span>
             </el-upload>
             <!-- mobile -->
             <el-upload
@@ -62,7 +62,7 @@
               :show-file-list="false"
               :before-upload="beforeUpload"
             >
-              <span class="check-file">上传移动端文件</span>
+              <span class="check-file">{{mobileBtnText}}</span>
             </el-upload>
           </el-form-item>
         </el-form>
@@ -113,6 +113,22 @@ export default {
     //用户id
     userId() {
       return this.$store.state.user.userId;
+    },
+    //pc上传按钮文字
+    pcBtnText() {
+      if (this.imageUrl.pc == "") {
+        return "上传pc文件";
+      } else {
+        return "重新上传pc文件";
+      }
+    },
+    //mobile上传按钮文字
+    mobileBtnText() {
+      if (this.imageUrl.mobile == "") {
+        return "上传mobile文件";
+      } else {
+        return "重新上传mobile文件";
+      }
     }
   },
   data() {
@@ -257,8 +273,8 @@ export default {
       this.resetForm("ruleForm");
       this.imageUrl.pc = "";
       this.imageUrl.mobile = "";
-      this.ruleForm.title= "";
-      this.ruleForm.address= "";
+      this.ruleForm.title = "";
+      this.ruleForm.address = "";
     },
     // 上传pc图片到七牛云
     upqiniu(req) {
@@ -289,6 +305,7 @@ export default {
         formdata.append("file", req.file);
         formdata.append("token", res.data.data);
         formdata.append("key", paramsObj.fileName);
+        
         //上传到七牛
         this.axios.post(this.domain, formdata, config).then(res => {
           this.imageUrl.pc = "http://" + this.qiniuaddr + "/" + res.data.key;

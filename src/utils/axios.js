@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Loading } from 'element-ui';
 
 
-import qs from 'qs' // 序列化请求数据，视服务端的要求
+// import qs from 'qs' // 序列化请求数据，视服务端的要求
 
 // 创建axios实例
 const service = axios.create({
@@ -38,7 +38,7 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
     response => {
-
+        // console.log(response)
         // 关闭loadding
         let loading = Loading.service({});
         loading.close();

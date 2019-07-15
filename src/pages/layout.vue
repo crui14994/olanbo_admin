@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="layout"
-  >
+  <div class="layout">
     <el-container>
       <!-- 侧边导航 -->
       <el-aside width="250px" style="z-index:2003">
@@ -12,7 +10,7 @@
               <img src="@/assets/logo.png" />
             </div>
             <el-menu
-              default-active="/operat/web/banner"
+              :default-active="activeIndex"
               class="el-menu-vertical-demo layout-menu"
               @open="handleOpen"
               @close="handleClose"
@@ -23,34 +21,58 @@
               unique-opened
               router
             >
-              <el-submenu
-                class="menu-box01"
-                :index="item.path"
-                v-for="(item,index) in operatMenu"
-                :key="index"
-              >
+              <!-- 网站文案管理 -->
+              <el-submenu class="menu-box01" :index="'/operat'">
                 <template slot="title">
-                  <i class="iconfont" :class="item.icon"></i>
-                  <span>{{item.title}}</span>
+                  <i class="iconfont icon-wenjian"></i>
+                  <span>网站文案管理</span>
                 </template>
-                <el-submenu
-                  :index="item02.path"
-                  class="menu-box02"
-                  v-for="(item02,index2) in item.childrenMenu"
-                  :key="index2"
-                >
-                  <template slot="title">{{item02.title}}</template>
-                  <el-menu-item
-                    :index="item03.path"
-                    v-for="(item03,index3) in item02.menuList"
-                    :key="index3"
-                  >{{item03.title}}</el-menu-item>
+                <!-- 首页管理 -->
+                <el-submenu class="menu-box02" :index="'/operat/web'">
+                  <template slot="title">首页管理</template>
+                  <el-menu-item :index="'/operat/web/banner'">banner管理</el-menu-item>
+                  <el-menu-item :index="'/operat/web/video'">视频管理</el-menu-item>
+                  <el-menu-item :index="'/operat/web/recommend'">推荐单品选择</el-menu-item>
                 </el-submenu>
+                <!-- 智能产品 -->
+                <el-menu-item :index="'/operat/product'">智能产品</el-menu-item>
+                <!-- 成功案例 -->
+                <el-menu-item :index="'/operat/case'">成功案例</el-menu-item>
+                <!-- 成功案例 -->
+                <el-menu-item :index="'/operat/case'">成功案例</el-menu-item>
               </el-submenu>
-              <!-- <el-menu-item index="2">
-                <i class="el-icon-menu"></i>
-                <span slot="title">导航二</span>
-              </el-menu-item>-->
+
+              <!-- 订单物流管理 -->
+              <el-submenu class="menu-box01" :index="'/order'">
+                <template slot="title">
+                  <i class="iconfont icon-icon-aobi_dingdanwuliuon"></i>
+                  <span>订单物流管理</span>
+                </template>
+              </el-submenu>
+
+              <!-- 开发者资质认证 -->
+              <el-submenu class="menu-box01" :index="'/developers'">
+                <template slot="title">
+                  <i class="iconfont icon-zizhi"></i>
+                  <span>开发者资质认证</span>
+                </template>
+              </el-submenu>
+
+              <!-- 开发者账号管理 -->
+              <el-submenu class="menu-box01" :index="'/account'">
+                <template slot="title">
+                  <i class="iconfont icon-tubiao39"></i>
+                  <span>开发者账号管理</span>
+                </template>
+              </el-submenu>
+
+              <!-- 代理商管理 -->
+              <el-submenu class="menu-box01" :index="'/agent'">
+                <template slot="title">
+                  <i class="iconfont icon-ziyuan"></i>
+                  <span>代理商管理</span>
+                </template>
+              </el-submenu>
             </el-menu>
           </el-col>
         </el-row>
@@ -68,9 +90,9 @@
           </div>
 
           <div class="main-container">
-            <keep-alive>
-              <router-view></router-view>
-            </keep-alive>
+            <!-- <keep-alive> -->
+            <router-view></router-view>
+            <!-- </keep-alive> -->
           </div>
         </el-main>
       </el-container>
@@ -90,6 +112,8 @@ export default {
   },
   data() {
     return {
+      //当前显示的导航状态
+      activeIndex: "",
       // 运营系统菜单数据
       operatMenu: [
         {
@@ -157,7 +181,9 @@ export default {
     //   return this.$route.matched
     // }
   },
-  created() {},
+  created() {
+    this.activeIndex = this.$route.path;
+  },
   methods: {
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
@@ -165,7 +191,9 @@ export default {
     handleClose(key, keyPath) {
       // console.log(key, keyPath);
     },
-    handleSelect(key, keyPath) {}
+    handleSelect(key, keyPath) {
+      // console.log(key, keyPath)
+    }
   }
 };
 </script>
@@ -270,7 +298,7 @@ export default {
     }
   }
 }
-.el-loading-mask{
-  z-index: 2010!important;
+.el-loading-mask {
+  z-index: 2010 !important;
 }
 </style>

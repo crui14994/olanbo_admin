@@ -21,12 +21,12 @@ export const operatRouter = [
     },
     {
         path: '/operat',
-        name: '运营系统',
+        name: 'operat',
         component: () => import('@/pages/layout'),
         children: [
             {
                 path: "web/banner",
-                name: 'banner管理',
+                name: 'banner',
                 component: () => import('@/pages/operat/web/banner'),
             },
             {
@@ -39,9 +39,15 @@ export const operatRouter = [
                 name: 'recommend',
                 component: () => import('@/pages/operat/web/recommend'),
             },
+            {
+                path: 'product',
+                name: 'product',
+                component: () => import('@/pages/operat/product'),
+            }
         ]
 
-    }
+    },
+    
 ];
 // 报表统计路由
 // export const reportRouter = [

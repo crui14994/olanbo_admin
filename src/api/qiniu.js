@@ -14,3 +14,8 @@ export function getToken(paramsObj) {
         params:paramsObj
     });
 }
+
+//上传到七牛
+export function uploadQiniu(domain,formdata,config){
+    return axios.post(domain,formdata,config)
+}
