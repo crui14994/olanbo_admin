@@ -296,7 +296,7 @@ export default {
           Math.floor(Math.random() * 100) +
           "." +
           filetype,
-        userId: this.userId,
+        userId:this.userId,
         deleteKey: this.imageUrl.pc.split("/").pop()
       };
       //获取token

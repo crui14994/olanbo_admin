@@ -40,9 +40,14 @@ export const operatRouter = [
                 component: () => import('@/pages/operat/web/recommend'),
             },
             {
-                path: 'product',
-                name: 'product',
-                component: () => import('@/pages/operat/product'),
+                path: 'productList',
+                name: 'productList',
+                component: () => import('@/pages/operat/product/productList'),
+            },
+            {
+                path: 'productEdit/:id',
+                name: 'productEdit',
+                component: () => import('@/pages/operat/product/productEdit'),
             }
         ]
 

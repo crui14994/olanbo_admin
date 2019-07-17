@@ -4,8 +4,9 @@
       background
       layout="pager, prev,next"
       :total="total"
+      :page-size="pageSize"
       @current-change="currentChange"
-      :pager-count="pagerCount"
+      :page-count="pagerCount"
       prev-text="上一页"
       next-text="下一页"
     ></el-pagination>
@@ -20,8 +21,8 @@ export default {
       type: Number,
       required: true
     },
-    //页码按钮的数量
-    pagerCount: {
+    //分页查询中每页返回的总条数
+    pageSize: {
       type: Number,
       required: true
     }
@@ -30,9 +31,14 @@ export default {
   data() {
     return {};
   },
+  computed: {
+    pagerCount() {
+      return Math.ceil(this.total / this.pageSize);
+    }
+  },
   methods: {
     currentChange(index) {
-      this.$emit('getChange', index);
+      this.$emit("getChange", index);
     }
   }
 };
@@ -41,7 +47,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style  lang = "scss">
 .pagination {
-  
+  .el-pagination{
+    padding: 0;
+  }
   .el-pager {
     > li {
       width: 40px;
@@ -49,6 +57,7 @@ export default {
       padding: 0;
       line-height: 40px;
       background: rgba(238, 238, 238, 1);
+      border-radius: 5px;
     }
     > li:not(.disabled):hover {
       color: #7670d9 !important;
@@ -67,6 +76,7 @@ export default {
       color: #7670d9;
       background: rgba(255, 182, 0, 0);
       border: 1px solid rgba(118, 112, 217, 1);
+      border-radius: 5px;
     }
     > span:hover {
       background: #7670d9;

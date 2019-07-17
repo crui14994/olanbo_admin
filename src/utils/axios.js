@@ -1,13 +1,9 @@
 import axios from 'axios'
-
 import { Loading } from 'element-ui';
-
-
-// import qs from 'qs' // 序列化请求数据，视服务端的要求
+import router from './../router'
 
 // 创建axios实例
 const service = axios.create({
-    //这里baseurl就是刚开始配置的开发环境和线上环境地址，webpack会自动读取无需手动再改
     // baseURL: process.env.BASE_URL, //baseurl
     timeout: 5000 // 请求超时时间
 })
@@ -24,6 +20,14 @@ service.interceptors.request.use(config => {
         }
     );
 
+    //判断localStorage中有没有userId，如果没有则用户没有登录，跳转到登录页面
+    let userId = JSON.parse(localStorage.getItem("SET_USERID"));
+    if(userId){
+
+    }else{
+        router.push("/login")
+    }
+
     return config
 }, error => {
     // 请求错误时做些事(接口错误、超时等)
@@ -32,13 +36,13 @@ service.interceptors.request.use(config => {
     let loading = Loading.service({});
     loading.close();
 
-    return Promise.reject(error) // 在调用的那边可以拿到(catch)你想返回的错误信息
+    return Promise.reject(error) 
 })
 
 // respone拦截器
 service.interceptors.response.use(
     response => {
-        // console.log(response)
+
         // 关闭loadding
         let loading = Loading.service({});
         loading.close();
@@ -46,7 +50,11 @@ service.interceptors.response.use(
         return response;
     },
     error => {
-        console.log('err' + error)// for debug
+
+        // 关闭loadding
+        let loading = Loading.service({});
+        loading.close();
+        
         return Promise.reject(error)
     })
 

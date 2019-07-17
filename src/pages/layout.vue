@@ -35,7 +35,7 @@
                   <el-menu-item :index="'/operat/web/recommend'">推荐单品选择</el-menu-item>
                 </el-submenu>
                 <!-- 智能产品 -->
-                <el-menu-item :index="'/operat/product'">智能产品</el-menu-item>
+                <el-menu-item :index="'/operat/productList'">智能产品</el-menu-item>
                 <!-- 成功案例 -->
                 <el-menu-item :index="'/operat/case'">成功案例</el-menu-item>
                 <!-- 成功案例 -->
@@ -114,65 +114,6 @@ export default {
     return {
       //当前显示的导航状态
       activeIndex: "",
-      // 运营系统菜单数据
-      operatMenu: [
-        {
-          path: "/operat",
-          title: "网站文案管理",
-          icon: "icon-wenjian",
-          // 二级菜单
-          childrenMenu: [
-            {
-              path: "/operat/web",
-              title: "首页管理",
-              menuList: [
-                { path: "/operat/web/banner", title: "banner管理" },
-                { path: "/operat/web/video", title: "视频管理" },
-                { path: "/operat/web/recommend", title: "推荐单品选择" }
-              ]
-            },
-            {
-              path: "",
-              title: "智能产品",
-              menuList: []
-            },
-            {
-              title: "成功案例",
-              path: "",
-              menuList: []
-            },
-            {
-              title: "用户留言",
-              path: "",
-              menuList: []
-            }
-          ]
-        },
-        {
-          path: "/order",
-          title: "订单物流管理",
-          icon: "icon-icon-aobi_dingdanwuliuon",
-          children: []
-        },
-        {
-          path: "/developers",
-          title: "开发者资质认证",
-          icon: "icon-zizhi",
-          children: []
-        },
-        {
-          path: "/account",
-          title: "开发者账号管理",
-          icon: "icon-tubiao39",
-          children: []
-        },
-        {
-          path: "/agent",
-          title: "代理商管理",
-          icon: "icon-ziyuan",
-          children: []
-        }
-      ],
       list: [] //面包屑数组
     };
   },

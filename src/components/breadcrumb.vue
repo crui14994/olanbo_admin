@@ -50,6 +50,12 @@ export default {
             case "recommend":
             this.list.push({name:"推荐单品选择",path:"/operat/web/recommend"});
             break;
+            case "productList":
+            this.list.push({name:"智能产品",path:"、operat/productList/"});
+            break;
+            case "productEdit":
+            this.list.push({name:"智能产品",path:"operat/productEdit/"});
+            break;
         }
       });
     }
