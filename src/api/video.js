@@ -1,3 +1,7 @@
+/**
+ * 首页视频相关api
+ */
+
 import axios from "./../utils/axios";
 
 //添加视频

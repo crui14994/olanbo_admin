@@ -21,10 +21,8 @@ service.interceptors.request.use(config => {
     );
 
     //判断localStorage中有没有userId，如果没有则用户没有登录，跳转到登录页面
-    let userId = JSON.parse(localStorage.getItem("SET_USERID"));
-    if(userId){
-
-    }else{
+    let userId = JSON.parse(sessionStorage.getItem("SET_ISLOGIN"));
+    if(!userId){
         router.push("/login")
     }
 

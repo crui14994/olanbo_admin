@@ -1,3 +1,8 @@
+/**
+ * 首页banner相关api
+ */
+
+
 import axios from "./../utils/axios";
 
 //添加banner

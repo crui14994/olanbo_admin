@@ -5,37 +5,21 @@ const types = {
     SET_USERID: 'SET_USERID', // 用户id
     SET_USERNAME: 'SET_USERNAME', // 用户信息
     SET_NICKNAME: 'SET_NICKNAME', // 用户昵称
-    SET_USERTYPE: 'SET_USERTYPE' // 用户类型
+    SET_USERTYPE: 'SET_USERTYPE', // 用户类型
+    SET_SMARTSYSTYPE: 'SET_SMARTSYSTYPE' //设备类型
 }
 
 const state = {
-    isLogin: false, //用户是否登录
-    userId: "b2b94188a3d56deb3031bd4c11221fa6",  // 用户id
-    userName: "",//用户登录名
-    nickName: "",//用户昵称
-    userType: null, //用户类型
-    smartSysType: [
-        { icon: "aaaaaaaaaaa", id: 1, status: 0, timeStamp: 0, typeName: "aaaaaaaa" },
-        { icon: "", id: 2, status: 0, timeStamp: 0, typeName: "智能家电" },
-        { icon: "", id: 3, status: 0, timeStamp: 0, typeName: "智能控制" },
-        { icon: "", id: 4, status: 0, timeStamp: 0, typeName: "test" }
-    ]
+    isLogin: JSON.parse(sessionStorage.getItem(types.SET_ISLOGIN)) || false, //用户是否登录
+    userId: JSON.parse(sessionStorage.getItem(types.SET_USERID)) || "",  // 用户id
+    userName: JSON.parse(sessionStorage.getItem(types.SET_USERNAME)) || "",//用户登录名
+    nickName: JSON.parse(sessionStorage.getItem(types.SET_NICKNAME)) || "",//用户昵称
+    userType: JSON.parse(sessionStorage.getItem(types.SET_USERTYPE)) || "", //用户类型
+    smartSysType: JSON.parse(sessionStorage.getItem(types.SET_SMARTSYSTYPE)) || "" //设备类型
 };
-// const getters = {
-//     isLogin(state){
-
-//         if (!state.isLogin) {   
-//             //从sessionStorage中读取状态 
-//             state.isLogin=localStorage.getItem(types.SET_ISLOGIN);   
-//             state.userId=localStorage.getItem(types.SET_USERID);
-//             state.userName=localStorage.getItem(types.SET_USERNAME);
-//             state.nickName=localStorage.getItem(types.SET_NICKNAME);
-//             state.userType=localStorage.getItem(types.SET_USERTYPE);
-
-//         }
-//         return state
-//     }
-// };
+const getters = {
+   
+};
 const mutations = {
     [types.SET_ISLOGIN](state, isLogin) {
         state.isLogin = isLogin;
@@ -51,6 +35,9 @@ const mutations = {
     },
     [types.SET_USERTYPE](state, userType) {
         state.userType = userType;
+    },
+    [types.SET_SMARTSYSTYPE](state, smartSysType) {
+        state.smartSysType = smartSysType;
     },
 };
 
@@ -68,11 +55,13 @@ const actions = {
                     commit(types.SET_USERNAME, data.userName);
                     commit(types.SET_NICKNAME, data.nickName);
                     commit(types.SET_USERTYPE, data.userType);
-                    localStorage.setItem(types.SET_ISLOGIN, JSON.stringify(true));
-                    localStorage.setItem(types.SET_USERID, JSON.stringify(data.userId));
-                    localStorage.setItem(types.SET_USERNAME, JSON.stringify(data.userName));
-                    localStorage.setItem(types.SET_NICKNAME, JSON.stringify(data.nickName));
-                    localStorage.setItem(types.SET_USERTYPE, JSON.stringify(data.userType));
+                    commit(types.SET_SMARTSYSTYPE, data.smartSysType);
+                    sessionStorage.setItem(types.SET_ISLOGIN, JSON.stringify(true));
+                    sessionStorage.setItem(types.SET_USERID, JSON.stringify(data.userId));
+                    sessionStorage.setItem(types.SET_USERNAME, JSON.stringify(data.userName));
+                    sessionStorage.setItem(types.SET_NICKNAME, JSON.stringify(data.nickName));
+                    sessionStorage.setItem(types.SET_USERTYPE, JSON.stringify(data.userType));
+                    sessionStorage.setItem(types.SET_SMARTSYSTYPE, JSON.stringify(data.smartSysType));
                 }
                 resolve(res.data);
             }).catch(error => {
@@ -84,11 +73,8 @@ const actions = {
     signOut: ({ commit }) => {
         return new Promise((resolve, reject) => {
             commit(types.SET_ISLOGIN, false);
-            localStorage.removeItem(types.SET_ISLOGIN);
-            localStorage.removeItem(types.SET_USERID);
-            localStorage.removeItem(types.SET_USERNAME);
-            localStorage.removeItem(types.SET_NICKNAME);
-            localStorage.removeItem(types.SET_USERTYPE);
+            sessionStorage.clear();
+            resolve();
         })
 
     }
@@ -98,5 +84,5 @@ export default {
     state,
     mutations,
     actions,
-    // getters
+    getters
 };

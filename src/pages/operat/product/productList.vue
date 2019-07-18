@@ -16,8 +16,13 @@
           <el-form>
             <el-form-item label="分类">
               <el-select v-model="typeId" placeholder="请选择分类" @change="selectList">
-                <el-option class="edit-serach-option" label="全部" value=""></el-option>
-                <el-option :label="item.typeName" :value="item.id" v-for="(item,index) in smartSysType" :key="index"></el-option>
+                <el-option class="edit-serach-option" label="全部" value></el-option>
+                <el-option
+                  :label="item.typeName"
+                  :value="item.id"
+                  v-for="(item,index) in smartSysType"
+                  :key="index"
+                ></el-option>
               </el-select>
             </el-form-item>
           </el-form>
@@ -71,7 +76,12 @@
             </el-col>
             <el-col :span="8">
               <el-button v-if="scope.row.status==1" size="mini" type="text">已推荐</el-button>
-              <el-button v-if="scope.row.status==0" size="mini" type="primary">推荐</el-button>
+              <el-button
+                v-if="scope.row.status==0"
+                size="mini"
+                type="primary"
+                @click="recommend(scope.$index, scope.row)"
+              >推荐</el-button>
             </el-col>
           </el-row>
         </template>
@@ -85,7 +95,7 @@
 </template>
 
 <script>
-import { smartList } from "@/api/devs.js";
+import { smartList , updateSmart} from "@/api/devs.js";
 import pagination from "@/components/pagination";
 
 export default {
@@ -114,15 +124,47 @@ export default {
     this.getSmartList(options);
   },
   computed: {
+    //用户id
+    userId() {
+      return this.$store.state.user.userId;
+    },
     //设备类型
-    smartSysType(){
+    smartSysType() {
       return this.$store.state.user.smartSysType;
     }
   },
   methods: {
+    //推荐
+    recommend(index, row) {
+      let options = {
+        userId: this.userId,
+        id: row.id,
+        devName: row.devName,
+        typeId: row.typeId,
+        desc: row.desc,
+        status: 1,
+        htmlContent: row.htmlContent,
+        linkUrl: row.linkUrl,
+        logoPath: row.logoPath,
+        key7: " "
+      };
+      //执行修改
+      updateSmart(options).then(res => {
+        let { code } = res.data;
+        if (code == 200) {
+          this.$message({
+            message: "已推荐！",
+            type: "success"
+          });
+          row.status=1;
+        } else {
+          this.$message.error("推荐失败");
+        }
+      });
+    },
     //编辑产品
     handleEdit(index, row) {
-      this.$router.push("/operat/productEdit/"+row.id);
+      this.$router.push("/operat/productEdit/" + row.id);
     },
     //新增产品
     addProduct() {
@@ -155,17 +197,17 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         devName: this.search,
-        typeId:this.typeId,
+        typeId: this.typeId
       };
       this.getSmartList(options);
     },
     //根据选中得到分类搜索
-    selectList(typeId){
+    selectList(typeId) {
       let options = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         devName: this.search,
-        typeId:typeId,
+        typeId: typeId
       };
       this.getSmartList(options);
     }

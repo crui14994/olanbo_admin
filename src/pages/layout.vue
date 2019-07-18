@@ -37,9 +37,9 @@
                 <!-- 智能产品 -->
                 <el-menu-item :index="'/operat/productList'">智能产品</el-menu-item>
                 <!-- 成功案例 -->
-                <el-menu-item :index="'/operat/case'">成功案例</el-menu-item>
+                <el-menu-item :index="'/operat/exampleList'">成功案例</el-menu-item>
                 <!-- 成功案例 -->
-                <el-menu-item :index="'/operat/case'">成功案例</el-menu-item>
+                <el-menu-item :index="'/operat/case'">用户留言</el-menu-item>
               </el-submenu>
 
               <!-- 订单物流管理 -->

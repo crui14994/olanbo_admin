@@ -27,6 +27,7 @@
                 :action="domain"
                 :http-request="upqiniu"
                 :show-file-list="false"
+                :on-change="getKey7"
                 :before-upload="beforeUpload"
               >
                 <el-button type="primary">上传图片</el-button>
@@ -81,7 +82,8 @@ export default {
       ruleForm: {
         name: "",
         region: "",
-        imgUrl: ""
+        imgUrl: "",
+        status:0
       },
       rules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
@@ -96,7 +98,9 @@ export default {
       //传递过来的id
       infoType: this.$route.params.id,
       //用于验证是否修改
-      cloneProduct: ""
+      cloneProduct: "",
+      // 更新封面图片时，需要删除的原七牛资源的key
+      key7:" ",
     };
   },
   components: {
@@ -122,25 +126,31 @@ export default {
     //按钮文字
     btnText() {
       return this.isAdd ? "立即添加" : "立即修改";
-    }
+    },
   },
   created() {
     this.initFrom();
   },
   mounted() {},
   methods: {
+    //getKey7
+    getKey7(file, fileList){
+      let oldFileUrl = this.ruleForm.imgUrl;
+      this.key7 = oldFileUrl.split("/").pop();
+    },
     //编辑修改设备
     updateProduct() {
       let options = {
         userId: this.userId,
         id: JSON.parse(this.infoType),
         devName: this.ruleForm.name,
-        typeId: JSON.parse(this.ruleForm.region),
-        desc: "无",
-        status: 0,
+        typeId: this.ruleForm.region,
+        desc: " ",
+        status: this.ruleForm.status,
         htmlContent: this.content,
-        linkUrl: "无",
-        logoPath: this.ruleForm.imgUrl
+        linkUrl: " ",
+        logoPath: this.ruleForm.imgUrl,
+        key7:this.key7
       };
       if(options.htmlContent==""){
         this.$message({
@@ -149,7 +159,6 @@ export default {
         });
         return;
       }
-
 
       //验证是否有修改过
       let str = JSON.stringify(this.ruleForm) + JSON.stringify(this.content);
@@ -164,7 +173,7 @@ export default {
             });
             this.$router.push("/operat/productList");
           } else {
-            this.$message.error("修改失败");
+            this.$message.error(res.data.desc);
           }
         });
       } else {
@@ -180,9 +189,9 @@ export default {
         typeId: this.ruleForm.region,
         status: 0,
         devName: this.ruleForm.name,
-        desc: "无",
+        desc: " ",
         htmlContent: this.content,
-        linkUrl: "",
+        linkUrl: " ",
         logoPath: this.ruleForm.imgUrl,
         userId: this.userId
       };
@@ -266,7 +275,7 @@ export default {
           imgUrl: ""
         };
       } else {
-        //删除
+        //x修改
         let options = {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -279,7 +288,8 @@ export default {
               this.ruleForm = {
                 name: item.devName,
                 region: item.typeId,
-                imgUrl: item.logoPath
+                imgUrl: item.logoPath,
+                status:item.status
               };
               this.content = item.htmlContent;
 

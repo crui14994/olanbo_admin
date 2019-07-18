@@ -12,6 +12,13 @@ export const registRouter = {
     component: () => import('@/pages/regist'),
 }
 
+// 修改个人信息
+export const updateInfo = {
+    path: '/updateInfo',
+    name: "updateInfo",
+    component: () => import('@/pages/updateInfo'),
+}
+
 
 // 运营系统路由
 export const operatRouter = [
@@ -48,6 +55,16 @@ export const operatRouter = [
                 path: 'productEdit/:id',
                 name: 'productEdit',
                 component: () => import('@/pages/operat/product/productEdit'),
+            },
+            {
+                path: 'exampleList',
+                name: 'exampleList',
+                component: () => import('@/pages/operat/examples/exampleList'),
+            },
+            {
+                path: 'exampleEdit/:id',
+                name: 'exampleEdit',
+                component: () => import('@/pages/operat/examples/exampleEdit'),
             }
         ]
 
@@ -79,8 +96,6 @@ export const operatRouter = [
 export const routers = [
     loginRouter,
     registRouter,
-    // errorRouter,
-    // otherRouter,
-    // ...reportRouter,
+    updateInfo,
     ...operatRouter
 ];
