@@ -72,7 +72,7 @@
               <el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             </el-col>
             <el-col :span="8">
-              <el-button size="mini" type="text">删除</el-button>
+              <el-button size="mini" @click="_deleteSmart(scope.$index, scope.row)" type="text">删除</el-button>
             </el-col>
             <el-col :span="8">
               <el-button v-if="scope.row.status==1" size="mini" type="text">已推荐</el-button>
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { smartList , updateSmart} from "@/api/devs.js";
+import { smartList, updateSmart, deleteSmart } from "@/api/devs.js";
 import pagination from "@/components/pagination";
 
 export default {
@@ -116,12 +116,7 @@ export default {
     pagination
   },
   created() {
-    let options = {
-      pageNum: this.pageNum,
-      pageSize: this.pageSize,
-      typeId: this.typeId
-    };
-    this.getSmartList(options);
+    this.getSmartList();
   },
   computed: {
     //用户id
@@ -134,6 +129,23 @@ export default {
     }
   },
   methods: {
+    //删除
+    _deleteSmart(index, row) {
+      let options = {
+        userId: this.userId,
+        devId: row.id
+      };
+      deleteSmart(options).then(res => {
+        let { code } = res.data;
+        if (code == 200) {
+          this.getSmartList();
+          this.$message({
+            message: "删除成功！",
+            type: "success"
+          });
+        }
+      });
+    },
     //推荐
     recommend(index, row) {
       let options = {
@@ -156,22 +168,26 @@ export default {
             message: "已推荐！",
             type: "success"
           });
-          row.status=1;
-        } else {
-          this.$message.error("推荐失败");
+          row.status = 1;
         }
       });
     },
     //编辑产品
     handleEdit(index, row) {
-      this.$router.push("/operat/productEdit/" + row.id);
+      this.$router.push(`/operat/productEdit/${row.id}`);
     },
     //新增产品
     addProduct() {
       this.$router.push("/operat/productEdit/add");
     },
     //根据传入参数的不同获取对应设备列表
-    getSmartList(options) {
+    getSmartList() {
+      let options = {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize,
+            devName: this.search,
+            typeId: this.typeId
+          };
       smartList(options).then(res => {
         let { code } = res.data;
         if (code == 200) {
@@ -185,31 +201,17 @@ export default {
     },
     //分页状态改变时重新请求数据
     currentChange(index) {
-      let options = {
-        pageNum: index,
-        pageSize: this.pageSize
-      };
-      this.getSmartList(options);
+      this.pageNum = index;
+      this.getSmartList();
     },
     //根据关键词搜索
     searchList() {
-      let options = {
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-        devName: this.search,
-        typeId: this.typeId
-      };
-      this.getSmartList(options);
+      this.getSmartList();
     },
     //根据选中得到分类搜索
     selectList(typeId) {
-      let options = {
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-        devName: this.search,
-        typeId: typeId
-      };
-      this.getSmartList(options);
+      this.typeId = typeId;
+      this.getSmartList();
     }
   }
 };

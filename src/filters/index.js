@@ -31,3 +31,20 @@ export function gettType(typeId) {
     }
 }
 
+
+/** 
+ * 案列类型
+ * @param {number} typeId
+ **/
+export function exampleType(typeId) {
+    switch (typeId) {
+        case 1:
+            return "测试分类A"
+            break;
+        case 2:
+            return "测试分类B"
+            break;
+        default:
+            return "未知分类"
+    }
+}

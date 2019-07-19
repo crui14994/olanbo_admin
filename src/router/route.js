@@ -19,7 +19,6 @@ export const updateInfo = {
     component: () => import('@/pages/updateInfo'),
 }
 
-
 // 运营系统路由
 export const operatRouter = [
     {
@@ -67,31 +66,8 @@ export const operatRouter = [
                 component: () => import('@/pages/operat/examples/exampleEdit'),
             }
         ]
-
-    },
-    
+    }, 
 ];
-// 报表统计路由
-// export const reportRouter = [
-//     {
-//         path:"/report",
-//     },
-//     {
-//         path: '/report',
-//         name: 'report',
-//         component: () => import('@/pages/layout'),
-//         children: [
-//         ]
-//     },
-//     {
-//         path: '/order',
-//         name: 'order',
-//         component: () => import('@/pages/layout'),
-//         children: [
-
-//         ]
-//     }
-// ];
 
 export const routers = [
     loginRouter,

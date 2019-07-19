@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Loading } from 'element-ui';
+import { Loading, Message } from 'element-ui';
 import router from './../router'
 
 // 创建axios实例
@@ -22,7 +22,7 @@ service.interceptors.request.use(config => {
 
     //判断localStorage中有没有userId，如果没有则用户没有登录，跳转到登录页面
     let userId = JSON.parse(sessionStorage.getItem("SET_ISLOGIN"));
-    if(!userId){
+    if (!userId) {
         router.push("/login")
     }
 
@@ -34,25 +34,41 @@ service.interceptors.request.use(config => {
     let loading = Loading.service({});
     loading.close();
 
-    return Promise.reject(error) 
+    console.log(0)
+
+    return Promise.reject(error)
 })
 
 // respone拦截器
 service.interceptors.response.use(
     response => {
+        const res = response.data
 
         // 关闭loadding
         let loading = Loading.service({});
         loading.close();
+
+        if (res.code == 300 || res.code == 401 || res.code == 404 || res.code == 600 || res.code == 700 || res.code == 801 || res.code == 999) {
+            Message({
+                showClose: true,
+                message: res.desc,
+                type: 'error'
+            });
+        }
 
         return response;
     },
     error => {
-
         // 关闭loadding
         let loading = Loading.service({});
         loading.close();
-        
+
+        console.log(error.message)
+        Message({
+            message: error.message,
+            type: 'error',
+        })
+
         return Promise.reject(error)
     })
 

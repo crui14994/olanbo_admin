@@ -5,7 +5,7 @@
         <img src="https://www.olanboa.com/images/logo@2x.png" alt>
       </div>
       <span>
-        {{userId}}
+        {{nickName}}
       </span>
     </div>
     <ul class="header-nav">
@@ -28,7 +28,7 @@
         </div>
       </li>
       <li>
-        <div>
+        <div @click="signOut">
           <i class="iconfont icon-tuichu"></i>
           <span>退出系统</span>
         </div>
@@ -44,10 +44,18 @@ export default {
     return {};
   },
   computed: {
-    userId() {
-      return this.$store.state.user.userId;
+    nickName() {
+      return this.$store.state.user.nickName;
     }
   },
+  methods:{
+    //退出系统
+    signOut(){
+      this.$store.dispatch('signOut').then(res=>{
+        this.$router.push("/login")
+      })
+    }
+  }
 };
 </script>
 

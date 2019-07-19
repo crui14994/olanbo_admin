@@ -22,3 +22,12 @@ export function addSmart(options) {
 export function updateSmart(options) {
     return axios.post("/api/web/devs/updateSmart", options);
 }
+
+//删除设备
+export function deleteSmart(options){
+    return axios({
+        url: "/api/web/devs/delete",
+        method: "GET",
+        params:options
+    })
+}

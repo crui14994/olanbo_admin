@@ -187,8 +187,6 @@ export default {
             typeId: this.typeId
           };
           this.getSmartList(options);
-        } else {
-          this.$message.error(res.data.desc);
         }
       });
     }

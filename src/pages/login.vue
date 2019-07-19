@@ -105,8 +105,6 @@ export default {
             type: "success"
           });
           this.$router.push("/");
-        } else{
-         this.$message.error(res.data.desc);
         }
       });
     }

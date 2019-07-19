@@ -70,13 +70,12 @@ const actions = {
         })
     },
     // 退出
-    signOut: ({ commit }) => {
+    signOut: ({ commit , state}) => {
         return new Promise((resolve, reject) => {
             commit(types.SET_ISLOGIN, false);
             sessionStorage.clear();
             resolve();
         })
-
     }
 }
 

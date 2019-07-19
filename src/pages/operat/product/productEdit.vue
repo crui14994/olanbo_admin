@@ -172,8 +172,6 @@ export default {
               type: "success"
             });
             this.$router.push("/operat/productList");
-          } else {
-            this.$message.error(res.data.desc);
           }
         });
       } else {
@@ -211,8 +209,6 @@ export default {
           });
           this.$router.push("/operat/productList");
           this.resetForm("ruleForm");
-        } else {
-          this.$message.error("添加失败");
         }
       });
     },
@@ -275,7 +271,6 @@ export default {
           imgUrl: ""
         };
       } else {
-        //x修改
         let options = {
           pageNum: this.pageNum,
           pageSize: this.pageSize,

@@ -15,7 +15,7 @@ Vue.config.productionTip = false
 Vue.prototype.$formatDate = utils.formatDate;
 Vue.prototype.getFilePreview = utils.getFilePreview;
 
-Vue.prototype.axios= axios;
+Vue.prototype.axios = axios;
 
 //sotre
 import store from "./store/index";
@@ -28,16 +28,13 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
 //引入富文本编辑器
-import  VueQuillEditor from 'vue-quill-editor'
+import VueQuillEditor from 'vue-quill-editor'
 Vue.use(VueQuillEditor)
 
 // 全局注册过滤器
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
-
-
-
 
 /* eslint-disable no-new */
 new Vue({
@@ -46,4 +43,17 @@ new Vue({
   store,
   components: { App },
   template: '<App/>'
+})
+
+// 导航守卫
+router.beforeEach((to, from, next) => {
+  // console.log(to.fullPath);
+  // if (store.state.user.isLogin && to.path!="/login") {
+  //   next();
+  // } else {
+  //   next({
+  //     path: '/login',
+  //   })
+  // }
+  next();
 })

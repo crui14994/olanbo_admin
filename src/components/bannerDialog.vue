@@ -260,6 +260,11 @@ export default {
             type: "success"
           });
           this.$emit("succBanner");
+        }else{
+          this.$message({
+            message: res.data.desc,
+            type: "warning"
+          });
         }
       });
     },
