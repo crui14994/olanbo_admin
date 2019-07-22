@@ -41,7 +41,7 @@
       <el-table-column align="center" prop="devName" label="名称"></el-table-column>
       <el-table-column align="center" prop="typeId" label="分类">
         <template slot-scope="scope">
-          <span>{{scope.row.typeId | gettType}}</span>
+          <span>{{typeName(scope.row.typeId)}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="timeStamp" label="更新时间" width="180">
@@ -61,7 +61,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="text" @click="cancelRecommend(scope.$index, scope.row)">取消推荐</el-button>
+          <el-button style="color:#6b6b6b;" type="text" @click="cancelRecommend(scope.$index, scope.row)">取消推荐</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -101,6 +101,16 @@ export default {
     //设备类型
     smartSysType() {
       return this.$store.state.user.smartSysType;
+    },
+    //设备类型名称
+    typeName() {
+      return function(value) {
+        for(let i=0;i<this.smartSysType.length;i++){
+          if(value == this.smartSysType[i].id){
+            return this.smartSysType[i].typeName
+          }
+        }
+      };
     }
   },
   created() {

@@ -6,33 +6,33 @@
     </el-row>
     <!-- tanle -->
     <el-table :data="tableData" stripe border style="width: 100%" class="banner-table">
-      <el-table-column prop="id" label="ID" width="100"></el-table-column>
-      <el-table-column prop="bannerTitle" label="banner 标题"></el-table-column>
-      <el-table-column prop="linkUrl" label="地址">
+      <el-table-column prop="id" label="ID" width="100" align="center"></el-table-column>
+      <el-table-column prop="bannerTitle" label="banner 标题" align="center"></el-table-column>
+      <el-table-column prop="linkUrl" label="地址" align="center">
         <template slot-scope="scope">
           <a :href="scope.row.linkUrl" target="_blank">{{scope.row.linkUrl}}</a>
         </template>
       </el-table-column>
 
-      <el-table-column prop="mobileDataUrl" label="缩略图" width="140">
+      <el-table-column prop="mobileDataUrl" label="缩略图" width="140" align="center">
         <template slot-scope="scope">
           <el-image :lazy="true" :src="scope.row.mobileDataUrl" fit="scale-down"></el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="timeStamp" label="更新时间" width="200">
+      <el-table-column prop="timeStamp" label="更新时间" width="200" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.timeStamp | timeFormat}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="user" label="发布人" width="140">
+      <el-table-column prop="user" label="发布人" width="140" align="center">
         <template>
           <span>admin</span>
         </template>
       </el-table-column>
-      <el-table-column prop="operation" label="操作" width="175">
+      <el-table-column prop="operation" label="操作" width="120" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button style="color:#7670D9;" size="mini" type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button style="color:#6b6b6b;" size="mini" type="text"  @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

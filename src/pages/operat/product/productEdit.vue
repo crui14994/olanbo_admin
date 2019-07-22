@@ -16,11 +16,16 @@
             <el-form-item label="分类：" prop="region">
               <el-select v-model="ruleForm.region" placeholder="产品分类">
                 <!-- <el-option class="edit-serach-option" label="全部" value="0"></el-option> -->
-                <el-option :label="item.typeName" :value="item.id" v-for="(item,index) in smartSysType" :key="index"></el-option>
+                <el-option
+                  :label="item.typeName"
+                  :value="item.id"
+                  v-for="(item,index) in smartSysType"
+                  :key="index"
+                ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="封面：" prop="imgUrl">
-              <el-input class="edit-input" v-model="ruleForm.imgUrl" placeholder="文件路径" ></el-input>
+              <el-input class="edit-input" v-model="ruleForm.imgUrl" placeholder="文件路径"></el-input>
               <!-- <el-button type="primary">上传图片</el-button> -->
               <el-upload
                 class="avatar-uploader"
@@ -68,7 +73,7 @@ import { quillEditor } from "vue-quill-editor";
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
 
 import { smartList, addSmart, updateSmart } from "@/api/devs.js";
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   name: "productEdit",
@@ -83,7 +88,7 @@ export default {
         name: "",
         region: "",
         imgUrl: "",
-        status:0
+        status: 0
       },
       rules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
@@ -96,11 +101,11 @@ export default {
         placeholder: "请输入内容"
       },
       //传递过来的id
-      infoType: this.$route.params.id,
+      infoType: JSON.parse(this.$route.query.item),
       //用于验证是否修改
       cloneProduct: "",
       // 更新封面图片时，需要删除的原七牛资源的key
-      key7:" ",
+      key7: " "
     };
   },
   components: {
@@ -112,12 +117,12 @@ export default {
       return this.$store.state.user.userId;
     },
     //设备类型
-    smartSysType(){
+    smartSysType() {
       return this.$store.state.user.smartSysType;
     },
     //是否是添加设备
     isAdd() {
-      if (this.infoType != "add") {
+      if (this.infoType) {
         return false;
       } else {
         return true;
@@ -126,7 +131,7 @@ export default {
     //按钮文字
     btnText() {
       return this.isAdd ? "立即添加" : "立即修改";
-    },
+    }
   },
   created() {
     this.initFrom();
@@ -134,7 +139,7 @@ export default {
   mounted() {},
   methods: {
     //getKey7
-    getKey7(file, fileList){
+    getKey7(file, fileList) {
       let oldFileUrl = this.ruleForm.imgUrl;
       this.key7 = oldFileUrl.split("/").pop();
     },
@@ -142,7 +147,7 @@ export default {
     updateProduct() {
       let options = {
         userId: this.userId,
-        id: JSON.parse(this.infoType),
+        id: this.infoType.id,
         devName: this.ruleForm.name,
         typeId: this.ruleForm.region,
         desc: " ",
@@ -150,9 +155,9 @@ export default {
         htmlContent: this.content,
         linkUrl: " ",
         logoPath: this.ruleForm.imgUrl,
-        key7:this.key7
+        key7: this.key7
       };
-      if(options.htmlContent==""){
+      if (options.htmlContent == "") {
         this.$message({
           message: "您还没有填写设备详情！",
           type: "warning"
@@ -193,7 +198,7 @@ export default {
         logoPath: this.ruleForm.imgUrl,
         userId: this.userId
       };
-      if(options.htmlContent==""){
+      if (options.htmlContent == "") {
         this.$message({
           message: "您还没有填写设备详情！",
           type: "warning"
@@ -271,28 +276,15 @@ export default {
           imgUrl: ""
         };
       } else {
-        let options = {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          typeId: this.typeId
+        this.ruleForm = {
+          name: this.infoType.devName,
+          region: this.infoType.typeId,
+          imgUrl: this.infoType.logoPath,
+          status: this.infoType.status
         };
-        smartList(options).then(res => {
-          let { records } = res.data.data;
-          records.forEach(item => {
-            if (item.id == this.infoType) {
-              this.ruleForm = {
-                name: item.devName,
-                region: item.typeId,
-                imgUrl: item.logoPath,
-                status:item.status
-              };
-              this.content = item.htmlContent;
-
-              this.cloneProduct =
-                JSON.stringify(this.ruleForm) + JSON.stringify(this.content);
-            }
-          });
-        });
+        this.content = this.infoType.htmlContent;
+        this.cloneProduct =
+          JSON.stringify(this.ruleForm) + JSON.stringify(this.content);
       }
     },
     //提交表单

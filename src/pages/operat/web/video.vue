@@ -7,25 +7,25 @@
 
     <div class="video-container">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="id" label="id" width="80"></el-table-column>
-        <el-table-column prop="url" label="地址">
+        <el-table-column prop="id" label="id" width="80" align="center"></el-table-column>
+        <el-table-column prop="url" label="地址" align="center">
           <template slot-scope="scope">
             <a :href="scope.row.url" target="_blank">{{scope.row.url}}</a>
           </template>
         </el-table-column>
-        <el-table-column prop="timeStamp" label="更新时间" width="200">
+        <el-table-column prop="timeStamp" label="更新时间" width="200" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.timeStamp | timeFormat}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="userName" label="发布人" width="170">
+        <el-table-column prop="userName" label="发布人" width="170" align="center">
           <template>
             <span>admin</span>
           </template>
         </el-table-column>
-        <el-table-column prop="operation" label="操作" width="90">
+        <el-table-column prop="operation" label="操作" width="90" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button style="color:#7670D9;" type="text" size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
           </template>
         </el-table-column>

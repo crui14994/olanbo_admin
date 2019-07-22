@@ -51,7 +51,7 @@
       </el-table-column>
       <el-table-column prop="typeId" label="分类" width="180" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.typeId | gettType}}</span>
+          <span>{{typeName(scope.row.typeId)}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="timeStamp" label="更新时间" width="200" align="center">
@@ -69,15 +69,16 @@
         <template slot-scope="scope">
           <el-row class="table-btns">
             <el-col :span="8">
-              <el-button size="mini" type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+              <el-button style="color:rgba(118,112,217,1);" size="mini" type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             </el-col>
             <el-col :span="8">
-              <el-button size="mini" @click="_deleteSmart(scope.$index, scope.row)" type="text">删除</el-button>
+              <el-button style="color:#6b6b6b;" size="mini" @click="_deleteSmart(scope.$index, scope.row)" type="text">删除</el-button>
             </el-col>
             <el-col :span="8">
               <el-button v-if="scope.row.status==1" size="mini" type="text">已推荐</el-button>
               <el-button
                 v-if="scope.row.status==0"
+                style="background:rgba(118,112,217,1);border-color:rgba(118,112,217,1);"
                 size="mini"
                 type="primary"
                 @click="recommend(scope.$index, scope.row)"
@@ -95,7 +96,7 @@
 </template>
 
 <script>
-import { smartList, updateSmart, deleteSmart } from "@/api/devs.js";
+import { smartList, updateSmart, deleteSmart,devPage } from "@/api/devs.js";
 import pagination from "@/components/pagination";
 
 export default {
@@ -107,8 +108,8 @@ export default {
       //分类
       typeId: "",
       tableData: [],
-      pageNum: 1, //分页当前页码
-      pageSize: 5, //分页查询中每页返回的总条数
+      pageNum: devPage.PAGENUM, //分页当前页码
+      pageSize: devPage.PAGESIZE, //分页查询中每页返回的总条数
       total: 0 //总共有多少条数据
     };
   },
@@ -126,6 +127,16 @@ export default {
     //设备类型
     smartSysType() {
       return this.$store.state.user.smartSysType;
+    },
+    //设备类型名称
+    typeName() {
+      return function(value) {
+        for(let i=0;i<this.smartSysType.length;i++){
+          if(value == this.smartSysType[i].id){
+            return this.smartSysType[i].typeName
+          }
+        }
+      };
     }
   },
   methods: {
@@ -174,20 +185,20 @@ export default {
     },
     //编辑产品
     handleEdit(index, row) {
-      this.$router.push(`/operat/productEdit/${row.id}`);
+      this.$router.push({ path: '/operat/productEdit', query: { item: JSON.stringify(row)}})
     },
     //新增产品
     addProduct() {
-      this.$router.push("/operat/productEdit/add");
+      this.$router.push("/operat/productEdit/");
     },
     //根据传入参数的不同获取对应设备列表
     getSmartList() {
       let options = {
-            pageNum: this.pageNum,
-            pageSize: this.pageSize,
-            devName: this.search,
-            typeId: this.typeId
-          };
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        devName: this.search,
+        typeId: this.typeId
+      };
       smartList(options).then(res => {
         let { code } = res.data;
         if (code == 200) {

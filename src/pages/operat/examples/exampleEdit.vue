@@ -98,7 +98,23 @@ export default {
       ListType: [], //案列类型列表
       editorOption: {
         // 编辑器选项
-        placeholder: "请输入内容"
+        placeholder: "请输入内容",
+        toolbar: [
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote", "code-block"],
+          [{ header: 1 }, { header: 2 }],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ script: "sub" }, { script: "super" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          [{ direction: "rtl" }],
+          [{ size: ["small", false, "large", "huge"] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ font: [] }],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }],
+          ["clean"],
+          ["link", "image", "video"]
+        ]
       },
       //传递过来的id
       infoType: this.$route.params.id,
@@ -261,12 +277,6 @@ export default {
     },
     //初始化表单数据
     initFrom() {
-      getListType().then(res => {
-        let { code } = res.data;
-        if (code == 200) {
-          this.ListType = res.data.data;
-        }
-      });
       if (this.isAdd) {
         //添加
         this.ruleForm = {
@@ -291,6 +301,13 @@ export default {
           }
         });
       }
+
+      getListType().then(res => {
+        let { code } = res.data;
+        if (code == 200) {
+          this.ListType = res.data.data;
+        }
+      });
     },
     //提交表单
     submitForm(formName) {

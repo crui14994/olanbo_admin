@@ -51,7 +51,7 @@ export const operatRouter = [
                 component: () => import('@/pages/operat/product/productList'),
             },
             {
-                path: 'productEdit/:id',
+                path: 'productEdit',
                 name: 'productEdit',
                 component: () => import('@/pages/operat/product/productEdit'),
             },
@@ -64,6 +64,11 @@ export const operatRouter = [
                 path: 'exampleEdit/:id',
                 name: 'exampleEdit',
                 component: () => import('@/pages/operat/examples/exampleEdit'),
+            },
+            {
+                path: 'webMsg',
+                name: 'webMsg',
+                component: () => import('@/pages/operat/webMsgList/webMsg'),
             }
         ]
     }, 

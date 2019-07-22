@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column prop="typeId" label="分类" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.typeId | exampleType}}</span>
+          <span>{{typeName(scope.row.typeId)}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="logoUrl" label="封面图" width="140" align="center">
@@ -69,10 +69,10 @@
         <template slot-scope="scope">
           <el-row class="table-btns">
             <el-col :span="12">
-              <el-button size="mini" type="text" @click="updatItem(scope.$index, scope.row)">编辑</el-button>
+              <el-button style="color:#7670D9;" size="mini" type="text" @click="updatItem(scope.$index, scope.row)">编辑</el-button>
             </el-col>
             <el-col :span="12">
-              <el-button size="mini" type="text" @click="_deleteItem(scope.$index, scope.row)">删除</el-button>
+              <el-button style="color:#6b6b6b;" size="mini" type="text" @click="_deleteItem(scope.$index, scope.row)">删除</el-button>
             </el-col>
           </el-row>
         </template>
@@ -108,14 +108,24 @@ export default {
     pagination
   },
   created() {
-    this._getListType();
     this._getList();
   },
   computed: {
     //用户id
     userId() {
       return this.$store.state.user.userId;
+    },
+    //案例类型名称
+    typeName(value){
+      return function(value){
+        for(let i=0;i<this.ListType.length;i++){
+          if(value==this.ListType[i].id){
+            return this.ListType[i].typeName
+          }
+        }
+      }
     }
+
   },
   methods: {
     //修改案例
@@ -128,16 +138,29 @@ export default {
     },
     //删除案列
     _deleteItem(index, row) {
-      deleteItem({ id: row.id, userId: this.userId }).then(res => {
-        let { code } = res.data;
-        if (code == 200) {
-          this._getList();
-          this.$message({
-            message: "删除成功！",
-            type: "success"
+      this.$confirm(`此操作将永久删除id为${row.id}文件, 是否继续?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          deleteItem({ id: row.id, userId: this.userId }).then(res => {
+            let { code } = res.data;
+            if (code == 200) {
+              this._getList();
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            }
           });
-        }
-      });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
     //获取案列类型列表
     _getListType() {
@@ -162,6 +185,7 @@ export default {
       getList(options).then(res => {
         let { code } = res.data;
         if (code == 200) {
+          this._getListType();
           this.total = res.data.data.total;
           this.tableData = res.data.data.records;
         } else if (code == 300) {

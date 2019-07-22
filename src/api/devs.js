@@ -4,6 +4,12 @@
 
 import axios from "./../utils/axios";
 
+//配置查询条件的额页码和每一页要显示的
+export const devPage = {
+    PAGENUM:1,//分页当前页码
+    PAGESIZE:5 //分页查询中每页返回的总条数
+}
+
 //获取设备列表
 export function smartList(options) {
     return axios({

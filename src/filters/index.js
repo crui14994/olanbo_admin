@@ -12,39 +12,39 @@ export function timeFormat(time) {
  * 设备类型
  * @param {number} typeId
  **/
-export function gettType(typeId) {
-    switch (typeId) {
-        case 1:
-            return "智能安防"
-            break;
-        case 2:
-            return "智能家电"
-            break;
-        case 3:
-            return "智能控制"
-            break;
-        case 4:
-            return "test"
-            break;
-        default:
-            return "未知设备"
-    }
-}
+// export function gettType(typeId) {
+//     switch (typeId) {
+//         case 1:
+//             return "网关系列"
+//             break;
+//         case 2:
+//             return "开关系列"
+//             break;
+//         case 3:
+//             return "灯光系列"
+//             break;
+//         case 4:
+//             return "test"
+//             break;
+//         default:
+//             return "未知设备"
+//     }
+// }
 
 
 /** 
  * 案列类型
  * @param {number} typeId
  **/
-export function exampleType(typeId) {
-    switch (typeId) {
-        case 1:
-            return "测试分类A"
-            break;
-        case 2:
-            return "测试分类B"
-            break;
-        default:
-            return "未知分类"
-    }
-}
+// export function exampleType(typeId) {
+//     switch (typeId) {
+//         case 1:
+//             return "测试分类A"
+//             break;
+//         case 2:
+//             return "测试分类B"
+//             break;
+//         default:
+//             return "未知分类"
+//     }
+// }
