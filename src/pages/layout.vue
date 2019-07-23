@@ -38,8 +38,10 @@
                 <el-menu-item :index="'/operat/productList'">智能产品</el-menu-item>
                 <!-- 成功案例 -->
                 <el-menu-item :index="'/operat/exampleList'">成功案例</el-menu-item>
-                <!-- 成功案例 -->
+                <!-- 用户留言 -->
                 <el-menu-item :index="'/operat/webMsg'">用户留言</el-menu-item>
+                 <!-- 合作申请 -->
+                <el-menu-item :index="'/operat/coopMsg'">合作申请</el-menu-item>
               </el-submenu>
 
               <!-- 订单物流管理 -->
