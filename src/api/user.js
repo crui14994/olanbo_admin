@@ -31,20 +31,20 @@ export const userType ={
 
 // 登陆
 export function userLogin(userName,mobile,passWord){
-    return axios.post("/api/user/login",{
+    return axios.post("/user/login",{
         userName,mobile,passWord
     })
 }
 
 //注册
 export function userRegist(smsCode,userName,nickName,mobile,passWord){
-    return axios.post("/api/user/regist",{
+    return axios.post("/user/regist",{
         smsCode,userName,nickName,mobile,passWord
     })
 }
 //修改
 // export function updateInfo(){
-//     return axios.post("/api/user/updateInfo",{
+//     return axios.post("/user/updateInfo",{
 
 //     })
 // }

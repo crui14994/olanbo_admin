@@ -3,26 +3,12 @@
     <!-- //顶部操作 -->
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-row>
-        <el-col :span="7">
+        <el-col :span="12">
           <el-form-item label="联系人姓名:">
             <el-input v-model="formInline.user" placeholder="输入联系人姓名"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="9">
-          <!-- <el-form-item label="留言时间:">
-            <el-date-picker
-              v-model="formInline.datePicker"
-              type="daterange"
-              align="right"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :picker-options="pickerOptions"
-            ></el-date-picker>
-          </el-form-item>-->
-        </el-col>
-        <el-col :span="6">
+        <el-col :span="10">
           <el-form-item label="状态">
             <el-select v-model="formInline.region" placeholder="状态">
               <el-option label="全部" value></el-option>

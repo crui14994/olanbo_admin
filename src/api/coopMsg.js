@@ -16,7 +16,7 @@ export const typeStatus = {
 //提交申请信息
 export function addMsg(options) {
     return axios({
-        url: "/api/coopMsg/addMsg",
+        url: "/coopMsg/addMsg",
         method: "POST",
         data: options
     })
@@ -25,7 +25,7 @@ export function addMsg(options) {
 //获取申请信息列表
 export function getcoopMsgList(options) {
     return axios({
-        url: "/api/coopMsg/getList",
+        url: "/coopMsg/getList",
         method: "GET",
         params: options
     })
@@ -34,7 +34,7 @@ export function getcoopMsgList(options) {
 //修改申请信息状态
 export function changeStatus(options) {
     return axios({
-        url: "/api/coopMsg/changeStatus",
+        url: "/coopMsg/changeStatus",
         method: "POST",
         data:options
     })
@@ -43,7 +43,7 @@ export function changeStatus(options) {
 //删除申请信息
 export function deleteCoopMsg(options) {
     return axios({
-        url: "/api/coopMsg/delete",
+        url: "/coopMsg/delete",
         method: "GET",
         params:options
     })

@@ -8,7 +8,7 @@
     <el-table :data="tableData" stripe border style="width: 100%" class="banner-table">
       <el-table-column prop="id" label="ID" width="100" align="center"></el-table-column>
       <el-table-column prop="bannerTitle" label="banner 标题" align="center"></el-table-column>
-      <el-table-column prop="linkUrl" label="地址" align="center">
+      <el-table-column prop="linkUrl" label="跳转地址" align="center">
         <template slot-scope="scope">
           <a :href="scope.row.linkUrl" target="_blank">{{scope.row.linkUrl}}</a>
         </template>

@@ -9,7 +9,7 @@ export const QINIU_PARAMS = {
 //获取token
 export function getToken(paramsObj) {
     return axios({
-        url: "/api/get7Token",
+        url: "/get7Token",
         method: "get",
         params:paramsObj
     });

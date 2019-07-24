@@ -30,18 +30,18 @@
                 <!-- 首页管理 -->
                 <el-submenu class="menu-box02" :index="'/operat/web'">
                   <template slot="title">首页管理</template>
-                  <el-menu-item :index="'/operat/web/banner'">banner管理</el-menu-item>
-                  <el-menu-item :index="'/operat/web/video'">视频管理</el-menu-item>
-                  <el-menu-item :index="'/operat/web/recommend'">推荐单品选择</el-menu-item>
+                  <el-menu-item :index="'/web/home/banner'">banner管理</el-menu-item>
+                  <el-menu-item :index="'/web/home/video'">视频管理</el-menu-item>
+                  <el-menu-item :index="'/web/home/recommend'">推荐单品选择</el-menu-item>
                 </el-submenu>
                 <!-- 智能产品 -->
-                <el-menu-item :index="'/operat/productList'">智能产品</el-menu-item>
+                <el-menu-item :index="'/web/productList'">智能产品</el-menu-item>
                 <!-- 成功案例 -->
-                <el-menu-item :index="'/operat/exampleList'">成功案例</el-menu-item>
+                <el-menu-item :index="'/web/exampleList'">成功案例</el-menu-item>
                 <!-- 用户留言 -->
-                <el-menu-item :index="'/operat/webMsg'">用户留言</el-menu-item>
-                 <!-- 合作申请 -->
-                <el-menu-item :index="'/operat/coopMsg'">合作申请</el-menu-item>
+                <el-menu-item :index="'/web/webMsg'">用户留言</el-menu-item>
+                <!-- 合作申请 -->
+                <el-menu-item :index="'/web/coopMsg'">合作申请</el-menu-item>
               </el-submenu>
 
               <!-- 订单物流管理 -->
@@ -119,10 +119,11 @@ export default {
       list: [] //面包屑数组
     };
   },
-  computed: {
-    // list () {
-    //   return this.$route.matched
-    // }
+  computed: {},
+  watch: {
+    $route(to, from) {
+      this.activeIndex = to.path;
+    }
   },
   created() {
     this.activeIndex = this.$route.path;
@@ -177,6 +178,9 @@ export default {
           }
           > .el-submenu__title:hover {
             background-color: rgba(255, 255, 255, 0.1) !important;
+          }
+          .el-menu-item:hover{
+            background-color: none!important;
           }
           .menu-box02 {
             > .el-submenu__title {
@@ -244,4 +248,5 @@ export default {
 .el-loading-mask {
   z-index: 2010 !important;
 }
+
 </style>

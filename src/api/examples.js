@@ -8,7 +8,7 @@ import axios from "./../utils/axios";
 //获取案例列表
 export function getList(options) {
     return axios({
-        url: "/api/web/examples/getList",
+        url: "/web/examples/getList",
         method: "GET",
         params:options
     })
@@ -16,7 +16,7 @@ export function getList(options) {
 //新增案例
 export function addItem(options) {
     return axios({
-        url: "/api/web/examples/addItem",
+        url: "/web/examples/addItem",
         method: "POST",
         data:options
     })
@@ -25,7 +25,7 @@ export function addItem(options) {
 // 修改案例信息
 export function update(options) {
     return axios({
-        url: "/api/web/examples/update",
+        url: "/web/examples/update",
         method: "POST",
         data:options
     })
@@ -34,7 +34,7 @@ export function update(options) {
 //删除案例
 export function deleteItem(options){
     return axios({
-        url: "/api/web/examples/delete",
+        url: "/web/examples/delete",
         method: "GET",
         params:options
     })
@@ -43,7 +43,7 @@ export function deleteItem(options){
 //增加案例类型
 export function addItemType(options){
     return axios({
-        url:"/api/web/exampleType/addItem",
+        url:"/web/exampleType/addItem",
         method: "POST",
         data:options
     })
@@ -52,7 +52,7 @@ export function addItemType(options){
 //获取案列类型列表
 export function getListType(){
     return axios({
-        url:"/api/web/exampleType/getList",
+        url:"/web/exampleType/getList",
         method: "GET"
     })
 }
@@ -61,7 +61,7 @@ export function getListType(){
 // 获取案例详情
 export function getItemInfo(id){
     return axios({
-        url:"/api/web/examples/getItemInfo",
+        url:"/web/examples/getItemInfo",
         method: "GET",
         params:{
             id

@@ -13,7 +13,7 @@ export const devPage = {
 //获取设备列表
 export function smartList(options) {
     return axios({
-        url: "/api/web/devs/smartList",
+        url: "/web/devs/smartList",
         method: "GET",
         params:options
     })
@@ -21,18 +21,18 @@ export function smartList(options) {
 
 //添加设备
 export function addSmart(options) {
-    return axios.post("/api/web/devs/addSmart", options);
+    return axios.post("/web/devs/addSmart", options);
 }
 
 //更新设备
 export function updateSmart(options) {
-    return axios.post("/api/web/devs/updateSmart", options);
+    return axios.post("/web/devs/updateSmart", options);
 }
 
 //删除设备
 export function deleteSmart(options){
     return axios({
-        url: "/api/web/devs/delete",
+        url: "/web/devs/delete",
         method: "GET",
         params:options
     })

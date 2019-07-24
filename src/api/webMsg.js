@@ -14,7 +14,7 @@ export const typeStatus = {
 // 获取网站留言列表
 export function getWebMsgList(options){
     return axios({
-        url: "/api/webMsg/getWebMsgList",
+        url: "/webMsg/getWebMsgList",
         method: "GET",
         params:options
     })
@@ -23,7 +23,7 @@ export function getWebMsgList(options){
 // 更新留言信息状态
 export function changeStatus(options){
     return axios({
-        url: "/api/webMsg/changeStatus",
+        url: "/webMsg/changeStatus",
         method: "POST",
         data:options
     })
@@ -32,7 +32,7 @@ export function changeStatus(options){
 // 删除网站留言信息
 export function deleteMsg(options){
     return axios({
-        url: "/api/webMsg/delete",
+        url: "/webMsg/delete",
         method: "GET",
         params:options
     })

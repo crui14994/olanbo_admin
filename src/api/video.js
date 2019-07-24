@@ -6,7 +6,7 @@ import axios from "./../utils/axios";
 
 //添加视频
 export function addHomeVideo(userId,url) {
-    return axios.post("/api/addHomeVideo",{
+    return axios.post("/addHomeVideo",{
         userId,
         url
     })
@@ -14,12 +14,12 @@ export function addHomeVideo(userId,url) {
 
 //获取视频
 export function getHomeVideo() {
-    return axios.get("/api/getHomeVideo")
+    return axios.get("/getHomeVideo")
 }
 
 //更新视频
 export function updateHomeVideo(userId, id , url , key){
-    return axios.post("/api/updateHomeVideo",{
+    return axios.post("/updateHomeVideo",{
         userId, id , url , key
     })
 }

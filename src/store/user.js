@@ -6,7 +6,7 @@ const types = {
     SET_USERNAME: 'SET_USERNAME', // 用户信息
     SET_NICKNAME: 'SET_NICKNAME', // 用户昵称
     SET_USERTYPE: 'SET_USERTYPE', // 用户类型
-    SET_SMARTSYSTYPE: 'SET_SMARTSYSTYPE' //设备类型
+    SET_SMARTSYSTYPE: 'SET_SMARTSYSTYPE' //获取到的设备类型
 }
 
 const state = {
