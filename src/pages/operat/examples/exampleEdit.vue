@@ -7,11 +7,14 @@
             :model="ruleForm"
             :rules="rules"
             ref="ruleForm"
-            label-width="70px"
+            label-width="100px"
             class="demo-ruleForm"
           >
             <el-form-item label="名称：" prop="name">
               <el-input class="edit-input" v-model="ruleForm.name" placeholder="输入产品名称"></el-input>
+            </el-form-item>
+             <el-form-item label="简介信息：" prop="desc">
+              <el-input class="edit-input" autosize type="textarea" v-model="ruleForm.desc" placeholder="输入产品名称"></el-input>
             </el-form-item>
             <el-form-item label="分类：" prop="region">
               <el-select v-model="ruleForm.region" placeholder="产品分类">
@@ -50,7 +53,7 @@
               ></quill-editor>
             </el-form-item>
             <el-form-item class="edit-btns">
-              <el-button type @click="$router.push('/operat/exampleList')">返回列表</el-button>
+              <el-button type @click="$router.push('/web/exampleList')">返回列表</el-button>
               <el-button type="primary" @click="submitForm('ruleForm')">{{btnText}}</el-button>
             </el-form-item>
           </el-form>
@@ -75,7 +78,7 @@ import { getListType, getItemInfo, update, addItem } from "@/api/examples.js";
 // import {mapState} from 'vuex';
 
 export default {
-  name: "productEdit",
+  name: "exampleEdit",
   data() {
     return {
       // 七牛云的上传地址，根据自己所在地区选择
@@ -85,12 +88,14 @@ export default {
       //表单信息
       ruleForm: {
         name: "",
+        desc:"",
         region: "",
         imgUrl: "",
         status: 0
       },
       rules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        desc: [{ required: true, message: "请输入名称", trigger: "blur" }],
         region: [{ required: true, message: "请选择分类", trigger: "change" }],
         imgUrl: [{ required: true, message: "请选择上传图片" }]
       },
@@ -163,7 +168,7 @@ export default {
         logoUrl: this.ruleForm.imgUrl,
         key7: this.key7 || " ",
         htmlContent: this.content,
-        desc: " ",
+        desc: this.ruleForm.desc,
         dtypeId: this.ruleForm.region,
         title: this.ruleForm.name,
         userId: this.userId
@@ -185,7 +190,7 @@ export default {
               message: "修改成功！",
               type: "success"
             });
-            this.$router.push("/operat/exampleList");
+            this.$router.push("/web/exampleList");
           }
         });
       } else {
@@ -201,7 +206,7 @@ export default {
         title: this.ruleForm.name,
         typeId: this.ruleForm.region,
         logoUrl: this.ruleForm.imgUrl,
-        desc: " ",
+        desc: this.ruleForm.desc,
         htmlContent: this.content,
         status: 0,
         userId: this.userId
@@ -221,7 +226,7 @@ export default {
             message: "添加成功！",
             type: "success"
           });
-          this.$router.push("/operat/exampleList");
+          this.$router.push("/web/exampleList");
           this.resetForm("ruleForm");
         }
       });
@@ -293,7 +298,8 @@ export default {
               name: data.title,
               region: data.typeId,
               imgUrl: data.logoUrl,
-              status: data.status
+              status: data.status,
+              desc:data.desc
             };
             this.content = data.htmlContent;
             this.cloneProduct =

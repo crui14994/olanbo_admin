@@ -7,7 +7,7 @@ import axios from "./../utils/axios";
 
 //添加banner
 export function addBanner(linkUrl, userId, pcDataUrl, mobileDataUrl, bannerTitle) {
-    return axios.post("/addBanner", {
+    return axios.post("/web/addBanner", {
         linkUrl, userId, pcDataUrl, mobileDataUrl,type:1, bannerTitle
     });
 }

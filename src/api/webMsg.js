@@ -11,6 +11,15 @@ export const typeStatus = {
     REPLY:1 //已回访
 }
 
+//留言提交
+export  function addMsg(options){
+    return axios({
+        url: "/webMsg/addMsg",
+        method: "POST",
+        data:options
+    })
+}
+
 // 获取网站留言列表
 export function getWebMsgList(options){
     return axios({

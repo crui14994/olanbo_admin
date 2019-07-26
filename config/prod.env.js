@@ -1,5 +1,5 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  BASE_URL:'"//olanboa.qicp.vip/"'
+  BASE_URL:'"http://olanboa.qicp.vip/"'
 }

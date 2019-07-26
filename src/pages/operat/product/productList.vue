@@ -185,11 +185,11 @@ export default {
     },
     //编辑产品
     handleEdit(index, row) {
-      this.$router.push({ path: '/operat/productEdit', query: { item: JSON.stringify(row)}})
+      this.$router.push({ path: '/web/productEdit', query: { item: JSON.stringify(row)}})
     },
     //新增产品
     addProduct() {
-      this.$router.push("/operat/productEdit/");
+      this.$router.push("/web/productEdit/");
     },
     //根据传入参数的不同获取对应设备列表
     getSmartList() {

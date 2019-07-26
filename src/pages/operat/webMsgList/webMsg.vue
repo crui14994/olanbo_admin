@@ -65,7 +65,7 @@
               type="primary"
               size="mini"
               @click="handleEdit(scope.$index, scope.row)"
-            >未回访</el-button>
+            >回访</el-button>
             <el-button style="color:#7670D9;width:60px;" v-if="scope.row.status==1" size="mini" type="text">已回访</el-button>
             <el-button style="color:#6B6B6B;" size="mini" type="text" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
@@ -83,6 +83,7 @@
 <script>
 import pagination from "@/components/pagination";
 import {
+  addMsg,
   typeStatus,
   getWebMsgList,
   changeStatus,
@@ -147,6 +148,18 @@ export default {
   },
   created() {
     this._getList();
+
+    // 模拟提交用户留言
+    // let options = {
+    //   name:"test",
+    //   email:"2456468@qq.com",
+    //   tel:"18255978765",
+    //   content:"test"
+    // }
+    // addMsg(options).then(res=>{
+    //   console.log(res);
+    // })
+
   },
   computed: {
     //用户id
@@ -207,7 +220,7 @@ export default {
           });
         });
     },
-    //获取案例列表
+    //获取列表
     _getList() {
       let options = {
         pageSize: this.pageSize,

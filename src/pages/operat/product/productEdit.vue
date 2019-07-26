@@ -7,11 +7,14 @@
             :model="ruleForm"
             :rules="rules"
             ref="ruleForm"
-            label-width="70px"
+            label-width="90px"
             class="demo-ruleForm"
           >
             <el-form-item label="名称：" prop="name">
               <el-input class="edit-input" v-model="ruleForm.name" placeholder="输入产品名称"></el-input>
+            </el-form-item>
+            <el-form-item label="简介信息:" prop="desc">
+              <el-input type="textarea" class="edit-input" v-model="ruleForm.desc" placeholder="输入简介信息"></el-input>
             </el-form-item>
             <el-form-item label="分类：" prop="region">
               <el-select v-model="ruleForm.region" placeholder="产品分类">
@@ -50,7 +53,7 @@
               ></quill-editor>
             </el-form-item>
             <el-form-item class="edit-btns">
-              <el-button type @click="$router.push('/operat/productList')">返回列表</el-button>
+              <el-button type @click="$router.push('/web/productList')">返回列表</el-button>
               <el-button type="primary" @click="submitForm('ruleForm')">{{btnText}}</el-button>
               <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
             </el-form-item>
@@ -88,10 +91,12 @@ export default {
         name: "",
         region: "",
         imgUrl: "",
+        desc:"",
         status: 0
       },
       rules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        desc: [{ required: true, message: "请输入简介信息", trigger: "blur" }],
         region: [{ required: true, message: "请选择分类", trigger: "change" }],
         imgUrl: [{ required: true, message: "请选择上传图片" }]
       },
@@ -100,8 +105,8 @@ export default {
         // 编辑器选项
         placeholder: "请输入内容"
       },
-      //传递过来的id
-      infoType: JSON.parse(this.$route.query.item),
+      //传递过来的数据
+      infoType:this.$route.query.item ? JSON.parse(this.$route.query.item) : "",
       //用于验证是否修改
       cloneProduct: "",
       // 更新封面图片时，需要删除的原七牛资源的key
@@ -150,7 +155,7 @@ export default {
         id: this.infoType.id,
         devName: this.ruleForm.name,
         typeId: this.ruleForm.region,
-        desc: " ",
+        desc: this.ruleForm.desc,
         status: this.ruleForm.status,
         htmlContent: this.content,
         linkUrl: " ",
@@ -176,7 +181,7 @@ export default {
               message: "修改成功！",
               type: "success"
             });
-            this.$router.push("/operat/productList");
+            this.$router.push("/web/productList");
           }
         });
       } else {
@@ -192,7 +197,7 @@ export default {
         typeId: this.ruleForm.region,
         status: 0,
         devName: this.ruleForm.name,
-        desc: " ",
+        desc: this.ruleForm.desc,
         htmlContent: this.content,
         linkUrl: " ",
         logoPath: this.ruleForm.imgUrl,
@@ -212,7 +217,7 @@ export default {
             message: "添加成功！",
             type: "success"
           });
-          this.$router.push("/operat/productList");
+          this.$router.push("/web/productList");
           this.resetForm("ruleForm");
         }
       });
@@ -273,14 +278,16 @@ export default {
         this.ruleForm = {
           name: "",
           region: "",
-          imgUrl: ""
+          imgUrl: "",
+          desc:"",
         };
       } else {
         this.ruleForm = {
           name: this.infoType.devName,
-          region: this.infoType.typeId,
+          region: this.infoType.sysTypeId,
           imgUrl: this.infoType.logoPath,
-          status: this.infoType.status
+          status: this.infoType.status,
+          desc: this.infoType.desc,
         };
         this.content = this.infoType.htmlContent;
         this.cloneProduct =

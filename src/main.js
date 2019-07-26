@@ -36,6 +36,18 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
+// 导航守卫
+router.beforeEach((to, from, next) => {
+  const isLogin = JSON.parse(sessionStorage.getItem("SET_ISLOGIN"));
+  if (!isLogin && to.path !== '/login' && to.path !== '/regist' && to.path !== '/updateInfo') {
+    next('/login');
+  } else {
+    next();
+  }
+})
+
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -45,15 +57,3 @@ new Vue({
   template: '<App/>'
 })
 
-// 导航守卫
-router.beforeEach((to, from, next) => {
-  // console.log(to.fullPath);
-  // if (store.state.user.isLogin && to.path!="/login") {
-  //   next();
-  // } else {
-  //   next({
-  //     path: '/login',
-  //   })
-  // }
-  next();
-})

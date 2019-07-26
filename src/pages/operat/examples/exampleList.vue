@@ -65,14 +65,40 @@
           <span>admin</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100" align="center">
+      <el-table-column label="操作" width="180" align="center">
         <template slot-scope="scope">
           <el-row class="table-btns">
-            <el-col :span="12">
-              <el-button style="color:#7670D9;" size="mini" type="text" @click="updatItem(scope.$index, scope.row)">编辑</el-button>
+            <el-col :span="8">
+              <el-button
+                style="color:#ffffff;background-color:#7670D9;border-color:#7670D9;"
+                size="mini"
+                type="primary"
+                v-if="scope.row.status===0"
+                @click="recommend(scope.$index, scope.row ,1)"
+              >推荐</el-button>
+              <el-button
+                style="color:#7670D9;"
+                size="mini"
+                type="text"
+                v-if="scope.row.status===1"
+                @click="recommend(scope.$index, scope.row,0)"
+              >取消推荐</el-button>
             </el-col>
-            <el-col :span="12">
-              <el-button style="color:#6b6b6b;" size="mini" type="text" @click="_deleteItem(scope.$index, scope.row)">删除</el-button>
+            <el-col :span="8">
+              <el-button
+                style="color:#7670D9;"
+                size="mini"
+                type="text"
+                @click="updatItem(scope.$index, scope.row)"
+              >编辑</el-button>
+            </el-col>
+            <el-col :span="8">
+              <el-button
+                style="color:#6b6b6b;"
+                size="mini"
+                type="text"
+                @click="_deleteItem(scope.$index, scope.row)"
+              >删除</el-button>
             </el-col>
           </el-row>
         </template>
@@ -86,11 +112,17 @@
 </template>
 
 <script>
-import { getListType, getList, deleteItem } from "@/api/examples.js";
+import {
+  STATUS,
+  getListType,
+  update,
+  getList,
+  deleteItem
+} from "@/api/examples.js";
 import pagination from "@/components/pagination";
 
 export default {
-  name: "productList",
+  name: "exampleList",
   data() {
     return {
       //搜索
@@ -116,25 +148,42 @@ export default {
       return this.$store.state.user.userId;
     },
     //案例类型名称
-    typeName(value){
-      return function(value){
-        for(let i=0;i<this.ListType.length;i++){
-          if(value==this.ListType[i].id){
-            return this.ListType[i].typeName
+    typeName(value) {
+      return function(value) {
+        for (let i = 0; i < this.ListType.length; i++) {
+          if (value == this.ListType[i].id) {
+            return this.ListType[i].typeName;
           }
         }
-      }
+      };
     }
-
   },
   methods: {
+    //推荐设置
+    recommend(index, row, status) {
+      let options = {
+        id: row.id,
+        userId: this.userId,
+        status: status
+      };
+      update(options).then(res => {
+        const { code } = res.data;
+        if (code == 200) {
+          this._getList();
+          this.$message({
+            type: "success",
+            message: options.status ? "推荐成功!" :"已取消推荐！"
+          });
+        }
+      });
+    },
     //修改案例
     updatItem(index, row) {
-      this.$router.push("/operat/exampleEdit/" + row.id);
+      this.$router.push("/web/exampleEdit/" + row.id);
     },
     //增加案列
     addItem() {
-      this.$router.push("/operat/exampleEdit/add");
+      this.$router.push("/web/exampleEdit/add");
     },
     //删除案列
     _deleteItem(index, row) {

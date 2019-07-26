@@ -5,6 +5,13 @@
 import axios from "./../utils/axios";
 
 
+//案例状态
+export const STATUS = {
+    RECOMMEND_NO: 0 ,
+    RECOMMEND:1
+}
+
+
 //获取案例列表
 export function getList(options) {
     return axios({

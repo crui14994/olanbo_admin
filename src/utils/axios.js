@@ -5,7 +5,11 @@ import router from './../router'
 // 创建axios实例
 const service = axios.create({
     baseURL: process.env.BASE_URL, //baseurl
-    timeout: 10000 // 请求超时时间
+    timeout: 10000, // 请求超时时间
+    // headers:{
+    //     "Access-Control-Allow-Origin":"*"
+    // }
+    // withCredentials:true,
 })
 
 // request拦截器
@@ -19,13 +23,6 @@ service.interceptors.request.use(config => {
             background: "rgba(0, 0, 0, 0.8)"
         }
     );
-
-    //判断localStorage中有没有userId，如果没有则用户没有登录，跳转到登录页面
-    let userId = JSON.parse(sessionStorage.getItem("SET_ISLOGIN"));
-    if (!userId) {
-        router.push("/login")
-    }
-
     return config
 }, error => {
     // 请求错误时做些事(接口错误、超时等)

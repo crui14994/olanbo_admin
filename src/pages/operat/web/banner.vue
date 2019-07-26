@@ -93,6 +93,7 @@ export default {
     },
     //删除
     handleDelete(index, row) {
+      this.keys=[];
       this.deleteId = row.id;
       let key1 = row.mobileDataUrl.split("/").pop();
       this.keys.push(key1);
