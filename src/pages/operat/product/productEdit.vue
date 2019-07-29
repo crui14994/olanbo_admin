@@ -10,14 +10,19 @@
             label-width="90px"
             class="demo-ruleForm"
           >
-            <el-form-item label="名称：" prop="name">
-              <el-input class="edit-input" v-model="ruleForm.name" placeholder="输入产品名称"></el-input>
+            <el-form-item label="名称：" prop="devName">
+              <el-input class="edit-input" v-model="ruleForm.devName" placeholder="输入产品名称"></el-input>
             </el-form-item>
             <el-form-item label="简介信息:" prop="desc">
-              <el-input type="textarea" class="edit-input" v-model="ruleForm.desc" placeholder="输入简介信息"></el-input>
+              <el-input
+                type="textarea"
+                class="edit-input"
+                v-model="ruleForm.desc"
+                placeholder="输入简介信息"
+              ></el-input>
             </el-form-item>
-            <el-form-item label="分类：" prop="region">
-              <el-select v-model="ruleForm.region" placeholder="产品分类">
+            <el-form-item label="分类：" prop="sysTypeId">
+              <el-select v-model="ruleForm.sysTypeId" placeholder="产品分类">
                 <!-- <el-option class="edit-serach-option" label="全部" value="0"></el-option> -->
                 <el-option
                   :label="item.typeName"
@@ -27,8 +32,8 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="封面：" prop="imgUrl">
-              <el-input class="edit-input" v-model="ruleForm.imgUrl" placeholder="文件路径"></el-input>
+            <el-form-item label="封面：" prop="logoPath">
+              <el-input class="edit-input" v-model="ruleForm.logoPath" placeholder="文件路径"></el-input>
               <!-- <el-button type="primary">上传图片</el-button> -->
               <el-upload
                 class="avatar-uploader"
@@ -41,10 +46,26 @@
                 <el-button type="primary">上传图片</el-button>
               </el-upload>
             </el-form-item>
+
+            <el-form-item label="推荐：" prop="homeShowImg">
+              <el-input class="edit-input" v-model="ruleForm.homeShowImg" placeholder="文件路径"></el-input>
+              <!-- <el-button type="primary">上传图片</el-button> -->
+              <el-upload
+                class="avatar-uploader"
+                :action="domain"
+                :http-request="upqiniu2"
+                :show-file-list="false"
+                :on-change="getKey7"
+                :before-upload="beforeUpload"
+              >
+                <el-button type="primary">上传推荐显示图片</el-button>
+              </el-upload>
+            </el-form-item>
+
             <!-- 富文本编辑器 -->
             <el-form-item>
               <quill-editor
-                v-model="content"
+                v-model="ruleForm.htmlContent"
                 ref="myQuillEditor"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
@@ -61,7 +82,7 @@
         </div>
       </el-col>
       <el-col :span="10">
-        <div class="ql-editor html-box" v-html="content"></div>
+        <div class="ql-editor html-box" v-html="ruleForm.htmlContent"></div>
       </el-col>
     </el-row>
   </div>
@@ -88,26 +109,32 @@ export default {
       qiniuaddr: QINIU_PARAMS.qiniuaddr,
       //表单信息
       ruleForm: {
-        name: "",
-        region: "",
-        imgUrl: "",
-        desc:"",
+        devName: "",
+        sysTypeId: "",
+        logoPath: "",
+        homeShowImg: "", //推荐的时候显示的图片，默认为logoPath的值
+        desc: "",
+        htmlContent: "", // 文章内容
         status: 0
       },
       rules: {
-        name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        devName: [{ required: true, message: "请输入名称", trigger: "blur" }],
         desc: [{ required: true, message: "请输入简介信息", trigger: "blur" }],
-        region: [{ required: true, message: "请选择分类", trigger: "change" }],
-        imgUrl: [{ required: true, message: "请选择上传图片" }]
+        sysTypeId: [
+          { required: true, message: "请选择分类", trigger: "change" }
+        ],
+        logoPath: [{ required: true, message: "请选择上传图片" }],
+        htmlContent: [{ required: true, message: "您还没有填写设备详情！" }]
       },
-      content: "", // 文章内容
       editorOption: {
         // 编辑器选项
         placeholder: "请输入内容"
       },
       //传递过来的数据
-      infoType:this.$route.query.item ? JSON.parse(this.$route.query.item) : "",
-      //用于验证是否修改
+      infoType: this.$route.query.item
+        ? JSON.parse(this.$route.query.item)
+        : "",
+      //复制用于验证是否修改
       cloneProduct: "",
       // 更新封面图片时，需要删除的原七牛资源的key
       key7: " "
@@ -143,9 +170,9 @@ export default {
   },
   mounted() {},
   methods: {
-    //getKey7
+    //getKey获取要删除图片的key
     getKey7(file, fileList) {
-      let oldFileUrl = this.ruleForm.imgUrl;
+      let oldFileUrl = this.ruleForm.logoPath;
       this.key7 = oldFileUrl.split("/").pop();
     },
     //编辑修改设备
@@ -153,26 +180,17 @@ export default {
       let options = {
         userId: this.userId,
         id: this.infoType.id,
-        devName: this.ruleForm.name,
-        typeId: this.ruleForm.region,
-        desc: this.ruleForm.desc,
-        status: this.ruleForm.status,
-        htmlContent: this.content,
-        linkUrl: " ",
-        logoPath: this.ruleForm.imgUrl,
         key7: this.key7
       };
-      if (options.htmlContent == "") {
-        this.$message({
-          message: "您还没有填写设备详情！",
-          type: "warning"
-        });
-        return;
-      }
-
       //验证是否有修改过
-      let str = JSON.stringify(this.ruleForm) + JSON.stringify(this.content);
+      let str = JSON.stringify(this.ruleForm);
       if (this.cloneProduct != str) {
+        //把修改过的参数添加到请求参数中
+        for (var index in this.ruleForm) {
+          if (this.ruleForm[index] !== JSON.parse(this.cloneProduct)[index]) {
+            options[index] = this.ruleForm[index];
+          }
+        }
         //执行修改
         updateSmart(options).then(res => {
           let { code } = res.data;
@@ -194,13 +212,14 @@ export default {
     //添加设备
     addProduct() {
       let options = {
-        typeId: this.ruleForm.region,
+        sysTypeId: this.ruleForm.sysTypeId,
         status: 0,
-        devName: this.ruleForm.name,
+        devName: this.ruleForm.devName,
         desc: this.ruleForm.desc,
-        htmlContent: this.content,
+        htmlContent: this.ruleForm.htmlContent,
         linkUrl: " ",
-        logoPath: this.ruleForm.imgUrl,
+        logoPath: this.ruleForm.logoPath,
+        homeShowImg:this.ruleForm.homeShowImg,
         userId: this.userId
       };
       if (options.htmlContent == "") {
@@ -224,6 +243,7 @@ export default {
     },
     // 上传pc图片到七牛云
     upqiniu(req) {
+      console.log(req);
       const config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
@@ -243,7 +263,7 @@ export default {
           "." +
           filetype,
         userId: this.userId,
-        deleteKey: this.ruleForm.imgUrl.split("/").pop()
+        deleteKey: this.ruleForm.logoPath.split("/").pop()
       };
       //获取token
       getToken(paramsObj).then(res => {
@@ -251,10 +271,45 @@ export default {
         formdata.append("file", req.file);
         formdata.append("token", res.data.data);
         formdata.append("key", paramsObj.fileName);
-        // this.ruleForm.imgUrl = req.file.name;
         // 上传到七牛
         this.axios.post(this.domain, formdata, config).then(res => {
-          this.ruleForm.imgUrl =
+          this.ruleForm.logoPath =
+            "http://" + this.qiniuaddr + "/" + res.data.key;
+        });
+      });
+    },
+    // 上传pc图片到七牛云
+    upqiniu2(req) {
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      let filetype = "";
+      if (req.file.type === "image/png") {
+        filetype = "png";
+      } else {
+        filetype = "jpg";
+      }
+
+      // 获取token需要的参数
+      let paramsObj = {
+        fileName:
+          "olanbo_pc_" +
+          Date.parse(new Date()) +
+          Math.floor(Math.random() * 100) +
+          "." +
+          filetype,
+        userId: this.userId,
+        deleteKey: this.ruleForm.homeShowImg.split("/").pop()
+      };
+      //获取token
+      getToken(paramsObj).then(res => {
+        const formdata = new FormData();
+        formdata.append("file", req.file);
+        formdata.append("token", res.data.data);
+        formdata.append("key", paramsObj.fileName);
+        // 上传到七牛
+        this.axios.post(this.domain, formdata, config).then(res => {
+          this.ruleForm.homeShowImg =
             "http://" + this.qiniuaddr + "/" + res.data.key;
         });
       });
@@ -276,22 +331,23 @@ export default {
       if (this.isAdd) {
         //添加
         this.ruleForm = {
-          name: "",
-          region: "",
-          imgUrl: "",
-          desc:"",
+          devName: "",
+          sysTypeId: "",
+          logoPath: "",
+          homeShowImg:"",
+          desc: ""
         };
       } else {
         this.ruleForm = {
-          name: this.infoType.devName,
-          region: this.infoType.sysTypeId,
-          imgUrl: this.infoType.logoPath,
+          devName: this.infoType.devName,
+          sysTypeId: this.infoType.sysTypeId,
+          logoPath: this.infoType.logoPath,
+          homeShowImg:this.infoType.homeShowImg,
           status: this.infoType.status,
           desc: this.infoType.desc,
+          htmlContent: this.infoType.htmlContent
         };
-        this.content = this.infoType.htmlContent;
-        this.cloneProduct =
-          JSON.stringify(this.ruleForm) + JSON.stringify(this.content);
+        this.cloneProduct = JSON.stringify(this.ruleForm);
       }
     },
     //提交表单
@@ -300,18 +356,12 @@ export default {
         if (valid) {
           this.isAdd ? this.addProduct() : this.updateProduct();
         } else {
-          // this.$message({
-          //   message: "表单输入有误，重新输入！",
-          //   type: "waring"
-          // });
-
           return false;
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.content = "";
     },
     onEditorBlur(quill) {
       // console.log("editor blur!", quill);
@@ -323,8 +373,7 @@ export default {
       // console.log("editor ready!", quill);
     },
     onEditorChange({ quill, html, text }) {
-      // console.log("editor change!", quill, html, text);
-      this.content = html;
+      this.ruleForm.htmlContent = html;
     }
   }
 };

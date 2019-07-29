@@ -15,7 +15,7 @@
         <div class="grid-content bg-purple-light edit-select">
           <el-form>
             <el-form-item label="分类">
-              <el-select v-model="typeId" placeholder="请选择分类" @change="selectList">
+              <el-select v-model="sysTypeId" placeholder="请选择分类" @change="selectList">
                 <el-option class="edit-serach-option" label="全部" value></el-option>
                 <el-option
                   :label="item.typeName"
@@ -49,9 +49,9 @@
           <el-image :lazy="true" :src="scope.row.logoPath" fit="scale-down"></el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="typeId" label="分类" width="180" align="center">
+      <el-table-column prop="sysTypeId" label="分类" width="180" align="center">
         <template slot-scope="scope">
-          <span>{{typeName(scope.row.typeId)}}</span>
+          <span>{{typeName(scope.row.sysTypeId)}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="timeStamp" label="更新时间" width="200" align="center">
@@ -106,7 +106,7 @@ export default {
       //搜索
       search: "",
       //分类
-      typeId: "",
+      sysTypeId: "",
       tableData: [],
       pageNum: devPage.PAGENUM, //分页当前页码
       pageSize: devPage.PAGESIZE, //分页查询中每页返回的总条数
@@ -162,17 +162,11 @@ export default {
       let options = {
         userId: this.userId,
         id: row.id,
-        devName: row.devName,
-        typeId: row.typeId,
-        desc: row.desc,
         status: 1,
-        htmlContent: row.htmlContent,
-        linkUrl: row.linkUrl,
-        logoPath: row.logoPath,
-        key7: " "
       };
       //执行修改
       updateSmart(options).then(res => {
+        console.log(options)
         let { code } = res.data;
         if (code == 200) {
           this.$message({
@@ -197,7 +191,7 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         devName: this.search,
-        typeId: this.typeId
+        sysTypeId: this.sysTypeId
       };
       smartList(options).then(res => {
         let { code } = res.data;
@@ -220,8 +214,8 @@ export default {
       this.getSmartList();
     },
     //根据选中得到分类搜索
-    selectList(typeId) {
-      this.typeId = typeId;
+    selectList(sysTypeId) {
+      this.sysTypeId = sysTypeId;
       this.getSmartList();
     }
   }

@@ -174,14 +174,7 @@ export default {
       let options = {
         userId: this.userId,
         id: row.id,
-        devName: row.devName,
-        typeId: row.typeId,
-        desc: row.desc,
         status: 0,
-        htmlContent: row.htmlContent,
-        linkUrl: row.linkUrl,
-        logoPath: row.logoPath,
-        key7: " "
       };
       //执行修改
       updateSmart(options).then(res => {
