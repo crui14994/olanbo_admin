@@ -244,7 +244,10 @@ export default {
       });
     },
     //分页状态改变时重新请求数据
-    currentChange(index) {},
+    currentChange(index) {
+      this.pageNum = index;
+      this._getList();
+    },
     //根据关键词搜索
     searchList() {
       this._getList();

@@ -10,14 +10,14 @@
             label-width="100px"
             class="demo-ruleForm"
           >
-            <el-form-item label="名称：" prop="name">
-              <el-input class="edit-input" v-model="ruleForm.name" placeholder="输入产品名称"></el-input>
+            <el-form-item label="名称：" prop="title">
+              <el-input class="edit-input" v-model="ruleForm.title" placeholder="输入产品名称"></el-input>
             </el-form-item>
              <el-form-item label="简介信息：" prop="desc">
               <el-input class="edit-input" autosize type="textarea" v-model="ruleForm.desc" placeholder="输入产品名称"></el-input>
             </el-form-item>
-            <el-form-item label="分类：" prop="region">
-              <el-select v-model="ruleForm.region" placeholder="产品分类">
+            <el-form-item label="分类：" prop="typeId">
+              <el-select v-model="ruleForm.typeId" placeholder="产品分类">
                 <!-- <el-option class="edit-serach-option" label="全部" value="0"></el-option> -->
                 <el-option
                   :label="item.typeName"
@@ -27,8 +27,8 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="封面：" prop="imgUrl">
-              <el-input class="edit-input" v-model="ruleForm.imgUrl" placeholder="文件路径"></el-input>
+            <el-form-item label="封面：" prop="logoUrl">
+              <el-input class="edit-input" v-model="ruleForm.logoUrl" placeholder="文件路径"></el-input>
               <!-- <el-button type="primary">上传图片</el-button> -->
               <el-upload
                 class="avatar-uploader"
@@ -41,10 +41,24 @@
                 <el-button type="primary">上传图片</el-button>
               </el-upload>
             </el-form-item>
+             <el-form-item label="推荐:" prop="homeShowImg">
+              <el-input class="edit-input" v-model="ruleForm.homeShowImg" placeholder="文件路径"></el-input>
+              <!-- <el-button type="primary">上传图片</el-button> -->
+              <el-upload
+                class="avatar-uploader"
+                :action="domain"
+                :http-request="upqiniu2"
+                :show-file-list="false"
+                :on-change="getKey7_02"
+                :before-upload="beforeUpload"
+              >
+                <el-button type="primary">上传推荐显示图片</el-button>
+              </el-upload>
+            </el-form-item>
             <!-- 富文本编辑器 -->
             <el-form-item>
               <quill-editor
-                v-model="content"
+                v-model="ruleForm.htmlContent"
                 ref="myQuillEditor"
                 :options="editorOption"
                 @blur="onEditorBlur($event)"
@@ -60,7 +74,7 @@
         </div>
       </el-col>
       <el-col :span="10">
-        <div class="ql-editor html-box" v-html="content"></div>
+        <div class="ql-editor html-box" v-html="ruleForm.htmlContent"></div>
       </el-col>
     </el-row>
   </div>
@@ -87,19 +101,20 @@ export default {
       qiniuaddr: QINIU_PARAMS.qiniuaddr,
       //表单信息
       ruleForm: {
-        name: "",
+        title: "",
         desc:"",
-        region: "",
-        imgUrl: "",
+        typeId: "",
+        logoUrl: "",
+        homeShowImg:"",
+        htmlContent:"", // 文章内容
         status: 0
       },
       rules: {
-        name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        title: [{ required: true, message: "请输入名称", trigger: "blur" }],
         desc: [{ required: true, message: "请输入名称", trigger: "blur" }],
-        region: [{ required: true, message: "请选择分类", trigger: "change" }],
-        imgUrl: [{ required: true, message: "请选择上传图片" }]
+        typeId: [{ required: true, message: "请选择分类", trigger: "change" }],
+        logoUrl: [{ required: true, message: "请选择上传图片" }],
       },
-      content: "", // 文章内容
       ListType: [], //案列类型列表
       editorOption: {
         // 编辑器选项
@@ -157,32 +172,30 @@ export default {
   methods: {
     //getKey7
     getKey7(file, fileList) {
-      let oldFileUrl = this.ruleForm.imgUrl;
-      this.key7 = oldFileUrl.split("/").pop();
+      let oldFileUrl = this.ruleForm.logoUrl;
+      this.key7 = oldFileUrl.split("/").pop() || " ";
+    },
+    //getKey7
+    getKey7_02(file, fileList) {
+      let oldFileUrl = this.ruleForm.homeShowImg;
+      this.key7 = oldFileUrl.split("/").pop() || " ";
     },
     //编辑修改设备
     updateProduct() {
       let options = {
         id: this.infoType,
-        status: this.ruleForm.status,
-        logoUrl: this.ruleForm.imgUrl,
-        key7: this.key7 || " ",
-        htmlContent: this.content,
-        desc: this.ruleForm.desc,
-        dtypeId: this.ruleForm.region,
-        title: this.ruleForm.name,
+        key7: this.key7,
         userId: this.userId
       };
-      if (options.htmlContent == "") {
-        this.$message({
-          message: "您还没有填写设备详情！",
-          type: "warning"
-        });
-        return;
-      }
       //验证是否有修改过
-      let str = JSON.stringify(this.ruleForm) + JSON.stringify(this.content);
+      let str = JSON.stringify(this.ruleForm);
       if (this.cloneProduct != str) {
+        //把修改过的参数添加到请求参数中
+        for (var index in this.ruleForm) {
+          if (this.ruleForm[index] !== JSON.parse(this.cloneProduct)[index]) {
+            options[index] = this.ruleForm[index];
+          }
+        }
         update(options).then(res => {
           let { code } = res.data;
           if (code == 200) {
@@ -203,15 +216,16 @@ export default {
     //添加设备
     addProduct() {
       let options = {
-        title: this.ruleForm.name,
-        typeId: this.ruleForm.region,
-        logoUrl: this.ruleForm.imgUrl,
+        title: this.ruleForm.title,
+        typeId: this.ruleForm.typeId,
+        logoUrl: this.ruleForm.logoUrl,
+        homeShowImg:this.ruleForm.homeShowImg,
         desc: this.ruleForm.desc,
-        htmlContent: this.content,
+        htmlContent: this.ruleForm.htmlContent,
         status: 0,
         userId: this.userId
       };
-      if (options.htmlContent == "") {
+      if (!this.ruleForm.htmlContent) {
         this.$message({
           message: "您还没有填写设备详情！",
           type: "warning"
@@ -252,7 +266,44 @@ export default {
           "." +
           filetype,
         userId: this.userId,
-        deleteKey: this.ruleForm.imgUrl.split("/").pop()
+        deleteKey: this.ruleForm.logoUrl.split("/").pop()
+      };
+      //获取token
+      getToken(paramsObj).then(res => {
+        const formdata = new FormData();
+        formdata.append("file", req.file);
+        formdata.append("token", res.data.data);
+        formdata.append("key", paramsObj.fileName);
+        // this.ruleForm.logoUrl = req.file.name;
+        // 上传到七牛
+        this.axios.post(this.domain, formdata, config).then(res => {
+          this.ruleForm.logoUrl =
+            "http://" + this.qiniuaddr + "/" + res.data.key;
+        });
+      });
+    },
+    // 上传pc图片到七牛云
+    upqiniu2(req) {
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      };
+      let filetype = "";
+      if (req.file.type === "image/png") {
+        filetype = "png";
+      } else {
+        filetype = "jpg";
+      }
+
+      // 获取token需要的参数
+      let paramsObj = {
+        fileName:
+          "olanbo_pc_" +
+          Date.parse(new Date()) +
+          Math.floor(Math.random() * 100) +
+          "." +
+          filetype,
+        userId: this.userId,
+        deleteKey: this.ruleForm.homeShowImg.split("/").pop()
       };
       //获取token
       getToken(paramsObj).then(res => {
@@ -263,7 +314,7 @@ export default {
         // this.ruleForm.imgUrl = req.file.name;
         // 上传到七牛
         this.axios.post(this.domain, formdata, config).then(res => {
-          this.ruleForm.imgUrl =
+          this.ruleForm.homeShowImg =
             "http://" + this.qiniuaddr + "/" + res.data.key;
         });
       });
@@ -285,9 +336,10 @@ export default {
       if (this.isAdd) {
         //添加
         this.ruleForm = {
-          name: "",
-          region: "",
-          imgUrl: ""
+          title: "",
+          typeId: "",
+          logoUrl: "",
+          homeShowImg:"",
         };
       } else {
         getItemInfo(this.infoType).then(res => {
@@ -295,15 +347,16 @@ export default {
           if (code == 200) {
             let data = res.data.data;
             this.ruleForm = {
-              name: data.title,
-              region: data.typeId,
-              imgUrl: data.logoUrl,
+              title: data.title,
+              typeId: data.typeId,
+              logoUrl: data.logoUrl,
+              homeShowImg:data.homeShowImg,
+              htmlContent:data.htmlContent,
               status: data.status,
               desc:data.desc
             };
-            this.content = data.htmlContent;
             this.cloneProduct =
-              JSON.stringify(this.ruleForm) + JSON.stringify(this.content);
+              JSON.stringify(this.ruleForm);
           }
         });
       }
@@ -327,7 +380,6 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.content = "";
     },
     onEditorBlur(quill) {
       // console.log("editor blur!", quill);
@@ -340,7 +392,7 @@ export default {
     },
     onEditorChange({ quill, html, text }) {
       // console.log("editor change!", quill, html, text);
-      this.content = html;
+      this.ruleForm.htmlContent = html;
     }
   }
 };

@@ -55,7 +55,7 @@
                 :action="domain"
                 :http-request="upqiniu2"
                 :show-file-list="false"
-                :on-change="getKey7"
+                :on-change="getKey7_02"
                 :before-upload="beforeUpload"
               >
                 <el-button type="primary">上传推荐显示图片</el-button>
@@ -124,7 +124,6 @@ export default {
           { required: true, message: "请选择分类", trigger: "change" }
         ],
         logoPath: [{ required: true, message: "请选择上传图片" }],
-        htmlContent: [{ required: true, message: "您还没有填写设备详情！" }]
       },
       editorOption: {
         // 编辑器选项
@@ -173,7 +172,12 @@ export default {
     //getKey获取要删除图片的key
     getKey7(file, fileList) {
       let oldFileUrl = this.ruleForm.logoPath;
-      this.key7 = oldFileUrl.split("/").pop();
+      this.key7 = oldFileUrl.split("/").pop() || " ";
+    },
+    //getKey获取要删除图片的key
+    getKey7_02(file, fileList) {
+      let oldFileUrl = this.ruleForm.homeShowImg;
+      this.key7 = oldFileUrl.split("/").pop() || " ";
     },
     //编辑修改设备
     updateProduct() {
@@ -222,7 +226,7 @@ export default {
         homeShowImg:this.ruleForm.homeShowImg,
         userId: this.userId
       };
-      if (options.htmlContent == "") {
+      if (!this.ruleForm.htmlContent) {
         this.$message({
           message: "您还没有填写设备详情！",
           type: "warning"
