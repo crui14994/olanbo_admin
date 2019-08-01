@@ -36,6 +36,8 @@
                 </el-submenu>
                 <!-- 智能产品 -->
                 <el-menu-item :index="'/web/productList'">智能产品</el-menu-item>
+                <!-- 解决方案 -->
+                <el-menu-item :index="'/web/solutionList'">解决方案</el-menu-item>
                 <!-- 成功案例 -->
                 <el-menu-item :index="'/web/exampleList'">成功案例</el-menu-item>
                 <!-- 用户留言 -->
@@ -179,8 +181,8 @@ export default {
           > .el-submenu__title:hover {
             background-color: rgba(255, 255, 255, 0.1) !important;
           }
-          .el-menu-item:hover{
-            background-color: none!important;
+          .el-menu-item:hover {
+            background-color: none !important;
           }
           .menu-box02 {
             > .el-submenu__title {
@@ -248,5 +250,4 @@ export default {
 .el-loading-mask {
   z-index: 2010 !important;
 }
-
 </style>

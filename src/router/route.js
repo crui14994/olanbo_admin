@@ -83,6 +83,18 @@ export const operatRouter = [
                 meta: { title: '案例编辑' }
             },
             {
+                path: 'solutionList',
+                name: 'solutionList',
+                component: () => import('@/pages/operat/solution/solutionList'),
+                meta: { title: '解决方案' }
+            },
+            {
+                path: 'solutionEdit/:id',
+                name: 'solutionEdit',
+                component: () => import('@/pages/operat/solution/solutionEdit'),
+                meta: { title: '解决方案编辑' }
+            },
+            {
                 path: 'webMsg',
                 name: 'webMsg',
                 component: () => import('@/pages/operat/webMsgList/webMsg'),

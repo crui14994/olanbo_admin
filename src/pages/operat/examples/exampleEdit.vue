@@ -1,5 +1,5 @@
 <template>
-  <div class="product-edit">
+  <div class="example-edit">
     <el-row :gutter="20">
       <el-col :span="14">
         <div class="edit-left">
@@ -139,7 +139,7 @@ export default {
       //传递过来的id
       infoType: this.$route.params.id,
       //用于验证是否修改
-      cloneProduct: "",
+      cloneexample: "",
       // 更新封面图片时，需要删除的原七牛资源的key
       key7: " "
     };
@@ -181,18 +181,18 @@ export default {
       this.key7 = oldFileUrl.split("/").pop() || " ";
     },
     //编辑修改设备
-    updateProduct() {
+    updateexample() {
       let options = {
-        id: this.infoType,
+        id: parseInt(this.infoType),
         key7: this.key7,
         userId: this.userId
       };
       //验证是否有修改过
       let str = JSON.stringify(this.ruleForm);
-      if (this.cloneProduct != str) {
+      if (this.cloneexample != str) {
         //把修改过的参数添加到请求参数中
         for (var index in this.ruleForm) {
-          if (this.ruleForm[index] !== JSON.parse(this.cloneProduct)[index]) {
+          if (this.ruleForm[index] !== JSON.parse(this.cloneexample)[index]) {
             options[index] = this.ruleForm[index];
           }
         }
@@ -214,7 +214,7 @@ export default {
       }
     },
     //添加设备
-    addProduct() {
+    addexample() {
       let options = {
         title: this.ruleForm.title,
         typeId: this.ruleForm.typeId,
@@ -355,7 +355,7 @@ export default {
               status: data.status,
               desc:data.desc
             };
-            this.cloneProduct =
+            this.cloneexample =
               JSON.stringify(this.ruleForm);
           }
         });
@@ -372,7 +372,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.isAdd ? this.addProduct() : this.updateProduct();
+          this.isAdd ? this.addexample() : this.updateexample();
         } else {
           return false;
         }
@@ -400,7 +400,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style  lang = "scss" >
-.product-edit {
+.example-edit {
   /* padding: 0 40px; */
   .edit-left {
     margin-bottom: 150px;
