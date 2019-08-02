@@ -166,7 +166,6 @@ export default {
       };
       //执行修改
       updateSmart(options).then(res => {
-        console.log(options)
         let { code } = res.data;
         if (code == 200) {
           this.$message({
@@ -179,11 +178,11 @@ export default {
     },
     //编辑产品
     handleEdit(index, row) {
-      this.$router.push({ path: '/web/productEdit', query: { item: JSON.stringify(row)}})
+      this.$router.push("/web/productEdit/" + row.id);
     },
     //新增产品
     addProduct() {
-      this.$router.push("/web/productEdit/");
+      this.$router.push("/web/productEdit/add");
     },
     //根据传入参数的不同获取对应设备列表
     getSmartList() {

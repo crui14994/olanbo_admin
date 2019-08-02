@@ -96,7 +96,7 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
 
-import { smartList, addSmart, updateSmart } from "@/api/devs.js";
+import { smartList, addSmart, updateSmart, getDevInfo } from "@/api/devs.js";
 import { mapState } from "vuex";
 
 export default {
@@ -123,20 +123,18 @@ export default {
         sysTypeId: [
           { required: true, message: "请选择分类", trigger: "change" }
         ],
-        logoPath: [{ required: true, message: "请选择上传图片" }],
+        logoPath: [{ required: true, message: "请选择上传图片" }]
       },
       editorOption: {
         // 编辑器选项
         placeholder: "请输入内容"
       },
       //传递过来的数据
-      infoType: this.$route.query.item
-        ? JSON.parse(this.$route.query.item)
-        : "",
+      infoType: this.$route.params.id,
       //复制用于验证是否修改
       cloneProduct: "",
       // 更新封面图片时，需要删除的原七牛资源的key
-      key7: " "
+      key7: null
     };
   },
   components: {
@@ -153,7 +151,7 @@ export default {
     },
     //是否是添加设备
     isAdd() {
-      if (this.infoType) {
+      if (this.infoType != "add") {
         return false;
       } else {
         return true;
@@ -172,18 +170,18 @@ export default {
     //getKey获取要删除图片的key
     getKey7(file, fileList) {
       let oldFileUrl = this.ruleForm.logoPath;
-      this.key7 = oldFileUrl.split("/").pop() || " ";
+      this.key7 = oldFileUrl.split("/").pop() || null;
     },
     //getKey获取要删除图片的key
     getKey7_02(file, fileList) {
       let oldFileUrl = this.ruleForm.homeShowImg;
-      this.key7 = oldFileUrl.split("/").pop() || " ";
+      this.key7 = oldFileUrl.split("/").pop() || null;
     },
     //编辑修改设备
     updateProduct() {
       let options = {
         userId: this.userId,
-        id: this.infoType.id,
+        id: this.infoType,
         key7: this.key7
       };
       //验证是否有修改过
@@ -223,7 +221,7 @@ export default {
         htmlContent: this.ruleForm.htmlContent,
         linkUrl: " ",
         logoPath: this.ruleForm.logoPath,
-        homeShowImg:this.ruleForm.homeShowImg,
+        homeShowImg: this.ruleForm.homeShowImg,
         userId: this.userId
       };
       if (!this.ruleForm.htmlContent) {
@@ -338,20 +336,25 @@ export default {
           devName: "",
           sysTypeId: "",
           logoPath: "",
-          homeShowImg:"",
+          homeShowImg: "",
           desc: ""
         };
       } else {
-        this.ruleForm = {
-          devName: this.infoType.devName,
-          sysTypeId: this.infoType.sysTypeId,
-          logoPath: this.infoType.logoPath,
-          homeShowImg:this.infoType.homeShowImg,
-          status: this.infoType.status,
-          desc: this.infoType.desc,
-          htmlContent: this.infoType.htmlContent
-        };
-        this.cloneProduct = JSON.stringify(this.ruleForm);
+        getDevInfo({ id: this.infoType }).then(res => {
+          const { code, data } = res.data;
+          if (code === 200) {
+            this.ruleForm = {
+              devName: data.devName,
+              sysTypeId: data.sysTypeId,
+              logoPath: data.logoPath,
+              homeShowImg: data.homeShowImg,
+              status: data.status,
+              desc: data.desc,
+              htmlContent: data.htmlContent
+            };
+            this.cloneProduct = JSON.stringify(this.ruleForm);
+          }
+        });
       }
     },
     //提交表单

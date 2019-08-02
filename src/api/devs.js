@@ -37,3 +37,11 @@ export function deleteSmart(options){
         params:options
     })
 }
+//获取设备详情
+export function getDevInfo(options){
+    return axios({
+        url: "web/devs/getItem",
+        method: "GET",
+        params:options
+    })
+}

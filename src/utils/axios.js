@@ -6,10 +6,6 @@ import router from './../router'
 const service = axios.create({
     baseURL: process.env.BASE_URL, //baseurl
     timeout: 10000, // 请求超时时间
-    // headers:{
-    //     "Access-Control-Allow-Origin":"*"
-    // }
-    // withCredentials:true,
 })
 
 // request拦截器
@@ -23,6 +19,10 @@ service.interceptors.request.use(config => {
             background: "rgba(0, 0, 0, 0.8)"
         }
     );
+
+    //全局添加请求头
+    config.headers['devType'] ="web";
+
     return config
 }, error => {
     // 请求错误时做些事(接口错误、超时等)
@@ -30,8 +30,6 @@ service.interceptors.request.use(config => {
     // 关闭loadding
     let loading = Loading.service({});
     loading.close();
-
-    console.log(0)
 
     return Promise.reject(error)
 })

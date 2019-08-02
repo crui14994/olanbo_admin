@@ -39,9 +39,9 @@
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column align="center" prop="id" label="id" width="100"></el-table-column>
       <el-table-column align="center" prop="devName" label="名称"></el-table-column>
-      <el-table-column align="center" prop="typeId" label="分类">
+      <el-table-column align="center" prop="sysTypeId" label="分类">
         <template slot-scope="scope">
-          <span>{{typeName(scope.row.typeId)}}</span>
+          <span>{{typeName(scope.row.sysTypeId)}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="timeStamp" label="更新时间" width="180">

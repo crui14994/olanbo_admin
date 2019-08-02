@@ -65,7 +65,7 @@ export const operatRouter = [
                 meta: { title: '智能产品' }
             },
             {
-                path: 'productEdit',
+                path: 'productEdit/:id',
                 name: 'productEdit',
                 component: () => import('@/pages/operat/product/productEdit'),
                 meta: { title: '产品编辑' }
