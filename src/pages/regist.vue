@@ -37,6 +37,7 @@
               autocomplete="off"
               placeholder="请输入验证码"
               v-model="ruleForm.validation"
+              @keyup.enter.native="submitForm('ruleForm')"
             >
               <template slot="append">获取验证码</template>
             </el-input>

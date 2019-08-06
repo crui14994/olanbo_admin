@@ -41,6 +41,7 @@
               v-model="ruleForm.checkPass"
               placeholder="确认密码"
               autocomplete="off"
+              @keyup.enter.native="submitForm('ruleForm')"
             ></el-input>
           </el-form-item>
           <el-form-item>

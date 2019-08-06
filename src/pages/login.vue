@@ -22,6 +22,7 @@
               v-model="ruleForm.pass"
               placeholder="请输入密码"
               autocomplete="off"
+              @keyup.enter.native="submitForm('ruleForm')"
             ></el-input>
           </el-form-item>
           <el-form-item class="login-btn-box">
