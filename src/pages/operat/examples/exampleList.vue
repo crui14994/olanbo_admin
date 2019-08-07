@@ -68,7 +68,24 @@
       <el-table-column label="操作" width="180" align="center">
         <template slot-scope="scope">
           <el-row class="table-btns">
-            <el-col :span="8">
+            
+            <el-col :span="7">
+              <el-button
+                style="color:#7670D9;"
+                size="mini"
+                type="text"
+                @click="updatItem(scope.$index, scope.row)"
+              >编辑</el-button>
+            </el-col>
+            <el-col :span="7">
+              <el-button
+                style="color:#6b6b6b;"
+                size="mini"
+                type="text"
+                @click="_deleteItem(scope.$index, scope.row)"
+              >删除</el-button>
+            </el-col>
+            <el-col :span="10">
               <el-button
                 style="color:#ffffff;background-color:#7670D9;border-color:#7670D9;"
                 size="mini"
@@ -83,22 +100,6 @@
                 v-if="scope.row.status===1"
                 @click="recommend(scope.$index, scope.row,0)"
               >取消推荐</el-button>
-            </el-col>
-            <el-col :span="8">
-              <el-button
-                style="color:#7670D9;"
-                size="mini"
-                type="text"
-                @click="updatItem(scope.$index, scope.row)"
-              >编辑</el-button>
-            </el-col>
-            <el-col :span="8">
-              <el-button
-                style="color:#6b6b6b;"
-                size="mini"
-                type="text"
-                @click="_deleteItem(scope.$index, scope.row)"
-              >删除</el-button>
             </el-col>
           </el-row>
         </template>
@@ -233,8 +234,8 @@ export default {
       }
       getList(options).then(res => {
         let { code } = res.data;
+        this._getListType();
         if (code == 200) {
-          this._getListType();
           this.total = res.data.data.total;
           this.tableData = res.data.data.records;
         } else if (code == 300) {

@@ -11,13 +11,13 @@
             class="demo-ruleForm"
           >
             <el-form-item label="名称：" prop="title">
-              <el-input class="edit-input" v-model="ruleForm.title" placeholder="输入产品名称"></el-input>
+              <el-input class="edit-input" v-model="ruleForm.title" placeholder="输入案例名称"></el-input>
             </el-form-item>
              <el-form-item label="简介信息：" prop="desc">
-              <el-input class="edit-input" autosize type="textarea" v-model="ruleForm.desc" placeholder="输入产品名称"></el-input>
+              <el-input class="edit-input" autosize type="textarea" v-model="ruleForm.desc" placeholder="输入案例简介信息"></el-input>
             </el-form-item>
             <el-form-item label="分类：" prop="typeId">
-              <el-select v-model="ruleForm.typeId" placeholder="产品分类">
+              <el-select v-model="ruleForm.typeId" placeholder="案例分类">
                 <!-- <el-option class="edit-serach-option" label="全部" value="0"></el-option> -->
                 <el-option
                   :label="item.typeName"

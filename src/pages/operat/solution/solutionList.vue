@@ -31,7 +31,7 @@
       <!-- add -->
       <el-col :span="3" :offset="2">
         <div class="solution-list-add">
-          <el-button class="edit-add" icon="iconfont icon-xinzeng" @click="addsolution">&nbsp;新增产品</el-button>
+          <el-button class="edit-add" icon="iconfont icon-xinzeng" @click="addsolution">&nbsp;新增方案</el-button>
         </div>
       </el-col>
     </el-row>
