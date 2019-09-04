@@ -74,7 +74,7 @@ export default {
       getToken(paramsObj).then(res => {
         const formdata = new FormData();
         formdata.append("file", req.file);
-        formdata.append("token", res.data.data);
+        formdata.append("token", res.data.data.token);
         formdata.append("key", paramsObj.fileName);
         // 上传到七牛
         this.axios.post(this.domain, formdata, config).then(res => {
@@ -99,7 +99,7 @@ export default {
 };
 </script>
 
-<style  lang = "scss" scopeds>
+<style  lang = "scss" scoped>
 .qiniu{
   display: inline-block;
 }

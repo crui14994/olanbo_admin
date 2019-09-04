@@ -65,17 +65,17 @@
           <span>admin</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200" align="center">
+      <el-table-column label="操作" width="180" align="center">
         <template slot-scope="scope">
           <el-row class="table-btns">
-            <el-col :span="8">
+            <el-col :span="7">
               <el-button style="color:rgba(118,112,217,1);" size="mini" type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="7">
               <el-button style="color:#6b6b6b;" size="mini" @click="_deleteSmart(scope.$index, scope.row)" type="text">删除</el-button>
             </el-col>
-            <el-col :span="8">
-              <el-button v-if="scope.row.status==1" size="mini" type="text">已推荐</el-button>
+            <el-col :span="10">
+              <el-button style="color:rgba(118,112,217,1);" v-if="scope.row.status==1" size="mini" type="text">已推荐</el-button>
               <el-button
                 v-if="scope.row.status==0"
                 style="background:rgba(118,112,217,1);border-color:rgba(118,112,217,1);"

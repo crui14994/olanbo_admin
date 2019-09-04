@@ -160,7 +160,7 @@ export default {
       getToken(paramsObj).then(res => {
         const formdata = new FormData();
         formdata.append("file", req.file);
-        formdata.append("token", res.data.data);
+        formdata.append("token", res.data.data.token);
         formdata.append("key", paramsObj.fileName);
 
         

@@ -59,9 +59,16 @@
           <span>admin</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="100">
+      <el-table-column align="center" label="操作" width="140">
         <template slot-scope="scope">
-          <el-button style="color:#6b6b6b;" type="text" @click="cancelRecommend(scope.$index, scope.row)">取消推荐</el-button>
+          <el-row class="table-btns">
+             <el-col :span="12">
+              <el-button style="color:rgba(118,112,217,1);" size="mini" type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            </el-col>
+            <el-col :span="12">
+              <el-button style="color:#6b6b6b;" size="mini" type="text" @click="cancelRecommend(scope.$index, scope.row)">取消推荐</el-button>
+            </el-col>
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -166,7 +173,7 @@ export default {
     },
     //跳转到新增页面
     addRecommend() {
-      this.$router.push("/operat/productList");
+      this.$router.push("/web/productList");
     },
     //取消推荐
     cancelRecommend(index, row) {
@@ -192,7 +199,11 @@ export default {
           this.getSmartList(options);
         }
       });
-    }
+    },
+    //编辑产品
+    handleEdit(index, row) {
+      this.$router.push("/web/productEdit/" + row.id);
+    },
   }
 };
 </script>

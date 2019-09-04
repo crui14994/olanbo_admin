@@ -77,6 +77,21 @@
                   <span>代理商管理</span>
                 </template>
               </el-submenu>
+
+               <!-- app升级管理 -->
+              <!-- <el-submenu class="menu-box01" :index="'/web/appUpgrade'">
+                <template slot="title">
+                  <i class="iconfont icon-ziyuan"></i>
+                  <span>app升级管理</span>
+                </template>
+              </el-submenu> -->
+              <el-menu-item class="menu-box01" :index="'/web/appUpgrade'">
+               <template slot="title">
+                  <i class="iconfont icon-ziyuan"></i>
+                  <span>app升级管理</span>
+                </template>
+              </el-menu-item>
+
             </el-menu>
           </el-col>
         </el-row>
@@ -124,13 +139,29 @@ export default {
   computed: {},
   watch: {
     $route(to, from) {
-      this.activeIndex = to.path;
+      this.navStatus(to);
     }
   },
   created() {
-    this.activeIndex = this.$route.path;
+    this.navStatus(this.$route);
   },
   methods: {
+    //特殊情况下左侧状态的处理
+    navStatus(item) {
+      switch (item.name) {
+        case "productEdit":
+          this.activeIndex = "/web/productList";
+          break;
+        case "exampleEdit":
+          this.activeIndex = "/web/exampleList";
+          break;
+        case "solutionEdit":
+          this.activeIndex = "/web/solutionList";
+          break;
+        default:
+          this.activeIndex = item.path;
+      }
+    },
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
     },
