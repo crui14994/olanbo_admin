@@ -3,12 +3,38 @@
     <el-row>
       <span class="add-user" @click="centerDialogVisible = true">添加用户</span>
     </el-row>
+
+    <!-- 表格数据 -->
     <el-row class="app-show">
-      <span class="prompt">您还没有任何用户，请点击按钮上传。</span>
+      <span v-show="tableData.length<=0" class="prompt">您还没有任何用户，请点击按钮上传。</span>
+
+      <el-table v-show="tableData.length>0" :data="tableData" border style="width: 100%">
+        <el-table-column prop="id" label="ID" width="180" align="center"></el-table-column>
+        <el-table-column prop="dealers" label="经销商名字" width="180" align="center"></el-table-column>
+        <el-table-column prop="version" label="版本号" align="center"></el-table-column>
+        <el-table-column prop="date" label="更新时间" align="center"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button
+              style="color:#FFD250"
+              type="text"
+              size="mini"
+              @click="handleEdit(scope.$index, scope.row)"
+            >编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-row>
+
     <!-- 添加用户弹窗 -->
     <el-row>
-      <el-dialog class="add-dialog" title :visible.sync="centerDialogVisible" width="30%">
+      <el-dialog
+        class="add-dialog"
+        title
+        :visible.sync="centerDialogVisible"
+        width="30%"
+        @closed="resetForm('formLabelAlign')"
+      >
         <el-form label-width="100px" :rules="rules" ref="formLabelAlign" :model="formLabelAlign">
           <el-form-item label="上传APK:" class="up-apk">
             <el-button class="up-btn" plain>上传APK</el-button>
@@ -35,6 +61,26 @@
 export default {
   data() {
     return {
+      tableData: [
+        {
+          id: "01",
+          dealers: "王小虎",
+          version: "2.0",
+          date: "2016-05-04"
+        },
+        {
+          id: "01",
+          dealers: "王小虎2",
+          version: "2.0",
+          date: "2016-05-04"
+        },
+        {
+          id: "01",
+          dealers: "王小虎3",
+          version: "2.0",
+          date: "2016-05-04"
+        }
+      ],
       centerDialogVisible: false,
       formLabelAlign: {
         version: "",
@@ -50,13 +96,6 @@ export default {
       }
     };
   },
-  watch:{
-      centerDialogVisible(val, oldVal){
-          if(!val){
-              this.resetForm('formLabelAlign');
-          }
-      }
-  },
   computed: {
     //用户id
     userId() {
@@ -65,19 +104,31 @@ export default {
   },
   created() {},
   methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+    //编辑用户
+    handleEdit(index, row) {
+      this.centerDialogVisible = true;
+      this.formLabelAlign = {
+        version: row.version,
+        dealers: row.dealers
+      };
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.formLabelAlign = {
+        version: "",
+        dealers: ""
+      };
+      this.$refs[formName].resetFields();
+    }
   }
 };
 </script>
