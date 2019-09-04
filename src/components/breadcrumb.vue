@@ -1,34 +1,40 @@
 <template>
   <div class="breadcrumb-list">
     <span class="now-address">当前位置：</span>
-    <el-breadcrumb separator-class="el-icon-arrow-right" style="display: inline-block;vertical-align: middle;">
-      <el-breadcrumb-item  v-for="(item,index) in list" :to="{ path: item.path }" :key="index">{{item.meta.title}}</el-breadcrumb-item>
+     <el-breadcrumb separator="/" separator-class="el-icon-arrow-right" style="display: inline-block;vertical-align: middle;">
+      <el-breadcrumb-item v-for="(item,index) in breadList" :key="index">
+        <router-link :to="{ path: item.path }">{{item.meta.title}}</router-link>
+      </el-breadcrumb-item>
     </el-breadcrumb>
   </div>
 </template>
 
 <script>
 export default {
+  name: "breadcrumb",
   data() {
     return {
-      list: []
+      breadList: []
     };
   },
   watch: {
-    $route() {
-      this.list = [];
-      this.getBreadcrumb();
+    $route(to, from) {
+      this.getBreadList();
     }
   },
-  computed: {},
   created() {
-    this.getBreadcrumb();
+    this.getBreadList();
   },
   methods: {
-    getBreadcrumb() {
-      let matched = this.$route.matched;
-      matched = [{ path: "/", meta: { title: "运营系统" } }].concat(matched);
-      this.list = matched;
+    getBreadList() {
+      this.breadList = [];
+      this.$route.matched.forEach(item => {
+        if (item.path === "") {
+          item.path = "/";
+        }
+        this.breadList.push(item);
+      });
+      return this.breadList;
     }
   }
 };
