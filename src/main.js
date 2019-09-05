@@ -42,6 +42,7 @@ router.beforeEach((to, from, next) => {
   if (!isLogin && to.path !== '/login' && to.path !== '/regist' && to.path !== '/updateInfo') {
     next('/login');
   } else {
+    store.dispatch('getNowRoutes', to);
     next();
   }
 })
