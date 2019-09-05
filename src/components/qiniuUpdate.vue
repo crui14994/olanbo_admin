@@ -2,6 +2,7 @@
     *** 上传成功后触发 qiniuSucc,回调参数fileUrl
     *** 文件状态改变时触发 fileChange,回调参数fileUrl
     *** oldFileUrl为重新上传图片时需要传入旧的文件url，格式需和配置的一致
+    *** isImg默认值为true，表示上传的文件为jpg/png图片。如需上传其它格式文件设置为false
  -->
 <template>
   <div class="qiniu">
@@ -12,7 +13,7 @@
       :on-change="getKey"
       :before-upload="beforeUpload"
     >
-      <el-button type="primary">上传图片</el-button>
+      <slot></slot>
     </el-upload>
   </div>
 </template>
@@ -25,6 +26,11 @@ export default {
     //传入需要删除的文件URL
     oldFileUrl: {
       type: String
+    },
+    //是否是上传图片
+    isImg: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -53,12 +59,13 @@ export default {
       const config = {
         headers: { "Content-Type": "multipart/form-data" }
       };
-      let filetype = "";
-      if (req.file.type === "image/png") {
-        filetype = "png";
-      } else {
-        filetype = "jpg";
-      }
+      let filetype = req.file.name.split(".").pop();
+      // let filetype = "";
+      // if (req.file.type === "image/png") {
+      //   filetype = "png";
+      // } else {
+      //   filetype = "jpg";
+      // }
       // 获取token需要的参数
       let paramsObj = {
         fileName:
@@ -85,22 +92,22 @@ export default {
     },
     // 验证文件合法性
     beforeUpload(file) {
-      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
+      if (this.isImg) {
+        const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        !isJPG && this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
+        !isLt2M && this.$message.error("上传头像图片大小不能超过 2MB!");
+        return isJPG && isLt2M;
+      }else{
+        return true;
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
     }
   }
 };
 </script>
 
 <style  lang = "scss" scoped>
-.qiniu{
+.qiniu {
   display: inline-block;
 }
 </style>

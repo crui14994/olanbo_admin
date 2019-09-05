@@ -35,11 +35,10 @@
             </el-form-item>
             <el-form-item label="图片：" prop="imgUrl">
               <el-input class="edit-input" v-model="ruleForm.imgUrl" placeholder="请上传图片"></el-input>
-              <qiniu-update
-                :oldFileUrl="ruleForm.imgUrl"
-                @qiniuSucc="qiniuSucc"
-                @fileChange="fileChange"
-              ></qiniu-update>
+              <!-- //七牛文件上传 -->
+              <qiniu-update :oldFileUrl="ruleForm.imgUrl" @qiniuSucc="qiniuSucc" @fileChange="fileChange">
+                <el-button type="primary">上传图片</el-button>
+              </qiniu-update>
             </el-form-item>
             <!-- 富文本编辑器 -->
             <el-form-item>
@@ -98,7 +97,9 @@ export default {
       },
       rules: {
         title: [{ required: true, message: "请输入标题", trigger: "blur" }],
-        miniTitle: [{ required: true, message: "请输入子标题", trigger: "blur" }],
+        miniTitle: [
+          { required: true, message: "请输入子标题", trigger: "blur" }
+        ],
         typeId: [{ required: true, message: "请选择分类", trigger: "change" }],
         imgUrl: [{ required: true, message: "请上传图片" }]
       },
@@ -164,7 +165,7 @@ export default {
     },
     //七牛状态改变，重新上传时触发
     fileChange(oldUrl) {
-        this.key7 = oldUrl.split("/").pop() || null;
+      this.key7 = oldUrl.split("/").pop() || null;
     },
     //编辑解决方案
     updatesolution() {
@@ -256,10 +257,10 @@ export default {
             let data = res.data.data;
             this.ruleForm = {
               title: data.title,
-              miniTitle:  data.miniTitle,
-              typeId:  data.typeId,
-              imgUrl:  data.imgUrl,
-              content:  data.content
+              miniTitle: data.miniTitle,
+              typeId: data.typeId,
+              imgUrl: data.imgUrl,
+              content: data.content
             };
             this.clonesolution = JSON.stringify(this.ruleForm);
           }

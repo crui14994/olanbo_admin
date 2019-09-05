@@ -32,13 +32,24 @@
         class="add-dialog"
         title
         :visible.sync="centerDialogVisible"
+        :close-on-click-modal='false'
         width="30%"
+        center
         @closed="resetForm('formLabelAlign')"
       >
         <el-form label-width="100px" :rules="rules" ref="formLabelAlign" :model="formLabelAlign">
           <el-form-item label="上传APK:" class="up-apk">
-            <el-button class="up-btn" plain>上传APK</el-button>
-            <i class="icon-suncc iconfont icon-gou1"></i>
+            <!-- //七牛文件上传 -->
+            <qiniu-update
+              :oldFileUrl="apkUrl"
+              :isImg="false"
+              @qiniuSucc="qiniuSucc"
+              @fileChange="fileChange"
+            >
+              <el-button class="up-btn" plain>{{upApkTxt}}</el-button>
+            </qiniu-update>
+
+            <i v-show="apkUrl" class="icon-suncc iconfont icon-gou1"></i>
           </el-form-item>
           <el-form-item label="设置版本号:" prop="version">
             <el-input v-model="formLabelAlign.version" placeholder="输入版本号"></el-input>
@@ -58,9 +69,12 @@
 </template>
 
 <script>
+import qiniuUpdate from "@/components/qiniuUpdate";
+
 export default {
   data() {
     return {
+      apkUrl: "", //apk文件地址
       tableData: [
         {
           id: "01",
@@ -96,14 +110,29 @@ export default {
       }
     };
   },
+  components: {
+    qiniuUpdate
+  },
   computed: {
     //用户id
     userId() {
       return this.$store.state.user.userId;
+    },
+    //上传apk按钮文字
+    upApkTxt(){
+      return this.apkUrl ? "已上传" : "上传APK"
     }
   },
   created() {},
   methods: {
+    //七牛上传成功
+    qiniuSucc(url) {
+      this.apkUrl = url;
+    },
+    //七牛状态改变，重新上传时触发
+    fileChange(oldUrl) {
+      this.key7 = oldUrl.split("/").pop() || null;
+    },
     //编辑用户
     handleEdit(index, row) {
       this.centerDialogVisible = true;
@@ -111,6 +140,7 @@ export default {
         version: row.version,
         dealers: row.dealers
       };
+      /***注意此处还应设置apkUrl的值***/
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -127,6 +157,7 @@ export default {
         version: "",
         dealers: ""
       };
+      this.apkUrl="";
       this.$refs[formName].resetFields();
     }
   }
