@@ -50,22 +50,14 @@ export default {
     sidebar
   },
   data() {
-    return {
-      
-    };
+    return {};
   },
   computed: {},
   watch: {
-    $route(to, from) {
-      // this.navStatus(to);
-    }
+    $route(to, from) {}
   },
-  created() {
-    // this.navStatus(this.$route);
-  },
-  methods: {
-    
-  }
+  created() {},
+  methods: {}
 };
 </script>
 
@@ -83,67 +75,6 @@ export default {
     .tac {
       .logo-wrapper {
         padding: 25px 0;
-      }
-      .el-menu {
-        border: none;
-      }
-      .layout-menu {
-        .menu-box01 {
-          padding-left: 10px;
-          > .el-submenu__title {
-            font-size: 16px;
-            border-radius: 50px 0 0 50px;
-            text-align: left;
-            > i:first-child {
-              font-size: 20px;
-              padding: 0 20px;
-              color: #fff;
-            }
-            > span {
-              color: #fff;
-            }
-          }
-          > .el-submenu__title:hover {
-            background-color: rgba(255, 255, 255, 0.1) !important;
-          }
-          .el-menu-item:hover {
-            background-color: none !important;
-          }
-          .menu-box02 {
-            > .el-submenu__title {
-              font-size: 14px;
-              padding-left: 85px !important;
-              text-align: left;
-              height: 40px;
-              line-height: 40px;
-              > i:first-child {
-                display: none;
-              }
-            }
-            > .el-submenu__title:hover {
-              background: none !important;
-            }
-            > ul {
-              > li {
-                height: 30px;
-                line-height: 30px;
-                padding-left: 100px !important;
-                text-align: left;
-                font-size: 12px;
-              }
-              > li:hover {
-                background: none !important;
-              }
-              > li:before {
-                content: "·";
-                display: inline-block;
-                font-size: 30px;
-                vertical-align: middle;
-                padding-right: 5px;
-              }
-            }
-          }
-        }
       }
     }
   }
