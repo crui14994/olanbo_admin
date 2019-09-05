@@ -82,7 +82,7 @@ export const asyncRouterMap = [
             {
                 path: '/appUpgrade', name: 'appUpgrade',
                 component: () => import('@/pages/operat/appUpgrade/appUpgrade'),
-                meta: { title: 'app升级管理',icon:"icon-shouji" },
+                meta: { title: 'app升级管理',icon:"icon-app" },
             },
         ]
     }
