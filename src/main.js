@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import store from "./store/index";
 import utils from "./utils/index" //导入工具函数
 import * as filters from './filters' // 全局过滤器
 
@@ -16,10 +17,6 @@ Vue.prototype.$formatDate = utils.formatDate;
 Vue.prototype.getFilePreview = utils.getFilePreview;
 
 Vue.prototype.axios = axios;
-
-//sotre
-import store from "./store/index";
-
 
 // 引入ElementUI
 import ElementUI from 'element-ui'
@@ -35,17 +32,6 @@ Vue.use(VueQuillEditor)
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
-
-// 导航守卫
-router.beforeEach((to, from, next) => {
-  const isLogin = JSON.parse(sessionStorage.getItem("SET_ISLOGIN"));
-  if (!isLogin && to.path !== '/login' && to.path !== '/regist' && to.path !== '/updateInfo') {
-    next('/login');
-  } else {
-    next();
-  }
-})
-
 
 
 /* eslint-disable no-new */

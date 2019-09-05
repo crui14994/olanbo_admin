@@ -9,90 +9,8 @@
             <div class="logo-wrapper">
               <img src="@/assets/logo.png" />
             </div>
-            <el-menu
-              :default-active="activeIndex"
-              class="el-menu-vertical-demo layout-menu"
-              @open="handleOpen"
-              @close="handleClose"
-              @select="handleSelect"
-              background-color="#3C3C50"
-              text-color="#b6b6b6"
-              active-text-color="#96BEFF"
-              unique-opened
-              router
-            >
-              <!-- 网站文案管理 -->
-              <el-submenu class="menu-box01" :index="'/operat'">
-                <template slot="title">
-                  <i class="iconfont icon-wenjian"></i>
-                  <span>网站文案管理</span>
-                </template>
-                <!-- 首页管理 -->
-                <el-submenu class="menu-box02" :index="'/operat/web'">
-                  <template slot="title">首页管理</template>
-                  <el-menu-item :index="'/web/home/banner'">banner管理</el-menu-item>
-                  <el-menu-item :index="'/web/home/video'">视频管理</el-menu-item>
-                  <el-menu-item :index="'/web/home/recommend'">推荐单品选择</el-menu-item>
-                </el-submenu>
-                <!-- 智能产品 -->
-                <el-menu-item :index="'/web/productList'">智能产品</el-menu-item>
-                <!-- 解决方案 -->
-                <el-menu-item :index="'/web/solutionList'">解决方案</el-menu-item>
-                <!-- 成功案例 -->
-                <el-menu-item :index="'/web/exampleList'">成功案例</el-menu-item>
-                <!-- 用户留言 -->
-                <el-menu-item :index="'/web/webMsg'">用户留言</el-menu-item>
-                <!-- 合作申请 -->
-                <el-menu-item :index="'/web/coopMsg'">合作申请</el-menu-item>
-              </el-submenu>
-
-              <!-- 订单物流管理 -->
-              <el-submenu class="menu-box01" :index="'/order'">
-                <template slot="title">
-                  <i class="iconfont icon-icon-aobi_dingdanwuliuon"></i>
-                  <span>订单物流管理</span>
-                </template>
-              </el-submenu>
-
-              <!-- 开发者资质认证 -->
-              <el-submenu class="menu-box01" :index="'/developers'">
-                <template slot="title">
-                  <i class="iconfont icon-zizhi"></i>
-                  <span>开发者资质认证</span>
-                </template>
-              </el-submenu>
-
-              <!-- 开发者账号管理 -->
-              <el-submenu class="menu-box01" :index="'/account'">
-                <template slot="title">
-                  <i class="iconfont icon-tubiao39"></i>
-                  <span>开发者账号管理</span>
-                </template>
-              </el-submenu>
-
-              <!-- 代理商管理 -->
-              <el-submenu class="menu-box01" :index="'/agent'">
-                <template slot="title">
-                  <i class="iconfont icon-ziyuan"></i>
-                  <span>代理商管理</span>
-                </template>
-              </el-submenu>
-
-               <!-- app升级管理 -->
-              <!-- <el-submenu class="menu-box01" :index="'/web/appUpgrade'">
-                <template slot="title">
-                  <i class="iconfont icon-ziyuan"></i>
-                  <span>app升级管理</span>
-                </template>
-              </el-submenu> -->
-              <el-menu-item class="menu-box01" :index="'/web/appUpgrade'">
-               <template slot="title">
-                  <i class="iconfont icon-ziyuan"></i>
-                  <span>app升级管理</span>
-                </template>
-              </el-menu-item>
-
-            </el-menu>
+            <!-- 侧边导航栏 -->
+            <sidebar></sidebar>
           </el-col>
         </el-row>
       </el-aside>
@@ -105,7 +23,7 @@
         <el-main>
           <!-- //面包屑 -->
           <div class="breadcrumb">
-            <breadcrumb :list="list"></breadcrumb>
+            <breadcrumb></breadcrumb>
           </div>
 
           <div class="main-container">
@@ -122,56 +40,24 @@
 <script>
 import headerNav from "@/components/header";
 import breadcrumb from "@/components/breadcrumb";
+import sidebar from "@/components/sidebar";
 
 export default {
   name: "layout",
   components: {
     headerNav,
-    breadcrumb
+    breadcrumb,
+    sidebar
   },
   data() {
-    return {
-      //当前显示的导航状态
-      activeIndex: "",
-      list: [] //面包屑数组
-    };
+    return {};
   },
   computed: {},
   watch: {
-    $route(to, from) {
-      this.navStatus(to);
-    }
+    $route(to, from) {}
   },
-  created() {
-    this.navStatus(this.$route);
-  },
-  methods: {
-    //特殊情况下左侧状态的处理
-    navStatus(item) {
-      switch (item.name) {
-        case "productEdit":
-          this.activeIndex = "/web/productList";
-          break;
-        case "exampleEdit":
-          this.activeIndex = "/web/exampleList";
-          break;
-        case "solutionEdit":
-          this.activeIndex = "/web/solutionList";
-          break;
-        default:
-          this.activeIndex = item.path;
-      }
-    },
-    handleOpen(key, keyPath) {
-      // console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      // console.log(key, keyPath);
-    },
-    handleSelect(key, keyPath) {
-      // console.log(key, keyPath)
-    }
-  }
+  created() {},
+  methods: {}
 };
 </script>
 
@@ -189,67 +75,6 @@ export default {
     .tac {
       .logo-wrapper {
         padding: 25px 0;
-      }
-      .el-menu {
-        border: none;
-      }
-      .layout-menu {
-        .menu-box01 {
-          padding-left: 10px;
-          > .el-submenu__title {
-            font-size: 16px;
-            border-radius: 50px 0 0 50px;
-            text-align: left;
-            > i:first-child {
-              font-size: 20px;
-              padding: 0 20px;
-              color: #fff;
-            }
-            > span {
-              color: #fff;
-            }
-          }
-          > .el-submenu__title:hover {
-            background-color: rgba(255, 255, 255, 0.1) !important;
-          }
-          .el-menu-item:hover {
-            background-color: none !important;
-          }
-          .menu-box02 {
-            > .el-submenu__title {
-              font-size: 14px;
-              padding-left: 85px !important;
-              text-align: left;
-              height: 40px;
-              line-height: 40px;
-              > i:first-child {
-                display: none;
-              }
-            }
-            > .el-submenu__title:hover {
-              background: none !important;
-            }
-            > ul {
-              > li {
-                height: 30px;
-                line-height: 30px;
-                padding-left: 100px !important;
-                text-align: left;
-                font-size: 12px;
-              }
-              > li:hover {
-                background: none !important;
-              }
-              > li:before {
-                content: "·";
-                display: inline-block;
-                font-size: 30px;
-                vertical-align: middle;
-                padding-right: 5px;
-              }
-            }
-          }
-        }
       }
     }
   }
