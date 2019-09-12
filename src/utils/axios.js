@@ -43,7 +43,7 @@ service.interceptors.response.use(
         let loading = Loading.service({});
         loading.close();
 
-        if (res.code == 300 || res.code == 401 || res.code == 404 || res.code == 600 || res.code == 700 || res.code == 801 || res.code == 999) {
+        if (res.code != 200) {
             Message({
                 showClose: true,
                 message: res.desc,

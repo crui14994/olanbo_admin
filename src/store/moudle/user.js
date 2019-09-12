@@ -2,7 +2,8 @@ import { userLogin } from "@/api/user.js";
 
 const types = {
     SET_ISLOGIN: 'SET_ISLOGIN', //用户是否登录
-    SET_USERID: 'SET_USERID', // 用户id
+    SET_USERID: 'SET_USERID', // 用户userId
+    SET_ID: 'SET_ID', // 用户id
     SET_USERNAME: 'SET_USERNAME', // 用户信息
     SET_NICKNAME: 'SET_NICKNAME', // 用户昵称
     SET_USERTYPE: 'SET_USERTYPE', // 用户类型
@@ -11,7 +12,8 @@ const types = {
 
 const state = {
     isLogin: JSON.parse(sessionStorage.getItem(types.SET_ISLOGIN)) || false, //用户是否登录
-    userId: JSON.parse(sessionStorage.getItem(types.SET_USERID)) || "",  // 用户id
+    userId: JSON.parse(sessionStorage.getItem(types.SET_USERID)) || "",  // 用户userId
+    id: JSON.parse(sessionStorage.getItem(types.SET_ID)) || "",  // 用户id
     userName: JSON.parse(sessionStorage.getItem(types.SET_USERNAME)) || "",//用户登录名
     nickName: JSON.parse(sessionStorage.getItem(types.SET_NICKNAME)) || "",//用户昵称
     userType: JSON.parse(sessionStorage.getItem(types.SET_USERTYPE)) || "", //用户类型
@@ -26,6 +28,9 @@ const mutations = {
     },
     [types.SET_USERID](state, userId) {
         state.userId = userId;
+    },
+    [types.SET_ID](state, id) {
+        state.id = id;
     },
     [types.SET_USERNAME](state, userName) {
         state.userName = userName;
@@ -52,12 +57,14 @@ const actions = {
                 if (res.data.code == 200) {
                     commit(types.SET_ISLOGIN, true);
                     commit(types.SET_USERID, data.userId);
+                    commit(types.SET_ID, data.id);
                     commit(types.SET_USERNAME, data.userName);
                     commit(types.SET_NICKNAME, data.nickName);
                     commit(types.SET_USERTYPE, data.userType);
                     commit(types.SET_SMARTSYSTYPE, data.smartSysType);
                     sessionStorage.setItem(types.SET_ISLOGIN, JSON.stringify(true));
                     sessionStorage.setItem(types.SET_USERID, JSON.stringify(data.userId));
+                    sessionStorage.setItem(types.SET_ID, JSON.stringify(data.id));
                     sessionStorage.setItem(types.SET_USERNAME, JSON.stringify(data.userName));
                     sessionStorage.setItem(types.SET_NICKNAME, JSON.stringify(data.nickName));
                     sessionStorage.setItem(types.SET_USERTYPE, JSON.stringify(data.userType));
