@@ -29,7 +29,7 @@
         </el-table-column>
       </el-table>
       <!-- //分页组件 -->
-    <div class="pagination">
+    <div v-show="!isEmpty" class="pagination">
       <pagination :total="total" :pageSize="pageSize" @getChange="currentChange"></pagination>
     </div>
     </el-row>
@@ -147,10 +147,16 @@ export default {
     //上传apk按钮文字
     upApkTxt() {
       return this.urlPath ? "已上传" : "上传APK";
+    },
+    //判断是否有数据
+    isEmpty(){
+       return this.tableData.length===0 ? true : false;
     }
   },
   created() {
     this._managerList();
+  },
+  mounted(){
   },
   methods: {
     //分页状态改变时重新请求数据
@@ -293,6 +299,10 @@ export default {
       font-weight: 400;
       color: rgba(182, 182, 182, 1);
     }
+  }
+  .pagination{
+    text-align: right;
+    margin: 50px 0;
   }
   .add-dialog {
     .el-dialog {

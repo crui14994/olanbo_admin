@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <p class="regist-footer">成都欧朗博科技有限公司版权所有</p>
+    <p class="regist-footer">深圳欧朗博科技有限公司版权所有</p>
   </div>
 </template>
 

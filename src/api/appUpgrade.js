@@ -7,8 +7,8 @@ import axios from "./../utils/axios";
 
 //配置条件
 export const managerConfig = {
-    PAGENUM:5,//分页当前页码
-    PAGESIZE:1 //分页查询中每页返回的总条数
+    PAGENUM:1,//分页当前页码
+    PAGESIZE:5 //分页查询中每页返回的总条数
 }
 
 

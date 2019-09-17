@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <p class="login-footer">成都欧朗博科技有限公司版权所有</p>
+    <p class="login-footer">深圳欧朗博科技有限公司版权所有</p>
   </div>
 </template>
 

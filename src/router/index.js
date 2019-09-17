@@ -6,6 +6,7 @@ import { routers, asyncRouterMap } from './route';
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
+  base:"/smartAdmin/",
   routes: [
     ...routers,
     ...asyncRouterMap
