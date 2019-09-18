@@ -29,9 +29,9 @@
         </el-table-column>
       </el-table>
       <!-- //分页组件 -->
-    <div v-show="!isEmpty" class="pagination">
-      <pagination :total="total" :pageSize="pageSize" @getChange="currentChange"></pagination>
-    </div>
+      <div v-show="!isEmpty" class="pagination">
+        <pagination :total="total" :pageSize="pageSize" @getChange="currentChange"></pagination>
+      </div>
     </el-row>
 
     <!-- 添加用户弹窗 -->
@@ -83,12 +83,18 @@
         </span>
       </el-dialog>
     </el-row>
+    <div>
+     
+    </div>
   </div>
 </template>
 
 <script>
 import qiniuUpdate from "@/components/qiniuUpdate";
 import pagination from "@/components/pagination";
+
+
+
 import {
   managerConfig,
   managerList,
@@ -112,16 +118,18 @@ export default {
       }
     };
     return {
+      msg: "",
+
       agentList: [], //用户经销商列表
       pageNum: managerConfig.PAGENUM,
       pageSize: managerConfig.PAGESIZE,
-      total:0,
+      total: 0,
       //apk文件地址
       urlPath: "",
       //表格展示数据
       tableData: [],
       //是否是修改数据
-      isUpdate:false,
+      isUpdate: false,
       //弹窗的显示隐藏
       centerDialogVisible: false,
       //表单数据
@@ -140,7 +148,8 @@ export default {
   },
   components: {
     qiniuUpdate,
-    pagination
+    pagination,
+    
   },
   computed: {
     ...mapGetters(["userId", "id"]),
@@ -149,16 +158,16 @@ export default {
       return this.urlPath ? "已上传" : "上传APK";
     },
     //判断是否有数据
-    isEmpty(){
-       return this.tableData.length===0 ? true : false;
+    isEmpty() {
+      return this.tableData.length === 0 ? true : false;
     }
   },
   created() {
     this._managerList();
   },
-  mounted(){
-  },
+  mounted() {},
   methods: {
+    
     //分页状态改变时重新请求数据
     currentChange(index) {
       this.pageNum = index;
@@ -203,7 +212,7 @@ export default {
     //更新
     _updateManager() {
       let options = {
-        id:1,
+        id: 1,
         urlPath: this.urlPath,
         userId: this.formLabelAlign.dealers,
         version: this.formLabelAlign.version,
@@ -262,7 +271,7 @@ export default {
       this.formLabelAlign = {
         version: "",
         dealers: "",
-        isforce:false
+        isforce: false
       };
       this.urlPath = "";
       this.$refs[formName].resetFields();
@@ -300,7 +309,7 @@ export default {
       color: rgba(182, 182, 182, 1);
     }
   }
-  .pagination{
+  .pagination {
     text-align: right;
     margin: 50px 0;
   }

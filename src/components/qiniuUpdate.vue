@@ -20,7 +20,7 @@
 
 <script>
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
-
+import { mapGetters } from "vuex";
 export default {
   props: {
     //传入需要删除的文件URL
@@ -44,9 +44,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    }
+    ...mapGetters(["userId"]),
   },
   created() {},
   methods: {
@@ -60,12 +58,6 @@ export default {
         headers: { "Content-Type": "multipart/form-data" }
       };
       let filetype = req.file.name.split(".").pop();
-      // let filetype = "";
-      // if (req.file.type === "image/png") {
-      //   filetype = "png";
-      // } else {
-      //   filetype = "jpg";
-      // }
       // 获取token需要的参数
       let paramsObj = {
         fileName:

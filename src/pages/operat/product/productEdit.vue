@@ -1,15 +1,15 @@
 <template>
   <div class="product-edit">
-    <el-row :gutter="20">
-      <el-col :span="14">
-        <div class="edit-left">
-          <el-form
-            :model="ruleForm"
-            :rules="rules"
-            ref="ruleForm"
-            label-width="90px"
-            class="demo-ruleForm"
-          >
+    <div class="edit-left">
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="90px"
+        class="demo-ruleForm"
+      >
+        <el-row :gutter="20">
+          <el-col :span="14">
             <el-form-item label="名称：" prop="devName">
               <el-input class="edit-input" v-model="ruleForm.devName" placeholder="输入产品名称"></el-input>
             </el-form-item>
@@ -61,39 +61,34 @@
                 <el-button type="primary">上传推荐显示图片</el-button>
               </el-upload>
             </el-form-item>
-
-            <!-- 富文本编辑器 -->
-            <el-form-item>
-              <quill-editor
-                v-model="ruleForm.htmlContent"
-                ref="myQuillEditor"
-                :options="editorOption"
-                @blur="onEditorBlur($event)"
-                @focus="onEditorFocus($event)"
-                @ready="onEditorReady($event)"
-              ></quill-editor>
-            </el-form-item>
-            <el-form-item class="edit-btns">
-              <el-button type @click="$router.push('/web/productList')">返回列表</el-button>
-              <el-button type="primary" @click="submitForm('ruleForm')">{{btnText}}</el-button>
-              <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-col>
-      <el-col :span="10">
-        <div class="ql-editor html-box" v-html="ruleForm.htmlContent"></div>
-      </el-col>
-    </el-row>
+          </el-col>
+          <el-col :span="24">
+            <el-row :gutter="20">
+              <el-col :span="14">
+                <!-- 富文本编辑器 -->
+                <el-form-item class="tinymce">
+                  <tinymce-editor v-model="ruleForm.htmlContent" @onClick="onClick" ref="editor"></tinymce-editor>
+                </el-form-item>
+                <el-form-item class="edit-btns">
+                  <el-button type @click="$router.push('/web/productList')">返回列表</el-button>
+                  <el-button type="primary" @click="submitForm('ruleForm')">{{btnText}}</el-button>
+                  <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <div class="ql-editor html-box" v-html="ruleForm.htmlContent"></div>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
-// require styles
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
+import TinymceEditor from "@/components/tinymce-editor";
+
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
 
 import { smartList, addSmart, updateSmart, getDevInfo } from "@/api/devs.js";
@@ -138,7 +133,7 @@ export default {
     };
   },
   components: {
-    quillEditor
+    TinymceEditor
   },
   computed: {
     //用户id
@@ -243,7 +238,7 @@ export default {
         }
       });
     },
-    // 上传pc图片到七牛云
+    // 上传图片到七牛云
     upqiniu(req) {
       console.log(req);
       const config = {
@@ -280,7 +275,7 @@ export default {
         });
       });
     },
-    // 上传pc图片到七牛云
+    // 上传图片到七牛云
     upqiniu2(req) {
       const config = {
         headers: { "Content-Type": "multipart/form-data" }
@@ -370,17 +365,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    onEditorBlur(quill) {
-      // console.log("editor blur!", quill);
-    },
-    onEditorFocus(quill) {
-      // console.log("editor focus!", quill);
-    },
-    onEditorReady(quill) {
-      // console.log("editor ready!", quill);
-    },
-    onEditorChange({ quill, html, text }) {
-      this.ruleForm.htmlContent = html;
+    //富文本鼠标单击的事件
+    onClick(e, editor) {
+      // console.log("Element clicked");
+      // console.log(e);
+      // console.log(editor);
     }
   }
 };

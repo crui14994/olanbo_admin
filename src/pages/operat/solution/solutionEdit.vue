@@ -1,15 +1,15 @@
 <template>
   <div class="solution-edit">
-    <el-row :gutter="20">
-      <el-col :span="14">
-        <div class="edit-left">
-          <el-form
-            :model="ruleForm"
-            :rules="rules"
-            ref="ruleForm"
-            label-width="100px"
-            class="demo-ruleForm"
-          >
+    <div class="edit-left">
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-row :gutter="20">
+          <el-col :span="14">
             <el-form-item label="标题：" prop="title">
               <el-input class="edit-input" v-model="ruleForm.title" placeholder="输入标题"></el-input>
             </el-form-item>
@@ -36,41 +36,40 @@
             <el-form-item label="图片：" prop="imgUrl">
               <el-input class="edit-input" v-model="ruleForm.imgUrl" placeholder="请上传图片"></el-input>
               <!-- //七牛文件上传 -->
-              <qiniu-update :oldFileUrl="ruleForm.imgUrl" @qiniuSucc="qiniuSucc" @fileChange="fileChange">
+              <qiniu-update
+                :oldFileUrl="ruleForm.imgUrl"
+                @qiniuSucc="qiniuSucc"
+                @fileChange="fileChange"
+              >
                 <el-button type="primary">上传图片</el-button>
               </qiniu-update>
             </el-form-item>
-            <!-- 富文本编辑器 -->
-            <el-form-item>
-              <quill-editor
-                v-model="ruleForm.content"
-                ref="myQuillEditor"
-                :options="editorOption"
-                @blur="onEditorBlur($event)"
-                @focus="onEditorFocus($event)"
-                @ready="onEditorReady($event)"
-              ></quill-editor>
-            </el-form-item>
-            <el-form-item class="edit-btns">
-              <el-button type @click="$router.push('/web/solutionList')">返回列表</el-button>
-              <el-button type="primary" @click="submitForm('ruleForm')">{{btnText}}</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-col>
-      <el-col :span="10">
-        <div class="ql-editor html-box" v-html="ruleForm.content"></div>
-      </el-col>
-    </el-row>
+          </el-col>
+          <el-col :span="24">
+            <el-row :gutter="20">
+              <el-col :span="14">
+                <!-- 富文本编辑器 -->
+                <el-form-item class="tinymce">
+                  <tinymce-editor v-model="ruleForm.content" ref="editor"></tinymce-editor>
+                </el-form-item>
+                <el-form-item class="edit-btns">
+                  <el-button type @click="$router.push('/web/solutionList')">返回列表</el-button>
+                  <el-button type="primary" @click="submitForm('ruleForm')">{{btnText}}</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <div class="ql-editor html-box" v-html="ruleForm.content"></div>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
-// require styles
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
+import TinymceEditor from "@/components/tinymce-editor";
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
 
 import {
@@ -133,7 +132,7 @@ export default {
     };
   },
   components: {
-    quillEditor,
+    TinymceEditor,
     qiniuUpdate
   },
   computed: {
@@ -280,19 +279,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    onEditorBlur(quill) {
-      // console.log("editor blur!", quill);
-    },
-    onEditorFocus(quill) {
-      // console.log("editor focus!", quill);
-    },
-    onEditorReady(quill) {
-      // console.log("editor ready!", quill);
-    },
-    onEditorChange({ quill, html, text }) {
-      // console.log("editor change!", quill, html, text);
-      this.ruleForm.content = html;
-    }
   }
 };
 </script>

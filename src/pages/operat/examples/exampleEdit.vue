@@ -1,20 +1,26 @@
 <template>
   <div class="example-edit">
-    <el-row :gutter="20">
-      <el-col :span="14">
-        <div class="edit-left">
-          <el-form
-            :model="ruleForm"
-            :rules="rules"
-            ref="ruleForm"
-            label-width="100px"
-            class="demo-ruleForm"
-          >
+    <div class="edit-left">
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-row :gutter="20">
+          <el-col :span="14">
             <el-form-item label="名称：" prop="title">
               <el-input class="edit-input" v-model="ruleForm.title" placeholder="输入案例名称"></el-input>
             </el-form-item>
-             <el-form-item label="简介信息：" prop="desc">
-              <el-input class="edit-input" autosize type="textarea" v-model="ruleForm.desc" placeholder="输入案例简介信息"></el-input>
+            <el-form-item label="简介信息：" prop="desc">
+              <el-input
+                class="edit-input"
+                autosize
+                type="textarea"
+                v-model="ruleForm.desc"
+                placeholder="输入案例简介信息"
+              ></el-input>
             </el-form-item>
             <el-form-item label="分类：" prop="typeId">
               <el-select v-model="ruleForm.typeId" placeholder="案例分类">
@@ -41,7 +47,7 @@
                 <el-button type="primary">上传图片</el-button>
               </el-upload>
             </el-form-item>
-             <el-form-item label="推荐:" prop="homeShowImg">
+            <el-form-item label="推荐:" prop="homeShowImg">
               <el-input class="edit-input" v-model="ruleForm.homeShowImg" placeholder="文件路径"></el-input>
               <!-- <el-button type="primary">上传图片</el-button> -->
               <el-upload
@@ -55,37 +61,33 @@
                 <el-button type="primary">上传推荐显示图片</el-button>
               </el-upload>
             </el-form-item>
-            <!-- 富文本编辑器 -->
-            <el-form-item>
-              <quill-editor
-                v-model="ruleForm.htmlContent"
-                ref="myQuillEditor"
-                :options="editorOption"
-                @blur="onEditorBlur($event)"
-                @focus="onEditorFocus($event)"
-                @ready="onEditorReady($event)"
-              ></quill-editor>
-            </el-form-item>
-            <el-form-item class="edit-btns">
-              <el-button type @click="$router.push('/web/exampleList')">返回列表</el-button>
-              <el-button type="primary" @click="submitForm('ruleForm')">{{btnText}}</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-col>
-      <el-col :span="10">
-        <div class="ql-editor html-box" v-html="ruleForm.htmlContent"></div>
-      </el-col>
-    </el-row>
+          </el-col>
+          <el-col :span="24">
+            <el-row :gutter="20">
+              <el-col :span="14">
+                <!-- 富文本编辑器 -->
+                <el-form-item class="tinymce">
+                  <tinymce-editor v-model="ruleForm.htmlContent" ref="editor"></tinymce-editor>
+                </el-form-item>
+                <el-form-item class="edit-btns">
+                  <el-button type @click="$router.push('/web/exampleList')">返回列表</el-button>
+                  <el-button type="primary" @click="submitForm('ruleForm')">{{btnText}}</el-button>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <div class="ql-editor html-box" v-html="ruleForm.htmlContent"></div>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
 // require styles
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
+import TinymceEditor from "@/components/tinymce-editor";
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
 
 import { getListType, getItemInfo, update, addItem } from "@/api/examples.js";
@@ -102,18 +104,18 @@ export default {
       //表单信息
       ruleForm: {
         title: "",
-        desc:"",
+        desc: "",
         typeId: "",
         logoUrl: "",
-        homeShowImg:"",
-        htmlContent:"", // 文章内容
+        homeShowImg: "",
+        htmlContent: "", // 文章内容
         status: 0
       },
       rules: {
         title: [{ required: true, message: "请输入名称", trigger: "blur" }],
         desc: [{ required: true, message: "请输入名称", trigger: "blur" }],
         typeId: [{ required: true, message: "请选择分类", trigger: "change" }],
-        logoUrl: [{ required: true, message: "请选择上传图片" }],
+        logoUrl: [{ required: true, message: "请选择上传图片" }]
       },
       ListType: [], //案列类型列表
       editorOption: {
@@ -145,7 +147,7 @@ export default {
     };
   },
   components: {
-    quillEditor
+    TinymceEditor
   },
   computed: {
     //用户id
@@ -219,7 +221,7 @@ export default {
         title: this.ruleForm.title,
         typeId: this.ruleForm.typeId,
         logoUrl: this.ruleForm.logoUrl,
-        homeShowImg:this.ruleForm.homeShowImg,
+        homeShowImg: this.ruleForm.homeShowImg,
         desc: this.ruleForm.desc,
         htmlContent: this.ruleForm.htmlContent,
         status: 0,
@@ -339,7 +341,7 @@ export default {
           title: "",
           typeId: "",
           logoUrl: "",
-          homeShowImg:"",
+          homeShowImg: ""
         };
       } else {
         getItemInfo(this.infoType).then(res => {
@@ -350,13 +352,12 @@ export default {
               title: data.title,
               typeId: data.typeId,
               logoUrl: data.logoUrl,
-              homeShowImg:data.homeShowImg,
-              htmlContent:data.htmlContent,
+              homeShowImg: data.homeShowImg,
+              htmlContent: data.htmlContent,
               status: data.status,
-              desc:data.desc
+              desc: data.desc
             };
-            this.cloneexample =
-              JSON.stringify(this.ruleForm);
+            this.cloneexample = JSON.stringify(this.ruleForm);
           }
         });
       }
@@ -381,19 +382,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    onEditorBlur(quill) {
-      // console.log("editor blur!", quill);
-    },
-    onEditorFocus(quill) {
-      // console.log("editor focus!", quill);
-    },
-    onEditorReady(quill) {
-      // console.log("editor ready!", quill);
-    },
-    onEditorChange({ quill, html, text }) {
-      // console.log("editor change!", quill, html, text);
-      this.ruleForm.htmlContent = html;
-    }
   }
 };
 </script>
