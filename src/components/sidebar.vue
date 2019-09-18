@@ -185,7 +185,7 @@ export default {
         }
       }
     }
-    .submenu01{
+    .submenu01:first-child,.submenu01:nth-child(5){
       >.is-active{
         background-color: rgba(255, 255, 255, 0) !important;
       }
