@@ -78,7 +78,7 @@
 <script>
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
 import { addBanner, updateBanner } from "@/api/banner.js";
-
+import { mapGetters } from "vuex";
 export default {
   name: "bannerDialog",
   props: {
@@ -111,9 +111,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    },
+    ...mapGetters(["userId"]),
     //pc上传按钮文字
     pcBtnText() {
       if (this.imageUrl.pc == "") {

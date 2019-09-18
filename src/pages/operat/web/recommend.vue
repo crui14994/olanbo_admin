@@ -82,7 +82,7 @@
 <script>
 import { smartList, updateSmart } from "@/api/devs.js";
 import pagination from "@/components/pagination";
-
+import { mapGetters } from "vuex";
 export default {
   name: "recommend",
   data() {
@@ -102,9 +102,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    },
+     ...mapGetters(["userId"]),
     //设备类型
     smartSysType() {
       return this.$store.state.user.smartSysType;

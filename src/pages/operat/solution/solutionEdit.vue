@@ -80,7 +80,7 @@ import {
   getItemInfo
 } from "@/api/solution.js";
 import qiniuUpdate from "@/components/qiniuUpdate";
-
+import { mapGetters } from "vuex";
 export default {
   name: "solutionEdit",
   data() {
@@ -137,9 +137,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    },
+    ...mapGetters(["userId"]),
     //是否是添加案例
     isAdd() {
       if (this.infoType != "add") {

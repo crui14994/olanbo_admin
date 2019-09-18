@@ -98,7 +98,7 @@
 <script>
 import { smartList, updateSmart, deleteSmart,devPage } from "@/api/devs.js";
 import pagination from "@/components/pagination";
-
+import { mapGetters } from "vuex";
 export default {
   name: "productList",
   data() {
@@ -121,9 +121,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    },
+    ...mapGetters(["userId"]),
     //设备类型
     smartSysType() {
       return this.$store.state.user.smartSysType;

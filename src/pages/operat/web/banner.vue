@@ -54,7 +54,7 @@ import pagination from "@/components/pagination";
 import bannerDialog from "@/components/bannerDialog";
 import { bannerList, deleteBanner } from "@/api/banner.js";
 import utils from "@/utils/index"; //导入工具函数
-
+import { mapGetters } from "vuex";
 export default {
   name: "banner",
   components: {
@@ -62,9 +62,7 @@ export default {
     bannerDialog
   },
   computed: {
-    userId() {
-      return this.$store.state.user.userId;
-    }
+     ...mapGetters(["userId"]),
   },
   data() {
     return {

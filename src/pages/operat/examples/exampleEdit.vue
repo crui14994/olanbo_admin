@@ -35,31 +35,25 @@
             </el-form-item>
             <el-form-item label="封面：" prop="logoUrl">
               <el-input class="edit-input" v-model="ruleForm.logoUrl" placeholder="文件路径"></el-input>
-              <!-- <el-button type="primary">上传图片</el-button> -->
-              <el-upload
-                class="avatar-uploader"
-                :action="domain"
-                :http-request="upqiniu"
-                :show-file-list="false"
-                :on-change="getKey7"
-                :before-upload="beforeUpload"
+              <!-- //七牛文件上传 -->
+              <qiniu-update
+                :oldFileUrl="ruleForm.logoUrl"
+                @qiniuSucc="qiniuSucc"
+                @fileChange="fileChange"
               >
                 <el-button type="primary">上传图片</el-button>
-              </el-upload>
+              </qiniu-update>
             </el-form-item>
             <el-form-item label="推荐:" prop="homeShowImg">
               <el-input class="edit-input" v-model="ruleForm.homeShowImg" placeholder="文件路径"></el-input>
-              <!-- <el-button type="primary">上传图片</el-button> -->
-              <el-upload
-                class="avatar-uploader"
-                :action="domain"
-                :http-request="upqiniu2"
-                :show-file-list="false"
-                :on-change="getKey7_02"
-                :before-upload="beforeUpload"
+              <!-- //七牛文件上传 -->
+              <qiniu-update
+                :oldFileUrl="ruleForm.homeShowImg"
+                @qiniuSucc="qiniuSucc2"
+                @fileChange="fileChange"
               >
                 <el-button type="primary">上传推荐显示图片</el-button>
-              </el-upload>
+               </qiniu-update>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -88,19 +82,15 @@
 <script>
 // require styles
 import TinymceEditor from "@/components/tinymce-editor";
-import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
+import qiniuUpdate from "@/components/qiniuUpdate";
 
 import { getListType, getItemInfo, update, addItem } from "@/api/examples.js";
-// import {mapState} from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   name: "exampleEdit",
   data() {
     return {
-      // 七牛云的上传地址，根据自己所在地区选择
-      domain: QINIU_PARAMS.domain,
-      // 这是七牛云空间的外链默认域名
-      qiniuaddr: QINIU_PARAMS.qiniuaddr,
       //表单信息
       ruleForm: {
         title: "",
@@ -147,13 +137,12 @@ export default {
     };
   },
   components: {
-    TinymceEditor
+    TinymceEditor,
+    qiniuUpdate
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    },
+    ...mapGetters(["userId"]),
     //是否是添加案例
     isAdd() {
       if (this.infoType != "add") {
@@ -172,16 +161,18 @@ export default {
   },
   mounted() {},
   methods: {
-    //getKey7
-    getKey7(file, fileList) {
-      let oldFileUrl = this.ruleForm.logoUrl;
-      this.key7 = oldFileUrl.split("/").pop() || " ";
+    //七牛上传成功
+    qiniuSucc(url) {
+      this.ruleForm.logoUrl = url;
     },
-    //getKey7
-    getKey7_02(file, fileList) {
-      let oldFileUrl = this.ruleForm.homeShowImg;
-      this.key7 = oldFileUrl.split("/").pop() || " ";
+    qiniuSucc2(url) {
+      this.ruleForm.homeShowImg = url;
     },
+    //七牛状态改变，重新上传时触发
+    fileChange(oldUrl) {
+      this.key7 = oldUrl.split("/").pop() || null;
+    },
+    
     //编辑修改设备
     updateexample() {
       let options = {
@@ -246,92 +237,6 @@ export default {
           this.resetForm("ruleForm");
         }
       });
-    },
-    // 上传pc图片到七牛云
-    upqiniu(req) {
-      const config = {
-        headers: { "Content-Type": "multipart/form-data" }
-      };
-      let filetype = "";
-      if (req.file.type === "image/png") {
-        filetype = "png";
-      } else {
-        filetype = "jpg";
-      }
-
-      // 获取token需要的参数
-      let paramsObj = {
-        fileName:
-          "olanbo_pc_" +
-          Date.parse(new Date()) +
-          Math.floor(Math.random() * 100) +
-          "." +
-          filetype,
-        userId: this.userId,
-        deleteKey: this.ruleForm.logoUrl.split("/").pop()
-      };
-      //获取token
-      getToken(paramsObj).then(res => {
-        const formdata = new FormData();
-        formdata.append("file", req.file);
-        formdata.append("token", res.data.data.token);
-        formdata.append("key", paramsObj.fileName);
-        // this.ruleForm.logoUrl = req.file.name;
-        // 上传到七牛
-        this.axios.post(this.domain, formdata, config).then(res => {
-          this.ruleForm.logoUrl =
-            "http://" + this.qiniuaddr + "/" + res.data.key;
-        });
-      });
-    },
-    // 上传pc图片到七牛云
-    upqiniu2(req) {
-      const config = {
-        headers: { "Content-Type": "multipart/form-data" }
-      };
-      let filetype = "";
-      if (req.file.type === "image/png") {
-        filetype = "png";
-      } else {
-        filetype = "jpg";
-      }
-
-      // 获取token需要的参数
-      let paramsObj = {
-        fileName:
-          "olanbo_pc_" +
-          Date.parse(new Date()) +
-          Math.floor(Math.random() * 100) +
-          "." +
-          filetype,
-        userId: this.userId,
-        deleteKey: this.ruleForm.homeShowImg.split("/").pop()
-      };
-      //获取token
-      getToken(paramsObj).then(res => {
-        const formdata = new FormData();
-        formdata.append("file", req.file);
-        formdata.append("token", res.data.data.token);
-        formdata.append("key", paramsObj.fileName);
-        // this.ruleForm.imgUrl = req.file.name;
-        // 上传到七牛
-        this.axios.post(this.domain, formdata, config).then(res => {
-          this.ruleForm.homeShowImg =
-            "http://" + this.qiniuaddr + "/" + res.data.key;
-        });
-      });
-    },
-    // 验证文件合法性
-    beforeUpload(file) {
-      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
     },
     //初始化表单数据
     initFrom() {

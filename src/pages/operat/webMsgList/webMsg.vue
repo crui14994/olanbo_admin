@@ -89,41 +89,11 @@ import {
   changeStatus,
   deleteMsg
 } from "@/api/webMsg.js";
+import { mapGetters } from "vuex";
 export default {
   name: "webMsg",
   data() {
     return {
-      //   pickerOptions: {
-      //     shortcuts: [
-      //       {
-      //         text: "最近一周",
-      //         onClick(picker) {
-      //           const end = new Date();
-      //           const start = new Date();
-      //           start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-      //           picker.$emit("pick", [start, end]);
-      //         }
-      //       },
-      //       {
-      //         text: "最近一个月",
-      //         onClick(picker) {
-      //           const end = new Date();
-      //           const start = new Date();
-      //           start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-      //           picker.$emit("pick", [start, end]);
-      //         }
-      //       },
-      //       {
-      //         text: "最近三个月",
-      //         onClick(picker) {
-      //           const end = new Date();
-      //           const start = new Date();
-      //           start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-      //           picker.$emit("pick", [start, end]);
-      //         }
-      //       }
-      //     ]
-      //   },
       formInline: {
         user: "",
         region: "",
@@ -148,24 +118,10 @@ export default {
   },
   created() {
     this._getList();
-
-    // 模拟提交用户留言
-    // let options = {
-    //   name:"test",
-    //   email:"2456468@qq.com",
-    //   tel:"18255978765",
-    //   content:"test"
-    // }
-    // addMsg(options).then(res=>{
-    //   console.log(res);
-    // })
-
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    }
+     ...mapGetters(["userId"]),
   },
   methods: {
     //设置已回访

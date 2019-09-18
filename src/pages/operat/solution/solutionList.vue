@@ -114,7 +114,7 @@ import {
   solutionConfig
 } from "@/api/solution.js";
 import pagination from "@/components/pagination";
-
+import { mapGetters } from "vuex";
 export default {
   name: "solutionList",
   data() {
@@ -138,9 +138,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    },
+     ...mapGetters(["userId"]),
     //类型名称
     typeName() {
       return function(value) {

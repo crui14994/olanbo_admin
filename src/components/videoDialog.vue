@@ -39,7 +39,7 @@
 <script>
 import { getToken,uploadQiniu, QINIU_PARAMS } from "@/api/qiniu.js";
 import { addHomeVideo, getHomeVideo, updateHomeVideo } from "@/api/video.js";
-
+import { mapGetters } from "vuex";
 export default {
   name: "videoDialog",
   props: {
@@ -69,9 +69,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    },
+    ...mapGetters(["userId"]),
     //重新上传或者更新需要获取上一个七牛资源的key
     deleteKey() {
       if (this.form.videoUrl == "") {
