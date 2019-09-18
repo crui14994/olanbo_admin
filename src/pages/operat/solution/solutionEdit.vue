@@ -71,7 +71,6 @@
 <script>
 import TinymceEditor from "@/components/tinymce-editor";
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
-
 import {
   solutionConfig,
   getSolutionType,
@@ -81,6 +80,7 @@ import {
 } from "@/api/solution.js";
 import qiniuUpdate from "@/components/qiniuUpdate";
 import { mapGetters } from "vuex";
+
 export default {
   name: "solutionEdit",
   data() {

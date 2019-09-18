@@ -45,25 +45,17 @@
           <!-- 上传文件 -->
           <el-form-item label="文件:">
             <!-- pc -->
-            <el-upload
-              class="avatar-uploader"
-              :action="domain"
-              :http-request="upqiniu"
-              :show-file-list="false"
-              :before-upload="beforeUpload"
-            >
+            <qiniu-update :oldFileUrl="imageUrl.pc" @qiniuSucc="qiniuSucc" @fileChange="fileChange">
               <span class="check-file">{{pcBtnText}}</span>
-            </el-upload>
+            </qiniu-update>
             <!-- mobile -->
-            <el-upload
-              class="avatar-uploader"
-              :action="domain"
-              :http-request="upqiniu02"
-              :show-file-list="false"
-              :before-upload="beforeUpload"
+            <qiniu-update
+              :oldFileUrl="imageUrl.mobile"
+              @qiniuSucc="qiniuSucc2"
+              @fileChange="fileChange"
             >
               <span class="check-file">{{mobileBtnText}}</span>
-            </el-upload>
+            </qiniu-update>
           </el-form-item>
         </el-form>
       </div>
@@ -78,6 +70,7 @@
 <script>
 import { getToken, QINIU_PARAMS } from "@/api/qiniu.js";
 import { addBanner, updateBanner } from "@/api/banner.js";
+import qiniuUpdate from "@/components/qiniuUpdate";
 import { mapGetters } from "vuex";
 export default {
   name: "bannerDialog",
@@ -129,6 +122,9 @@ export default {
       }
     }
   },
+  components: {
+    qiniuUpdate
+  },
   data() {
     var validatetitle = (rule, value, callback) => {
       if (value === "") {
@@ -160,14 +156,12 @@ export default {
         pc: "",
         mobile: ""
       },
-      // 七牛云的上传地址，根据自己所在地区选择
-      domain: QINIU_PARAMS.domain,
-      // 这是七牛云空间的外链默认域名
-      qiniuaddr: QINIU_PARAMS.qiniuaddr,
       //是否是添加banner
       isAdd: true,
       //深度拷贝传入的数据对象
-      cloneData: null
+      cloneData: null,
+      // 更新封面图片时，需要删除的原七牛资源的key
+      key7: null
     };
   },
   created() {},
@@ -197,6 +191,18 @@ export default {
         }
       });
     },
+    //七牛上传成功
+    qiniuSucc(url) {
+      this.imageUrl.pc = url;
+    },
+    qiniuSucc2(url) {
+      this.imageUrl.mobile = url;
+    },
+    //七牛状态改变，重新上传时触发
+    fileChange(oldUrl) {
+      this.key7 = oldUrl.split("/").pop() || null;
+    },
+
     //添加banner
     addInit(linkUrl, pcDataUrl, mobileDataUrl, bannerTitle) {
       addBanner(
@@ -258,7 +264,7 @@ export default {
             type: "success"
           });
           this.$emit("succBanner");
-        }else{
+        } else {
           this.$message({
             message: res.data.desc,
             type: "warning"
@@ -278,90 +284,6 @@ export default {
       this.imageUrl.mobile = "";
       this.ruleForm.title = "";
       this.ruleForm.address = "";
-    },
-    // 上传pc图片到七牛云
-    upqiniu(req) {
-      const config = {
-        headers: { "Content-Type": "multipart/form-data" }
-      };
-      let filetype = "";
-      if (req.file.type === "image/png") {
-        filetype = "png";
-      } else {
-        filetype = "jpg";
-      }
-
-      // 获取token需要的参数
-      let paramsObj = {
-        fileName:
-          "olanbo_pc_" +
-          Date.parse(new Date()) +
-          Math.floor(Math.random() * 100) +
-          "." +
-          filetype,
-        userId:this.userId,
-        deleteKey: this.imageUrl.pc.split("/").pop()
-      };
-      //获取token
-      getToken(paramsObj).then(res => {
-        const formdata = new FormData();
-        formdata.append("file", req.file);
-        formdata.append("token", res.data.data.token);
-        formdata.append("key", paramsObj.fileName);
-        
-        //上传到七牛
-        this.axios.post(this.domain, formdata, config).then(res => {
-          this.imageUrl.pc = "http://" + this.qiniuaddr + "/" + res.data.key;
-        });
-      });
-    },
-    // 上传pc图片到七牛云
-    upqiniu02(req) {
-      const config = {
-        headers: { "Content-Type": "multipart/form-data" }
-      };
-      let filetype = "";
-      if (req.file.type === "image/png") {
-        filetype = "png";
-      } else {
-        filetype = "jpg";
-      }
-
-      // 获取token需要的参数
-      let paramsObj = {
-        fileName:
-          "olanbo_mobile_" +
-          Date.parse(new Date()) +
-          Math.floor(Math.random() * 100) +
-          "." +
-          filetype,
-        userId: this.userId,
-        deleteKey: this.imageUrl.mobile.split("/").pop()
-      };
-      //获取token
-      getToken(paramsObj).then(res => {
-        const formdata = new FormData();
-        formdata.append("file", req.file);
-        formdata.append("token", res.data.data.token);
-        formdata.append("key", paramsObj.fileName);
-        //上传到七牛
-        this.axios.post(this.domain, formdata, config).then(res => {
-          this.imageUrl.mobile =
-            "http://" + this.qiniuaddr + "/" + res.data.key;
-        });
-      });
-    },
-    // 验证文件合法性
-    beforeUpload(file) {
-      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
     },
     //判断数据中的值是否更改
     isUpdata(d1, d2) {
@@ -416,20 +338,17 @@ export default {
           .el-form-item__label {
             text-align: left;
           }
-          .avatar-uploader {
+          .check-file {
             display: inline-block;
-            .check-file {
-              display: inline-block;
-              padding: 3px 10px;
-              margin-right: 5px;
-              font-size: 12px;
-              line-height: 30px;
-              background: rgba(238, 238, 238, 1);
-              border-radius: 5px;
-            }
-            .check-file:hover {
-              color: #7670d9;
-            }
+            padding: 3px 10px;
+            margin-right: 5px;
+            font-size: 12px;
+            line-height: 30px;
+            background: rgba(238, 238, 238, 1);
+            border-radius: 5px;
+          }
+          .check-file:hover {
+            color: #7670d9;
           }
         }
       }

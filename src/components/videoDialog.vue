@@ -130,7 +130,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    // 上传pc图片到七牛云
+    // 上传到七牛云
     upqiniu(req) {
       const config = {
         headers: { "Content-Type": "multipart/form-data" }
@@ -161,7 +161,6 @@ export default {
         formdata.append("token", res.data.data.token);
         formdata.append("key", paramsObj.fileName);
 
-        
         // 上传到七牛
         uploadQiniu(this.domain, formdata, config).then(res => {
           this.form.videoUrl = "http://" + this.qiniuaddr + "/" + res.data.key;
@@ -173,10 +172,10 @@ export default {
       const isJPG = file.type === "video/mp4" || file.type === "video/3gp";
       const isLt2M = file.size / 1024 / 1024 < 50;
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 mp4/3gp 格式!");
+        this.$message.error("上传视频只能是 mp4/3gp 格式!");
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error("上传视频大小不能超过 50MB!");
       }
       return isJPG && isLt2M;
     },
