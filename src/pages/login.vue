@@ -30,7 +30,7 @@
             <span class="login-btn" @click="submitForm('ruleForm')">登录</span>
           </el-form-item>
           <el-form-item>
-            <router-link class="reg-btn" :to="{ path: '/regist' }">注册</router-link>
+            <!-- <router-link class="reg-btn" :to="{ path: '/regist' }">注册</router-link> -->
           </el-form-item>
         </el-form>
       </div>

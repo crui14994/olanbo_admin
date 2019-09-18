@@ -99,7 +99,7 @@ import {
   changeStatus,
   deleteCoopMsg
 } from "@/api/coopMsg.js";
-
+import { mapGetters } from "vuex";
 export default {
   name: "webMsg",
   data() {
@@ -113,9 +113,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    }
+    ...mapGetters(["userId"]),
   },
   components: {
     pagination

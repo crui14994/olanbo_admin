@@ -38,15 +38,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "headerNav",
   data() {
     return {};
   },
   computed: {
-    nickName() {
-      return this.$store.state.user.nickName;
-    }
+    ...mapGetters(["nickName"]),
   },
   methods:{
     //退出系统

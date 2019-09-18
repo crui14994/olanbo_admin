@@ -29,9 +29,9 @@
         </el-table-column>
       </el-table>
       <!-- //分页组件 -->
-    <div v-show="!isEmpty" class="pagination">
-      <pagination :total="total" :pageSize="pageSize" @getChange="currentChange"></pagination>
-    </div>
+      <div v-show="!isEmpty" class="pagination">
+        <pagination :total="total" :pageSize="pageSize" @getChange="currentChange"></pagination>
+      </div>
     </el-row>
 
     <!-- 添加用户弹窗 -->
@@ -73,7 +73,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-checkbox v-model="formLabelAlign.isforce">是否强制更新</el-checkbox>
+            <el-checkbox v-model="formLabelAlign.isForce">是否强制更新</el-checkbox>
           </el-form-item>
         </el-form>
 
@@ -83,12 +83,14 @@
         </span>
       </el-dialog>
     </el-row>
+    <div></div>
   </div>
 </template>
 
 <script>
 import qiniuUpdate from "@/components/qiniuUpdate";
 import pagination from "@/components/pagination";
+
 import {
   managerConfig,
   managerList,
@@ -115,21 +117,25 @@ export default {
       agentList: [], //用户经销商列表
       pageNum: managerConfig.PAGENUM,
       pageSize: managerConfig.PAGESIZE,
-      total:0,
+      total: 0,
       //apk文件地址
       urlPath: "",
       //表格展示数据
       tableData: [],
       //是否是修改数据
-      isUpdate:false,
+      isUpdate: false,
       //弹窗的显示隐藏
       centerDialogVisible: false,
+      //表格中的数据id编号
+      tableId: null,
       //表单数据
       formLabelAlign: {
         version: "",
         dealers: "",
-        isforce: false
+        isForce: null
       },
+      //用于验证是否修改
+      cloneGrade: "",
       rules: {
         version: [{ validator: validateVersion, trigger: "blur" }],
         dealers: [
@@ -149,15 +155,14 @@ export default {
       return this.urlPath ? "已上传" : "上传APK";
     },
     //判断是否有数据
-    isEmpty(){
-       return this.tableData.length===0 ? true : false;
-    }
+    isEmpty() {
+      return this.tableData.length === 0 ? true : false;
+    },
   },
   created() {
     this._managerList();
   },
-  mounted(){
-  },
+  mounted() {},
   methods: {
     //分页状态改变时重新请求数据
     currentChange(index) {
@@ -186,7 +191,7 @@ export default {
         urlPath: this.urlPath,
         userId: this.formLabelAlign.dealers,
         version: this.formLabelAlign.version,
-        isforce: this.formLabelAlign.isforce,
+        isForce: this.formLabelAlign.isForce,
         adminiUserId: this.id
       };
       addManager(options).then(res => {
@@ -197,29 +202,42 @@ export default {
             type: "success"
           });
           this.centerDialogVisible = false;
+           //更新数据
+          this._managerList();
         }
       });
     },
     //更新
     _updateManager() {
       let options = {
-        id:1,
+        id: this.tableId,
         urlPath: this.urlPath,
         userId: this.formLabelAlign.dealers,
         version: this.formLabelAlign.version,
-        isforce: this.formLabelAlign.isforce,
+        isForce: this.formLabelAlign.isForce ? 1 : 0,
         adminiUserId: this.id
       };
-      updateManager(options).then(res => {
-        const { code } = res.data;
-        if (code == 200) {
-          this.$message({
-            message: "修改成功！",
-            type: "success"
-          });
-          this.centerDialogVisible = false;
-        }
-      });
+      //验证是否有修改过
+      let str = JSON.stringify(this.formLabelAlign) + this.urlPath;
+      if (str !== this.cloneGrade) {
+        updateManager(options).then(res => {
+          const { code } = res.data;
+          if (code == 200) {
+            this.$message({
+              message: "修改成功！",
+              type: "success"
+            });
+            this.centerDialogVisible = false;
+            //更新数据
+            this._managerList();
+          }
+        });
+      } else {
+        this.$message({
+          message: "您没有修改任何内容，无法提交！",
+          type: "warning"
+        });
+      }
     },
     //七牛上传成功
     qiniuSucc(url) {
@@ -231,13 +249,19 @@ export default {
     },
     //编辑用户
     handleEdit(index, row) {
+      //重置验证是否修改数据
+      this.cloneGrade = "";
+
       this.isUpdate = true; //表示为修改数据
+      this.tableId = row.id;
       this.centerDialogVisible = true;
       this.formLabelAlign.version = row.version;
-      this.formLabelAlign.isforce = row.isforce;
+      this.formLabelAlign.isForce = row.isForce === 1 ?true :false;
       this.formLabelAlign.dealers = row.userId;
       /***注意此处还应设置urlPath的值***/
       this.urlPath = row.urlPath;
+
+      this.cloneGrade = JSON.stringify(this.formLabelAlign) + this.urlPath;
     },
     submitForm(formName) {
       // 先判断有没有上传apk文件
@@ -262,7 +286,7 @@ export default {
       this.formLabelAlign = {
         version: "",
         dealers: "",
-        isforce:false
+        isForce: null
       };
       this.urlPath = "";
       this.$refs[formName].resetFields();
@@ -300,7 +324,7 @@ export default {
       color: rgba(182, 182, 182, 1);
     }
   }
-  .pagination{
+  .pagination {
     text-align: right;
     margin: 50px 0;
   }

@@ -121,7 +121,7 @@ import {
   deleteItem
 } from "@/api/examples.js";
 import pagination from "@/components/pagination";
-
+import { mapGetters } from "vuex";
 export default {
   name: "exampleList",
   data() {
@@ -145,9 +145,7 @@ export default {
   },
   computed: {
     //用户id
-    userId() {
-      return this.$store.state.user.userId;
-    },
+    ...mapGetters(["userId"]),
     //案例类型名称
     typeName(value) {
       return function(value) {
