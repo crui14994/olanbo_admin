@@ -71,8 +71,8 @@ export default {
   .btn-next {
     > span {
       width: 90px;
-      height: 40px;
-      line-height: 40px;
+      height: 40px!important;
+      line-height: 40px !important;
       color: #7670d9;
       background: rgba(255, 182, 0, 0);
       border: 1px solid rgba(118, 112, 217, 1);

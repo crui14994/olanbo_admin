@@ -45,9 +45,9 @@ export default {
     return {
       //初始化配置
       init: {
-        language_url: "/static/tinymce/langs/zh_CN.js",
+        language_url: process.env.BASE_URL === "/api/" ? "/static/tinymce/langs/zh_CN.js" : "/smartAdmin/static/tinymce/langs/zh_CN.js",
         language: "zh_CN",
-        skin_url: "/static/tinymce/skins/ui/oxide",
+        skin_url: process.env.BASE_URL === "/api/" ? "/static/tinymce/skins/ui/oxide" : "/smartAdmin/static/tinymce/skins/ui/oxide",
         height: 800,
         plugins: this.plugins,
         toolbar: this.toolbar,
