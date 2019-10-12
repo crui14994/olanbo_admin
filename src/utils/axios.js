@@ -5,7 +5,7 @@ import router from './../router'
 // 创建axios实例
 const service = axios.create({
     baseURL: process.env.BASE_URL, //baseurl
-    timeout: 10000, // 请求超时时间
+    timeout: 15000, // 请求超时时间
 })
 
 // request拦截器
