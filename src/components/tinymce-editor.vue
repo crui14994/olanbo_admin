@@ -1,3 +1,4 @@
+
 <template>
   <div class="tinymce-editor">
     <editor v-model="myValue" :init="init" @onClick="onClick"></editor>
@@ -21,6 +22,12 @@ import "tinymce/plugins/colorpicker";
 import "tinymce/plugins/textcolor";
 import "tinymce/plugins/link";
 import "tinymce/plugins/code";
+import "tinymce/plugins/preview";
+import "tinymce/plugins/paste";
+
+// 扩展插件在此网站下载后按如下配置使用(http://tinymce.ax-z.cn/plugins/advlist.php)
+import  "@/utils/tinymce/lineheight/lineheight.js"
+
 export default {
   components: {
     Editor
@@ -33,12 +40,12 @@ export default {
     },
     plugins: {
       type: [String, Array],
-      default: "link lists image code table   wordcount "
+      default: "link lists image code table lineheight  wordcount preview paste"
     },
     toolbar: {
       type: [String, Array],
       default:
-        "undo redo | bold italic underline strikethrough forecolor | fontsizeselect  | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote  | link unlink image table | removeformat"
+        "preview | undo redo | bold italic underline strikethrough forecolor | fontsizeselect lineheight | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote  | link unlink image table | removeformat"
     }
   },
   data() {
@@ -53,6 +60,10 @@ export default {
         toolbar: this.toolbar,
         branding: false,
         menubar: false,
+        paste_auto_cleanup_on_paste : true,
+        paste_remove_styles: true,
+        paste_remove_styles_if_webkit: true,
+        paste_strip_class_attributes: true,
         //图片上传处理函数
         images_upload_handler: (blobInfo, success, failure) => {
           let img = this.upImg(blobInfo);
@@ -121,5 +132,5 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 </style>

@@ -9,11 +9,13 @@
               <el-image :src="imageUrl.pc" fit="contain">
                 <div slot="error" class="image-slot">pc端图片预览</div>
               </el-image>
+              <span class="prompt">图片尺寸为：1920x870</span>
             </el-col>
             <el-col :span="12">
               <el-image :src="imageUrl.mobile" fit="contain">
                 <div slot="error" class="image-slot">移动端图片预览</div>
               </el-image>
+              <span class="prompt">图片尺寸为：750x400</span>
             </el-col>
           </el-row>
         </div>
@@ -299,6 +301,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style  lang = "scss">
 .banner-dialog {
+  .prompt{
+      color: #999999;
+      font-size: 12px;
+      padding-top: 10px;
+    }
   .el-dialog__wrapper {
     .el-dialog {
       width: 700px !important;

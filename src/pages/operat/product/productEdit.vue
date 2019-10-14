@@ -9,7 +9,7 @@
         class="demo-ruleForm"
       >
         <el-row :gutter="20">
-          <el-col :span="14">
+          <el-col :span="24">
             <el-form-item label="名称：" prop="devName">
               <el-input class="edit-input" v-model="ruleForm.devName" placeholder="输入产品名称"></el-input>
             </el-form-item>
@@ -41,6 +41,7 @@
                 @fileChange="fileChange"
               >
                 <el-button type="primary">上传图片</el-button>
+                <span class="prompt">图片尺寸为：540x350</span>
               </qiniu-update>
             </el-form-item>
 
@@ -54,11 +55,13 @@
               >
                 <el-button type="primary">上传推荐显示图片</el-button>
               </qiniu-update>
+
+                <p class="prompt">尺寸：380x380(第一排三个),960x600(第二排大图),480x300(第二排小图)</p>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-row :gutter="20">
-              <el-col :span="14">
+              <el-col :span="24">
                 <!-- 富文本编辑器 -->
                 <el-form-item class="tinymce">
                   <tinymce-editor v-model="ruleForm.htmlContent" @onClick="onClick" ref="editor"></tinymce-editor>
@@ -69,9 +72,9 @@
                   <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
                 </el-form-item>
               </el-col>
-              <el-col :span="10">
+              <!-- <el-col :span="10">
                 <div class="ql-editor html-box" v-html="ruleForm.htmlContent"></div>
-              </el-col>
+              </el-col> -->
             </el-row>
           </el-col>
         </el-row>
@@ -286,7 +289,12 @@ export default {
       min-height: 250px;
     }
     .edit-input {
-      width: 60%;
+      width: 40%;
+    }
+    .prompt{
+      color: #999999;
+      padding-left: 10px;
+      font-size: 12px;
     }
     .avatar-uploader {
       display: inline-block;

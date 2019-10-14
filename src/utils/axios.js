@@ -31,6 +31,8 @@ service.interceptors.request.use(config => {
     let loading = Loading.service({});
     loading.close();
 
+    console.log("2:"+error)
+
     return Promise.reject(error)
 })
 
@@ -42,6 +44,8 @@ service.interceptors.response.use(
         // 关闭loadding
         let loading = Loading.service({});
         loading.close();
+
+        console.log("3:"+res)
 
         if (res.code != 200) {
             Message({
@@ -58,7 +62,8 @@ service.interceptors.response.use(
         let loading = Loading.service({});
         loading.close();
 
-        console.log(error.message)
+        console.log("4:"+error)
+
         Message({
             message: error.message,
             type: 'error',

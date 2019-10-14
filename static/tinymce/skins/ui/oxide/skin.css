@@ -91,7 +91,7 @@ button::-moz-focus-inner {
   border: 0;
 }
 .tox-silver-sink {
-  z-index: 1300;
+  z-index: 2005;
 }
 .tox .accessibility-issue__header {
   align-items: center;
@@ -1015,7 +1015,7 @@ button::-moz-focus-inner {
   z-index: 1100;
 }
 .tox .tox-dialog-wrap__backdrop {
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(0,0,0,.55);
   bottom: 0;
   left: 0;
   position: absolute;
@@ -1138,7 +1138,7 @@ button::-moz-focus-inner {
   flex: 1;
   flex-direction: column;
   -ms-flex-preferred-size: auto;
-  max-height: 650px;
+  max-height: 95%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   padding: 16px 16px;
@@ -1214,7 +1214,7 @@ button::-moz-focus-inner {
   margin-top: 0;
 }
 .tox .tox-dialog--width-lg {
-  height: 650px;
+  height: 95%;
   max-width: 1200px;
 }
 .tox .tox-dialog--width-md {
