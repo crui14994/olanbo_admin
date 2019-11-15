@@ -88,9 +88,13 @@ export const asyncRouterMap = [
             //     meta: { title: '代理商管理',icon:"icon-ziyuan" },
             // },
             {
-                path: '/appUpgrade', name: 'appUpgrade',
-                component: () => import('@/pages/operat/appUpgrade/appUpgrade'),
-                meta: { title: 'app升级管理', icon: "icon-app" },
+                path: '/upgrade', name: 'upgrade',
+                component:{ render(c) { return c('router-view') } },
+                meta: { title: '升级管理', icon: "icon-app" },
+                children:[
+                    { path: 'appUpgrade', name: 'appUpgrade', component:() => import('@/pages/operat/upgrade/appUpgrade'), meta: { title: 'app升级管理' }, },
+                    { path: 'otaUpgrade', name: 'otaUpgrade', component:() => import('@/pages/operat/upgrade/otaUpgrade'), meta: { title: '设备OTA升级' }, },
+                ]
             },
         ]
     }

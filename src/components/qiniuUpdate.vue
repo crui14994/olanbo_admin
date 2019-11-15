@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     //用户id
-    ...mapGetters(["userId"]),
+    ...mapGetters(["userId"])
   },
   created() {},
   methods: {
@@ -75,10 +75,12 @@ export default {
         formdata.append("file", req.file);
         formdata.append("token", res.data.data.token);
         formdata.append("key", paramsObj.fileName);
+
         // 上传到七牛
         this.axios.post(this.domain, formdata, config).then(res => {
           this.fileUrl = "http://" + this.qiniuaddr + "/" + res.data.key;
           this.$emit("qiniuSucc", this.fileUrl);
+          this.$emit("getFileSize",req.file.size);
         });
       });
     },
@@ -90,7 +92,7 @@ export default {
         !isJPG && this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
         !isLt2M && this.$message.error("上传头像图片大小不能超过 2MB!");
         return isJPG && isLt2M;
-      }else{
+      } else {
         return true;
       }
     }

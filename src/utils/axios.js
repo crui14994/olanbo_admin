@@ -47,7 +47,7 @@ service.interceptors.response.use(
 
         console.log("3:"+res)
 
-        if (res.code != 200) {
+        if (res.code != 200 && res.desc!=undefined) {
             Message({
                 showClose: true,
                 message: res.desc,
@@ -62,10 +62,14 @@ service.interceptors.response.use(
         let loading = Loading.service({});
         loading.close();
 
-        console.log("4:"+error)
-
+        let message = ()=>{
+            if(error.message=="Network Error"){
+                return "网络错误！"
+            }
+            return error.message;
+        }
         Message({
-            message: error.message,
+            message: message(),
             type: 'error',
         })
 
