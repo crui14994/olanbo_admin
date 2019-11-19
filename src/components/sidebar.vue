@@ -16,7 +16,7 @@
         <!-- 如果当前路由下有你子路由则用el-submenu -->
         <el-submenu
           class="submenu01-div"
-          v-show="!item.hidden"
+          v-show="!item.hidden" 
           :index="item.path"
           v-if="item.children"
         >
@@ -185,7 +185,7 @@ export default {
         }
       }
     }
-    .submenu01:first-child,.submenu01:nth-child(5),.submenu01:first-child,.submenu01:nth-child(6){
+    .submenu01{
       >.is-active{
         background-color: rgba(255, 255, 255, 0) !important;
       }

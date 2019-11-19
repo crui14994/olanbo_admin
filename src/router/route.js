@@ -65,14 +65,13 @@ export const asyncRouterMap = [
                 meta: { title: '订单物流管理', icon: "icon-icon-aobi_dingdanwuliuon" },
             },
             {
-                path: '/credentials', name: 'credentials',
+                path: '/devUsers', name: 'credentials',
                 component: { render(c) { return c('router-view') } },
-                meta: { title: '开发者资质认证', icon: "icon-zizhi" },
-            },
-            {
-                path: '/developers', name: ' developers',
-                component: { render(c) { return c('router-view') } },
-                meta: { title: '开发者账号管理', icon: "icon-tubiao39" },
+                meta: { title: '开发者管理', icon: "icon-tubiao39" },
+                children:[
+                    { path: 'credentials', name: 'credentials', component: { render(c) { return c('router-view') } },meta: { title: '开发者资质认证' }, },
+                    { path: 'developers', name: 'developers', component: { render(c) { return c('router-view') } },meta: { title: '开发者账号管理' }, },
+                ]
             },
             {
                 path: '/user', name: 'user',
@@ -82,11 +81,6 @@ export const asyncRouterMap = [
                     { path: 'agent', name: 'agent', component: { render(c) { return c('router-view') } }, meta: { title: '代理商管理' }, },
                 ]
             },
-            // {
-            //     path: '/agent', name: 'agent',
-            //     component: { render(c) { return c('router-view') } },
-            //     meta: { title: '代理商管理',icon:"icon-ziyuan" },
-            // },
             {
                 path: '/upgrade', name: 'upgrade',
                 component:{ render(c) { return c('router-view') } },
