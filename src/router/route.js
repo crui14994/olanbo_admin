@@ -78,7 +78,8 @@ export const asyncRouterMap = [
                 component: { render(c) { return c('router-view') } },
                 meta: { title: '用户管理', icon: "icon-ziyuan" },
                 children:[
-                    { path: 'agent', name: 'agent', component: { render(c) { return c('router-view') } }, meta: { title: '代理商管理' }, },
+                    { path: 'agent', name: 'agent', component: () => import('@/pages/operat/user/agent'), meta: { title: '代理商管理' }, },
+                    { path: 'urlEdit', name: 'urlEdit',hidden: true, component: () => import('@/pages/operat/user/urlEdit'), meta: { title: 'APP跳转地址管理' }, },
                 ]
             },
             {

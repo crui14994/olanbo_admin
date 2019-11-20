@@ -26,6 +26,10 @@ export const userType ={
     SALER:{
         type:6,
         typeName:"销售商"
+    },
+    SMARTDEV:{
+        type:7,
+        typeName:"智能家居控制端(APP)"
     }
 }
 

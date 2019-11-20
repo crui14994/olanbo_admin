@@ -5,7 +5,7 @@
 import axios from "./../utils/axios";
 
 //本地服务器地址
-const baseUrl = "http://192.168.101.129:8888"
+// const baseUrl = "http://192.168.101.129:8888"
 
 
 //配置条件
@@ -21,7 +21,6 @@ export function getOtaType() {
         method: "GET"
     })
 }
-
 
 
 //获取列表

@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'https://api.olanboa.com',//设置你调用的接口域名和端口号
+        target: 'http://192.168.101.129:8888',//设置你调用的接口域名和端口号
         changeOrigin: true,//如果需要跨域
         pathRewrite: {
           '^/api': '/'

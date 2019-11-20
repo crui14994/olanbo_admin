@@ -24,7 +24,7 @@
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
-              style="color:#FFD250"
+              style="color:rgba(118,112,217,1)"
               type="text"
               size="mini"
               @click="handleEdit(scope.$index, scope.row)"

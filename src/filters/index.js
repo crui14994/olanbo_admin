@@ -8,6 +8,14 @@ export function timeFormat(time) {
     return utils.formatDate("YYYY-mm-dd hh:ff:ss", new Date(time));
 }
 
+/**
+ * 如果为空数据则返回 “暂无数据”
+ * @param {number} time
+ */
+export function nullData(data) {
+    return data ? data : "暂无数据"
+}
+
 /** 
  * 设备类型
  * @param {number} typeId
