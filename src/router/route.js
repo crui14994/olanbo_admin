@@ -37,7 +37,7 @@ export const asyncRouterMap = [
             {
                 path: '/web', redirect: '/web/home', name: 'web',
                 component: { render(c) { return c('router-view') } },
-                meta: { title: '网站文案管理', icon: "icon-wenjian" },
+                meta: { title: '网站管理', icon: "icon-wenjian" },
                 children: [
                     {
                         path: 'home', redirect: 'home/banner', name: 'home',
@@ -68,10 +68,10 @@ export const asyncRouterMap = [
                 path: '/devUsers', name: 'credentials',
                 component: { render(c) { return c('router-view') } },
                 meta: { title: '开发者管理', icon: "icon-tubiao39" },
-                children:[
-                    { path: 'credentials', name: 'credentials', component: { render(c) { return c('router-view') } },meta: { title: '开发者资质认证' }, },
-                    { path: 'developers', name: 'developers', component: { render(c) { return c('router-view') } },meta: { title: '开发者账号管理' }, },
-                ]
+                // children:[
+                //     { path: 'credentials', name: 'credentials', component: { render(c) { return c('router-view') } },meta: { title: '开发者资质认证' }, },
+                //     { path: 'developers', name: 'developers', component: { render(c) { return c('router-view') } },meta: { title: '开发者账号管理' }, },
+                // ]
             },
             {
                 path: '/user', name: 'user',

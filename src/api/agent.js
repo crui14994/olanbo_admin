@@ -28,6 +28,15 @@ export function getappUrlList(options) {
 }
 
 
+//添加代理商
+export function agentRegist(options) {
+    return axios({
+        url: "/user/regist",
+        method: "post",
+        data: options
+    })
+}
+
 //添加跳转地址
 export function addUrl(options){
     return axios({

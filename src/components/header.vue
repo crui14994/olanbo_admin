@@ -16,13 +16,13 @@
         </div>
       </li>
       <li>
-        <div>
+        <div @click="promptOpen">
           <i class="iconfont icon-baobiaotongji"></i>
           <span>报表统计</span>
         </div>
       </li>
       <li>
-        <div>
+        <div @click="promptOpen">
           <i class="iconfont icon-fangqiuzhiyepeiyangzhuanhuan"></i>
           <span>用户系统</span>
         </div>
@@ -48,6 +48,18 @@ export default {
     ...mapGetters(["nickName"]),
   },
   methods:{
+    //打开正在开发提示框
+    promptOpen() {
+      this.$alert("正在开发中...", "提示", {
+        confirmButtonText: "确定",
+        // callback: action => {
+        //   this.$message({
+        //     type: "info",
+        //     message: `action: ${action}`
+        //   });
+        // }
+      });
+    },
     //退出系统
     signOut(){
       this.$store.dispatch('signOut').then(res=>{

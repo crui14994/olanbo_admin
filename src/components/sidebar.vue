@@ -1,76 +1,79 @@
 <template>
   <div class="Sidebar">
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-vertical-demo el-menu01"
-      @open="handleOpen"
-      @close="handleClose"
-      background-color="#3C3C50"
-      text-color="#b6b6b6"
-      active-text-color="#96BEFF"
-      unique-opened
-      router
-    >
-      <!-- 一级循环路由 -->
-      <div class="submenu01" v-for="(item,index) in siderBarRouters.children" :key="index">
-        <!-- 如果当前路由下有你子路由则用el-submenu -->
-        <el-submenu
-          class="submenu01-div"
-          v-show="!item.hidden" 
-          :index="item.path"
-          v-if="item.children"
-        >
-          <template slot="title">
+    <el-row>
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-vertical-demo el-menu01"
+        @open="handleOpen"
+        @close="handleClose"
+        background-color="#3C3C50"
+        text-color="#b6b6b6"
+        active-text-color="#96BEFF"
+        unique-opened
+        router
+      >
+        <!-- 一级循环路由 -->
+        <div class="submenu01" v-for="(item,index) in siderBarRouters.children" :key="index">
+          <!-- 如果当前路由下有子路由则用el-submenu -->
+          <el-submenu
+            class="submenu01-div"
+            v-show="!item.hidden"
+            :index="item.path"
+            v-if="item.children"
+          >
+            <template slot="title">
+              <i class="iconfont" :class="item.meta.icon"></i>
+              <span>{{item.meta.title}}</span>
+            </template>
+
+            <!-- 二级循环路由 -->
+            <div class="submenu02" v-for="(item2,index2) in item.children" :key="index2">
+              <el-submenu
+                class="submenu02-div"
+                v-show="!item2.hidden"
+                :index="item2.path"
+                v-if="item2.children"
+              >
+                <template slot="title">
+                  <span>{{item2.meta.title}}</span>
+                </template>
+
+                <!-- 三级循环路由 -->
+                <div class="submenu03" v-for="(item3,index3) in item2.children" :key="index3">
+                  <el-submenu v-show="!item3.hidden" :index="item3.path" v-if="item3.children">
+                    <template slot="title">
+                      <span>{{item3.meta.title}}</span>
+                    </template>
+                  </el-submenu>
+                  <el-menu-item
+                    v-show="!item3.hidden"
+                    :index="item.path+'/'+item2.path+'/'+item3.path"
+                    v-if="!item3.children"
+                  >{{item3.meta.title}}</el-menu-item>
+                </div>
+              </el-submenu>
+
+              <el-menu-item
+                v-show="!item2.hidden"
+                :index="item.path+'/'+item2.path"
+                v-if="!item2.children"
+              >{{item2.meta.title}}</el-menu-item>
+            </div>
+          </el-submenu>
+          <!-- 如果当前路由下没有你子路由则用el-menu-item -->
+          <el-menu-item
+            class="submenu01-li"
+            v-show="!item.hidden"
+            :index="item.path"
+            v-if="!item.children"
+            @click="promptOpen"
+          >
             <i class="iconfont" :class="item.meta.icon"></i>
-            <span>{{item.meta.title}}</span>
-          </template>
-
-          <!-- 二级循环路由 -->
-          <div class="submenu02" v-for="(item2,index2) in item.children" :key="index2">
-            <el-submenu
-              class="submenu02-div"
-              v-show="!item2.hidden"
-              :index="item2.path"
-              v-if="item2.children"
-            >
-              <template slot="title">
-                <span>{{item2.meta.title}}</span>
-              </template>
-
-              <!-- 三级循环路由 -->
-              <div class="submenu03" v-for="(item3,index3) in item2.children" :key="index3">
-                <el-submenu v-show="!item3.hidden" :index="item3.path" v-if="item3.children">
-                  <template slot="title">
-                    <span>{{item3.meta.title}}</span>
-                  </template>
-                </el-submenu>
-                <el-menu-item
-                  v-show="!item3.hidden"
-                  :index="item.path+'/'+item2.path+'/'+item3.path"
-                  v-if="!item3.children"
-                >{{item3.meta.title}}</el-menu-item>
-              </div>
-            </el-submenu>
-
-            <el-menu-item
-              v-show="!item2.hidden"
-              :index="item.path+'/'+item2.path"
-              v-if="!item2.children"
-            >{{item2.meta.title}}</el-menu-item>
-          </div>
-        </el-submenu>
-        <!-- 如果当前路由下没有你子路由则用el-menu-item -->
-        <el-menu-item
-          class="submenu01-li"
-          v-show="!item.hidden"
-          :index="item.path"
-          v-if="!item.children"
-        >
-          <i class="iconfont" :class="item.meta.icon"></i>
-          <span slot="title">{{item.meta.title}}</span>
-        </el-menu-item>
-      </div>
-    </el-menu>
+            <span slot="title">{{item.meta.title}}</span>
+          </el-menu-item>
+        </div>
+      </el-menu>
+    </el-row>
   </div>
 </template>
 
@@ -96,6 +99,18 @@ export default {
     this.activeIndex = this.$route.path;
   },
   methods: {
+    //打开正在开发提示框
+    promptOpen() {
+      this.$alert("正在开发中...", "提示", {
+        confirmButtonText: "确定",
+        // callback: action => {
+        //   this.$message({
+        //     type: "info",
+        //     message: `action: ${action}`
+        //   });
+        // }
+      });
+    },
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
     },
@@ -125,12 +140,12 @@ export default {
       .submenu01-li {
         border-radius: 30px 0px 0px 30px;
         text-align: left;
-        color: aliceblue!important;
+        color: aliceblue !important;
         > span {
           font-size: 16px;
         }
       }
-      >.is-active{
+      > .is-active {
         background-color: rgba(255, 255, 255, 0.1) !important;
       }
       .submenu01-li:hover {
@@ -140,7 +155,7 @@ export default {
         text-align: left;
         > .el-submenu__title {
           border-radius: 30px 0px 0px 30px;
-          color: aliceblue!important;
+          color: aliceblue !important;
           > span {
             font-size: 16px;
           }
@@ -185,8 +200,8 @@ export default {
         }
       }
     }
-    .submenu01{
-      >.is-active{
+    .submenu01 {
+      > .is-active {
         background-color: rgba(255, 255, 255, 0) !important;
       }
     }
