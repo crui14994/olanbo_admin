@@ -10,22 +10,22 @@
     </div>
     <ul class="header-nav">
       <li class="nav-active">
-        <div>
+        <!-- <div>
           <i class="iconfont icon-yunying"></i>
           <span>运营系统</span>
-        </div>
+        </div> -->
       </li>
       <li>
-        <div @click="promptOpen">
+        <!-- <div @click="promptOpen">
           <i class="iconfont icon-baobiaotongji"></i>
           <span>报表统计</span>
-        </div>
+        </div> -->
       </li>
       <li>
-        <div @click="promptOpen">
+        <!-- <div @click="promptOpen">
           <i class="iconfont icon-fangqiuzhiyepeiyangzhuanhuan"></i>
           <span>用户系统</span>
-        </div>
+        </div> -->
       </li>
       <li>
         <div @click="signOut">
