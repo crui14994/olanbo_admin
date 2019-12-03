@@ -101,8 +101,8 @@ export default {
   methods: {
     //打开正在开发提示框
     promptOpen() {
-      this.$alert("正在开发中...", "提示", {
-        confirmButtonText: "确定",
+      this.$alert("暂未开放...", "提示", {
+        confirmButtonText: "确定"
         // callback: action => {
         //   this.$message({
         //     type: "info",
@@ -146,7 +146,7 @@ export default {
         }
       }
       > .is-active {
-        background-color: rgba(255, 255, 255, 0.1) !important;
+        background: none !important;
       }
       .submenu01-li:hover {
         background-color: rgba(255, 255, 255, 0.1) !important;
@@ -172,6 +172,9 @@ export default {
             background-color: rgba(255, 255, 255, 0) !important;
             color: #96beff !important;
           }
+        }
+        > .is-active {
+          background: none !important;
         }
         > li:hover {
           background-color: rgba(255, 255, 255, 0) !important;
@@ -202,7 +205,7 @@ export default {
     }
     .submenu01 {
       > .is-active {
-        background-color: rgba(255, 255, 255, 0) !important;
+        background: none !important;
       }
     }
   }

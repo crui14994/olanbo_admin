@@ -80,6 +80,7 @@ export const asyncRouterMap = [
                 children:[
                     { path: 'agent', name: 'agent', component: () => import('@/pages/operat/user/agent'), meta: { title: '代理商管理' }, },
                     { path: 'urlEdit', name: 'urlEdit',hidden: true, component: () => import('@/pages/operat/user/urlEdit'), meta: { title: 'APP跳转地址管理' }, },
+                    { path: 'smartDev', name: 'smartDev', component: () => import('@/pages/operat/user/smartDev'), meta: { title: '智能家居(APP)管理' }, },
                 ]
             },
             {

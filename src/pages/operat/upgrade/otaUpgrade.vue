@@ -1,7 +1,7 @@
 <template>
   <div class="ota-upgrade">
     <el-row>
-      <span class="add-user" @click="centerDialogVisible = true">添加OTA设备</span>
+      <span class="add-user" @click="centerDialogVisible = true">新增</span>
     </el-row>
 
     <!-- 表格数据 -->
@@ -21,7 +21,7 @@
             <span>{{scope.row.timeStamp | timeFormat}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" width="220" align="center">
           <template slot-scope="scope">
             <el-button
               style="color:rgba(118,112,217,1)"

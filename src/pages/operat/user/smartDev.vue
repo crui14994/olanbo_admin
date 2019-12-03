@@ -1,18 +1,14 @@
 <template>
-  <div class="agent">
-    <el-row>
-      <span class="add-user" @click="centerDialogVisible = true">新增</span>
-    </el-row>
-
+  <div class="smart-dev">
     <el-row>
       <el-col :span="7">
         <el-form :inline="true" label-width="60px" label-position="left">
           <el-form-item label="账号:">
             <el-input
               placeholder="登录账号"
-              v-model="agentForm.userName"
+              v-model="smartForm.userName"
               clearable
-              @clear="agentFilter"
+              @clear="smartFilter"
             ></el-input>
           </el-form-item>
         </el-form>
@@ -20,32 +16,39 @@
       <el-col :span="7">
         <el-form :inline="true" label-width="60px" label-position="left">
           <el-form-item label="昵称:">
-            <el-input placeholder="昵称" v-model="agentForm.nickName" clearable @clear="agentFilter"></el-input>
+            <el-input placeholder="昵称" v-model="smartForm.nickName" clearable @clear="smartFilter"></el-input>
           </el-form-item>
         </el-form>
       </el-col>
       <el-col :span="8">
         <el-form :inline="true" label-width="60px" label-position="left">
           <el-form-item label="手机号:">
-            <el-input placeholder="手机号" v-model="agentForm.mobile" clearable @clear="agentFilter"></el-input>
+            <el-input placeholder="手机号" v-model="smartForm.mobile" clearable @clear="smartFilter"></el-input>
           </el-form-item>
         </el-form>
       </el-col>
 
       <el-col :span="2" style="text-align: right;">
         <el-button
-          @click="agentFilter"
+          @click="smartFilter"
           type="primary"
           style="background:rgba(118,112,217,1);border:none;"
         >查找</el-button>
       </el-col>
     </el-row>
+
     <!-- 表格数据 -->
-    <el-row class="agent-show">
-      <span v-show="tableData.length<=0" class="prompt">暂无代理商信息！</span>
+    <el-row class="smart-dev-show">
+      <span v-show="tableData.length<=0" class="prompt">暂无智能家居控制端(APP)用户信息！</span>
 
       <el-table v-show="tableData.length>0" :data="tableData" border style="width: 100%">
         <el-table-column prop="id" sortable label="ID" width="80" align="center"></el-table-column>
+        <el-table-column prop="headImg" label="头像" width="90" align="center">
+          <template slot-scope="scope">
+            <!-- <el-avatar :src="scope.row.headImg"></el-avatar> -->
+            <el-image class="avatar" :lazy="true" :src="scope.row.headImg" fit="cover"></el-image>
+          </template>
+        </el-table-column>
         <el-table-column prop="userName" label="账号" align="center"></el-table-column>
         <el-table-column prop="nickName" label="昵称" align="center">
           <template slot-scope="scope">
@@ -67,13 +70,24 @@
             <span>{{scope.row.timeStamp | timeFormat}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="140">
+        <el-table-column prop="timeStamp" label="当前状态" width="80" align="center">
           <template slot-scope="scope">
-            <el-select value placeholder="设置">
-              <el-option label="APP信息管理" value="APP信息管理">
-                <span @click="goToUrlEdit(scope.row.userId)">APP信息管理</span>
-              </el-option>
-            </el-select>
+            <span>{{scope.row.status==0 ? "已启用" : "已禁用"}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="100">
+          <template slot-scope="scope">
+            <el-row class="table-btns">
+              <el-col :span="24">
+                <el-button
+                  style="color:rgba(118,112,217,1);"
+                  size="mini"
+                  type="text"
+                  @click="handleEdit(scope.$index, scope.row)"
+                >编辑</el-button>
+              </el-col>
+            </el-row>
+            <!-- <el-switch v-model="scope.row.status" active-color="#898995" inactive-color="#7670D9" active-text="启用"></el-switch> -->
           </template>
         </el-table-column>
       </el-table>
@@ -83,7 +97,7 @@
       </div>
     </el-row>
 
-    <!-- 添加用户弹窗 -->
+    <!-- 编辑用户弹窗 -->
     <el-row>
       <el-dialog
         class="add-dialog"
@@ -95,34 +109,25 @@
         @closed="resetForm('formLabelAlign')"
       >
         <el-form label-width="100px" :rules="rules" ref="formLabelAlign" :model="formLabelAlign">
-          <el-form-item label="代理商名称:" prop="nickName">
-            <el-input v-model="formLabelAlign.nickName" placeholder="输入代理商名称"></el-input>
+          <el-form-item label="昵称：" prop="nickName">
+            <el-input v-model="formLabelAlign.nickName" placeholder="昵称"></el-input>
           </el-form-item>
 
-          <el-form-item label="手机号码:" prop="mobile">
-            <el-input v-model="formLabelAlign.mobile" placeholder="输入手机号码"></el-input>
+          <el-form-item label="启用：">
+            <el-switch v-model="formLabelAlign.status"></el-switch>
           </el-form-item>
 
-          <el-form-item label="邮箱:" prop="email">
-            <el-input v-model="formLabelAlign.email" placeholder="输入邮箱"></el-input>
-          </el-form-item>
-
-          <el-form-item label="登录密码：" prop="passWord">
-            <el-input
-              type="passWord"
-              v-model="formLabelAlign.passWord"
-              autocomplete="off"
-              placeholder="输入登录密码"
-            ></el-input>
-          </el-form-item>
-
-          <el-form-item label="确认密码" prop="checkPass">
-            <el-input
-              type="password"
-              v-model="formLabelAlign.checkPass"
-              autocomplete="off"
-              placeholder="确认密码"
-            ></el-input>
+          <el-form-item label="上传头像：">
+            <!-- <el-switch v-model="formLabelAlign.headImg"></el-switch> -->
+            <qiniuUpdate
+              :oldFileUrl="formLabelAlign.headImg"
+              :preview="true"
+              @qiniuSucc="qiniuSucc"
+              @fileChange="fileChange"
+            >
+              <img v-if="formLabelAlign.headImg" :src="formLabelAlign.headImg" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </qiniuUpdate>
           </el-form-item>
         </el-form>
 
@@ -138,15 +143,17 @@
 
 <script>
 import pagination from "@/components/pagination";
+import qiniuUpdate from "@/components/qiniuUpdate";
 import { mapGetters } from "vuex";
 
-import { agentConfig, getList, agentRegist } from "@/api/agent";
+import { agentConfig, getList, updateInfo } from "@/api/smartDev";
 import { userType } from "@/api/user";
 
 export default {
-  name: "agent",
+  name: "smart-dev",
   components: {
-    pagination
+    pagination,
+    qiniuUpdate
   },
   computed: {
     ...mapGetters(["userId"]),
@@ -156,54 +163,6 @@ export default {
     }
   },
   data() {
-    var validateMobile = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入手机号!"));
-      } else {
-        //验证版本号格式
-        let isMobile = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/.test(
-          value
-        );
-        if (!isMobile) {
-          callback(new Error("手机号格式错误！"));
-        }
-        callback();
-      }
-    };
-    var validateEmail = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入邮箱!"));
-      } else {
-        //验证版本号格式
-        let reg = new RegExp(
-          "^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"
-        );
-        let isEmail = reg.test(value);
-        if (!isEmail) {
-          callback(new Error("邮箱格式错误！"));
-        }
-        callback();
-      }
-    };
-    var validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.formLabelAlign.checkPass !== "") {
-          this.$refs.formLabelAlign.validateField("checkPass");
-        }
-        callback();
-      }
-    };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.formLabelAlign.passWord) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
     return {
       pageNum: agentConfig.PAGENUM,
       pageSize: agentConfig.PAGESIZE,
@@ -211,35 +170,32 @@ export default {
       tableData: [],
       //数据条数
       total: 0,
-      //弹窗的显示隐藏
-      centerDialogVisible: false,
       //表单数据
       formLabelAlign: {
+        id:"",
         nickName: "",
-        mobile: "",
-        email: "",
-        passWord: "",
-        checkPass: ""
+        status: "",
+        headImg: ""
       },
+      //弹窗的显示隐藏
+      centerDialogVisible: false,
       //过滤数据
-      agentForm: {
+      smartForm: {
         nickName: "",
         userName: "",
         mobile: ""
       },
+      //更新头像的时候原七牛的资源key
+      key7: null,
+      //拷贝数据用于验证是否更改
+      copyData: null,
       rules: {
         nickName: [
           { required: true, message: "请输入代理商名称！", trigger: "blur" }
         ],
-        mobile: [
-          { required: true, validator: validateMobile, trigger: "blur" }
-        ],
-        email: [{ required: true, validator: validateEmail, trigger: "blur" }],
-        passWord: [
-          { required: true, validator: validatePass, trigger: "blur" }
-        ],
-        checkPass: [
-          { required: true, validator: validatePass2, trigger: "blur" }
+        status: [{ required: true, message: "请选择状态！", trigger: "blur" }],
+        headImg: [
+          { required: true, message: "请上传头像！", trigger: "change" }
         ]
       }
     };
@@ -248,36 +204,38 @@ export default {
     this._getList();
   },
   methods: {
-    //查询过滤
-    agentFilter() {
-      this._getList();
+    handleEdit(index, row) {
+      this.centerDialogVisible = true;
+
+      this.formLabelAlign.nickName = row.nickName;
+      this.formLabelAlign.id = row.userId;
+      this.formLabelAlign.status = row.status === 0 ? true : false;
+      this.formLabelAlign.headImg = row.headImg;
+
+      //拷贝数据
+      this.copyData = JSON.stringify(this.formLabelAlign);
     },
-    //添加代理商
-    _agentRegist() {
-      let options = {
-        userType: userType.AGENT.type,
-        mobile: this.formLabelAlign.mobile,
-        nickName: this.formLabelAlign.nickName,
-        email: this.formLabelAlign.email,
-        passWord: this.formLabelAlign.passWord
-      };
-      agentRegist(options).then(res => {
-        const { code } = res.data;
-        if (code == 200) {
-          this.$message({
-            message: "添加成功！",
-            type: "success"
-          });
-          this.centerDialogVisible = false;
-          //更新数据
-          this._getList();
-        }
-      });
+    //上传成功后触发
+    qiniuSucc(url) {
+      this.formLabelAlign.headImg = url;
+    },
+    //文件状态改变时触发
+    fileChange(oldUrl) {
+      this.key7 = oldUrl.split("/").pop() || null;
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this._agentRegist();
+          let str = JSON.stringify(this.formLabelAlign);
+          if (str === this.copyData) {
+            this.$message({
+              message: "您没有修改任何内容，无法提交！",
+              type: "warning"
+            });
+            return;
+          }
+          //执行添加
+          this._updateInfo();
         } else {
           console.log("error submit!!");
           return false;
@@ -286,15 +244,48 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.copyData = null;
+      this.key7 = null;
+    },
+    //查询过滤
+    smartFilter() {
+      this._getList();
     },
     //分页状态改变时重新请求数据
     currentChange(index) {
       this.pageNum = index;
       this._getList();
     },
-    //跳转到APP跳转地址管理,isAdd为1代表是添加，0代表更新
-    goToUrlEdit(id) {
-      this.$router.push({ path: "/user/urlEdit", query: { id } });
+    //更新用户信息
+    _updateInfo() {
+      let options = {
+        userId:this.formLabelAlign.id,
+        nickName: this.formLabelAlign.nickName,
+        status: this.formLabelAlign.status ? 0 : 1,
+        headImg: this.formLabelAlign.headImg
+      };
+      this.key7 && (options.key7 = this.key7);
+      updateInfo(options).then(res => {
+        let { code } = res.data;
+        if (code == 200) {
+          this.$message({
+            message: "修改成功！",
+            type: "success"
+          });
+          this.centerDialogVisible = false;
+          this.updatePage(options);
+        }
+      });
+    },
+    //不重新请求数据更新本地页面
+    updatePage(options){
+      this.tableData.forEach((item,index)=>{
+        if(item.userId === options.userId){
+          item.nickName = options.nickName;
+          item.status = options.status;
+          item.headImg = options.headImg;
+        }
+      })
     },
     //获取列表
     _getList() {
@@ -302,22 +293,22 @@ export default {
         userId: this.userId,
         pageNum: this.pageNum,
         pageSize: this.pageSize,
-        userType: userType.AGENT.type
+        userType: userType.SMARTDEV.type
       };
 
       //查询参数
-      this.agentForm.nickName != ""
-        ? (options.nickName = this.agentForm.nickName)
+      this.smartForm.nickName != ""
+        ? (options.nickName = this.smartForm.nickName)
         : options;
-      this.agentForm.userName != ""
-        ? (options.userName = this.agentForm.userName)
+      this.smartForm.userName != ""
+        ? (options.userName = this.smartForm.userName)
         : options;
-      this.agentForm.mobile != ""
-        ? (options.mobile = this.agentForm.mobile)
+      this.smartForm.mobile != ""
+        ? (options.mobile = this.smartForm.mobile)
         : options;
 
       getList(options).then(res => {
-         if (res.data.code === 200) {
+        if (res.data.code === 200) {
           const { records, total } = res.data.data;
           this.tableData = records;
           this.total = total;
@@ -333,24 +324,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang = "scss" >
-.agent {
-  .add-user {
-    cursor: pointer;
-    display: inline-block;
-    width: 160px;
-    font-size: 20px;
-    color: aliceblue;
-    font-weight: bold;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-    background: rgba(255, 210, 80, 1);
-    border-radius: 10px;
-    box-shadow: 0px 6px 7px 0px rgba(255, 210, 80, 0.4);
-    border-radius: 10px;
-    margin: 15px 0 45px 0;
-  }
-  .agent-show {
+.smart-dev {
+  .smart-dev-show {
     text-align: center;
     .prompt {
       display: inline-block;
@@ -363,6 +338,13 @@ export default {
     .pagination {
       text-align: right;
       margin: 50px 0;
+    }
+    .avatar {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      overflow: hidden;
+      background-size: 100%;
     }
   }
   .add-dialog {

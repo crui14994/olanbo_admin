@@ -1,23 +1,27 @@
 <template>
   <div class="app-upgrade">
     <el-row>
-      <span class="add-user" @click="centerDialogVisible = true">添加版本号</span>
+      <span class="add-user" @click="centerDialogVisible = true">新增</span>
     </el-row>
 
     <!-- 表格数据 -->
     <el-row class="app-show">
       <span v-show="tableData.length<=0" class="prompt">您还没有任何经销商信息，请点击按钮上传。</span>
 
-      <el-table v-show="tableData.length>0" :data="tableData" border style="width: 100%">
+      <el-table v-show="tableDataFilter.length>0" :data="tableDataFilter" border style="width: 100%">
         <el-table-column prop="id" label="ID" width="180" align="center"></el-table-column>
-        <el-table-column prop="userId" label="经销商名字" width="180" align="center"></el-table-column>
-        <el-table-column prop="version" label="版本号" align="center"></el-table-column>
+        <el-table-column prop="nickName" label="经销商名字"  align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row.nickName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="version" label="版本号" width="180"  align="center"></el-table-column>
         <el-table-column prop="timeStamp" label="更新时间" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.timeStamp | timeFormat}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" width="220" align="center">
           <template slot-scope="scope">
             <el-button
               style="color:rgba(118,112,217,1)"
@@ -158,6 +162,20 @@ export default {
     isEmpty() {
       return this.tableData.length === 0 ? true : false;
     },
+    //过滤数据
+    tableDataFilter(){
+      let newArr = [];
+      this.tableData.forEach((item,index)=>{
+
+        this.agentList.forEach((item2,index)=>{
+         if(item.userId == item2.userId){
+              item.nickName=item2.nickName
+         }
+        })
+        newArr.push(item);
+      })
+      return newArr;
+    }
   },
   created() {
     this._managerList();

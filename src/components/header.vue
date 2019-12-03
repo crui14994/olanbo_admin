@@ -50,7 +50,7 @@ export default {
   methods:{
     //打开正在开发提示框
     promptOpen() {
-      this.$alert("正在开发中...", "提示", {
+      this.$alert("暂未开放...", "提示", {
         confirmButtonText: "确定",
         // callback: action => {
         //   this.$message({

@@ -1,12 +1,15 @@
 <!-- 
-    *** 上传成功后触发 qiniuSucc,回调参数fileUrl
+    *** 上传成功后触发 qiniuSucc,回调参数fileUrl ;
+    *** 上传成功后触发 getFileSize , 回调参数文件大小
     *** 文件状态改变时触发 fileChange,回调参数fileUrl
     *** oldFileUrl为重新上传图片时需要传入旧的文件url，格式需和配置的一致
     *** isImg默认值为true，表示上传的文件为jpg/png图片。如需上传其它格式文件设置为false
+    *** preview为true表示以预览图代替按钮
  -->
 <template>
   <div class="qiniu">
     <el-upload
+      :class="{ 'avatar-uploader': preview}"
       :action="domain"
       :http-request="upqiniu"
       :show-file-list="false"
@@ -31,6 +34,11 @@ export default {
     isImg: {
       type: Boolean,
       default: true
+    },
+    // 以预览图代替按钮
+    preview:{
+      type: Boolean,
+      default:false
     }
   },
   data() {
@@ -100,8 +108,31 @@ export default {
 };
 </script>
 
-<style  lang = "scss" scoped>
+<style  lang = "scss">
 .qiniu {
   display: inline-block;
+   .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 }
 </style>
