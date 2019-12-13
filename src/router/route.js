@@ -98,7 +98,7 @@ export const asyncRouterMap = [
                 component:{ render(c) { return c('router-view') } }, 
                 meta: { title: '系统' ,icon: "icon-shezhi1" }, 
                 children:[
-                    { path: 'msgPush', name: 'msgPush', component:() => import('@/pages/operat/upgrade/appUpgrade'), meta: { title: '消息推送' }, },
+                    { path: 'msgPush', name: 'msgPush', component:() => import('@/pages/operat/system/msgPush'), meta: { title: '消息推送' }, },
                 ]
             },
         ]
