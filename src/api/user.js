@@ -33,6 +33,38 @@ export const userType ={
     }
 }
 
+// 登录-设备类型
+export const devType = {
+    IOS:{
+        type:1,
+        TypeName:"ios"
+    },
+    HUAWEI:{
+        type:2,
+        TypeName:"huawei"
+    },
+    XIAOMI:{
+        type:3,
+        TypeName:"xiaomi"
+    },
+    ANDROID:{
+        type:4,
+        TypeName:"android"
+    },
+    WEB:{
+        type:5,
+        TypeName:"web"
+    },
+    PC:{
+        type:6,
+        TypeName:"pc"
+    },
+    OTHER:{
+        type:99,
+        TypeName:"other"
+    }
+}
+
 // 登陆
 export function userLogin(userName,mobile,passWord){
     return axios.post("/user/login",{

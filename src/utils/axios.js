@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Loading, Message } from 'element-ui';
 import router from './../router'
+import { devType } from "../api/user"
 
 // 创建axios实例
 const service = axios.create({
@@ -21,7 +22,7 @@ service.interceptors.request.use(config => {
     );
 
     //全局添加请求头
-    config.headers['devType'] ="web";
+    config.headers['type'] = devType.WEB.type;
 
     return config
 }, error => {
@@ -31,7 +32,7 @@ service.interceptors.request.use(config => {
     let loading = Loading.service({});
     loading.close();
 
-    console.log("2:"+error)
+    console.log("2:" + error)
 
     return Promise.reject(error)
 })
@@ -45,9 +46,9 @@ service.interceptors.response.use(
         let loading = Loading.service({});
         loading.close();
 
-        console.log("3:"+res)
+        console.log("3:" + res)
 
-        if (res.code != 200 && res.desc!=undefined) {
+        if (res.code != 200 && res.desc != undefined) {
             Message({
                 showClose: true,
                 message: res.desc,
@@ -62,8 +63,8 @@ service.interceptors.response.use(
         let loading = Loading.service({});
         loading.close();
 
-        let message = ()=>{
-            if(error.message=="Network Error"){
+        let message = () => {
+            if (error.message == "Network Error") {
                 return "网络错误！"
             }
             return error.message;
