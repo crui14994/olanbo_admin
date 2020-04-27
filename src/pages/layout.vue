@@ -32,6 +32,7 @@
             <!-- </keep-alive> -->
           </div>
         </el-main>
+        <el-footer class="footer"><a href="http://www.beian.miit.gov.cn">粤ICP备18143352号-1 </a> <a href="http://www.beian.miit.gov.cn">欧朗博</a>提供技术支持</el-footer>
       </el-container>
     </el-container>
   </div>
@@ -100,6 +101,12 @@ export default {
       .breadcrumb {
         padding: 30px 0;
       }
+    }
+    .footer{
+      text-align: center;
+      line-height: 60px;
+      font-size: 14px;
+      color: #787878;
     }
   }
 }
