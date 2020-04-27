@@ -73,6 +73,7 @@ export default {
     text-align: center;
     background: #3c3c50;
     z-index: 10;
+    overflow: hidden;
     .tac {
       .logo-wrapper {
         padding: 25px 0;
@@ -98,6 +99,7 @@ export default {
     }
     .el-main {
       padding: 0px 70px 0;
+      min-height: 750px;
       .breadcrumb {
         padding: 30px 0;
       }

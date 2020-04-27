@@ -66,7 +66,6 @@
             v-show="!item.hidden"
             :index="item.path"
             v-if="!item.children"
-            @click="promptOpen"
           >
             <i class="iconfont" :class="item.meta.icon"></i>
             <span slot="title">{{item.meta.title}}</span>
@@ -99,18 +98,6 @@ export default {
     this.activeIndex = this.$route.path;
   },
   methods: {
-    //打开正在开发提示框
-    promptOpen() {
-      this.$alert("暂未开放...", "提示", {
-        confirmButtonText: "确定"
-        // callback: action => {
-        //   this.$message({
-        //     type: "info",
-        //     message: `action: ${action}`
-        //   });
-        // }
-      });
-    },
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
     },
