@@ -3,7 +3,10 @@
     *** 上传成功后触发 getFileSize , 回调参数文件大小
     *** 文件状态改变时触发 fileChange,回调参数fileUrl
     *** oldFileUrl为重新上传图片时需要传入旧的文件url，格式需和配置的一致
-    *** isImg默认值为true，表示上传的文件为jpg/png图片。如需上传其它格式文件设置为false
+    *** fileType默认值为img，表示上传的文件为jpg/png图片。
+             值为 zip/rar 表示上传文件必须是这两种格式的压缩文件；
+             值为 apk 表示上传文件必须apk文件； 
+             other表示除图片/zip/rar格式外的文件 
     *** preview为true表示以预览图代替按钮
  -->
 <template>
@@ -30,15 +33,15 @@ export default {
     oldFileUrl: {
       type: String
     },
-    //是否是上传图片
-    isImg: {
-      type: Boolean,
-      default: true
+    //上传文件类型
+    fileType: {
+      type: String,
+      default: "img"
     },
     // 以预览图代替按钮
-    preview:{
+    preview: {
       type: Boolean,
-      default:false
+      default: false
     }
   },
   data() {
@@ -88,18 +91,29 @@ export default {
         this.axios.post(this.domain, formdata, config).then(res => {
           this.fileUrl = "http://" + this.qiniuaddr + "/" + res.data.key;
           this.$emit("qiniuSucc", this.fileUrl);
-          this.$emit("getFileSize",req.file.size);
+          this.$emit("getFileSize", req.file.size);
         });
       });
     },
     // 验证文件合法性
     beforeUpload(file) {
-      if (this.isImg) {
+      let fileName = file.name;
+      let fileType = fileName.split(".").pop();
+
+      if (this.fileType === "img") {
         const isJPG = file.type === "image/jpeg" || file.type === "image/png";
         const isLt2M = file.size / 1024 / 1024 < 2;
         !isJPG && this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
         !isLt2M && this.$message.error("上传头像图片大小不能超过 2MB!");
         return isJPG && isLt2M;
+      } else if (this.fileType === "zip/rar") {
+        const compressedFiles = fileType === "zip" || fileType === "rar";
+        !compressedFiles && this.$message.error("上传文件只能是 zip/rar 格式!");
+        return compressedFiles;
+      } else if (this.fileType === "apk") {
+        const compressedFiles = fileType === "apk";
+        !compressedFiles && this.$message.error("上传文件只能是apk格式!");
+        return compressedFiles;
       } else {
         return true;
       }
@@ -111,7 +125,7 @@ export default {
 <style  lang = "scss">
 .qiniu {
   display: inline-block;
-   .avatar-uploader .el-upload {
+  .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -119,7 +133,7 @@ export default {
     overflow: hidden;
   }
   .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
+    border-color: #409eff;
   }
   .avatar-uploader-icon {
     font-size: 28px;

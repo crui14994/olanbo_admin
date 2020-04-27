@@ -54,7 +54,7 @@
             <!-- //七牛文件上传 -->
             <qiniu-update
               :oldFileUrl="urlPath"
-              :isImg="false"
+              fileType="apk"
               @qiniuSucc="qiniuSucc"
               @fileChange="fileChange"
             >
@@ -67,7 +67,7 @@
             <el-input v-model="formLabelAlign.version" placeholder="输入版本号"></el-input>
           </el-form-item>
           <el-form-item label="经销商:" prop="dealers">
-            <el-select v-model="formLabelAlign.dealers" placeholder="选择经销商">
+            <el-select v-model="formLabelAlign.dealers" :disabled="isUpdate" placeholder="选择经销商">
               <el-option
                 v-for="(item,index) in agentList"
                 :key="index"
@@ -141,7 +141,7 @@ export default {
       //用于验证是否修改
       cloneGrade: "",
       rules: {
-        version: [{ validator: validateVersion, trigger: "blur" }],
+        version: [{ required: true,validator: validateVersion, trigger: "blur" }],
         dealers: [
           { required: true, message: "请选择经销商", trigger: "change" }
         ]

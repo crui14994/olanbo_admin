@@ -8,11 +8,19 @@
     <el-row class="app-show">
       <span v-show="tableData.length<=0" class="prompt">您还没有添加任何OTA设备，请点击按钮上传。</span>
 
-      <el-table v-show="tableData.length>0" :data="tableData" border style="width: 100%">
-        <el-table-column prop="id" label="ID" width="180" align="center"></el-table-column>
+      <el-table
+        @expand-change="expandChange"
+        v-show="tableData.length>0"
+        :row-key="getRowKeys"
+        :expand-row-keys="expands"
+        :data="tableData"
+        border
+        style="width: 100%"
+      >
+        <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
         <el-table-column prop="modelId" label="设备类型" align="center">
           <template slot-scope="scope">
-            <span>{{getOtaTypeName(scope.row.modelId)}}</span>
+            <span>{{getOtaTypeItem(scope.row.modelId).devName}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="version" label="版本号" width="180" align="center"></el-table-column>
@@ -21,7 +29,7 @@
             <span>{{scope.row.timeStamp | timeFormat}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="220" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button
               style="color:rgba(118,112,217,1)"
@@ -29,6 +37,18 @@
               size="mini"
               @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button>
+
+            <el-button
+              style="color:rgba(118,112,217,1)"
+              type="text"
+              size="mini"
+              @click="updaeAll(scope.$index, scope.row)"
+            >全部更新</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="更多" width="50" align="center" type="expand">
+          <template slot-scope="scope">
+            <otaTable  :devType="getOtaTypeItem(scope.row.modelId).id"></otaTable>
           </template>
         </el-table-column>
       </el-table>
@@ -54,7 +74,7 @@
             <!-- //七牛文件上传 -->
             <qiniu-update
               :oldFileUrl="urlPath"
-              :isImg="false"
+              fileType="zip/rar"
               @qiniuSucc="qiniuSucc"
               @getFileSize="getFileSize"
               @fileChange="fileChange"
@@ -68,11 +88,10 @@
             <el-input v-model="formLabelAlign.version" placeholder="输入版本号"></el-input>
           </el-form-item>
           <el-form-item label="设备类型:" prop="modelId">
-            <el-select v-model="formLabelAlign.modelId" placeholder="请选择设备类型">
+            <el-select v-model="formLabelAlign.modelId" :disabled="isUpdate" placeholder="请选择设备类型">
               <el-option
                 v-for="(item,index) in otaTypeList"
                 :key="index"
-                v-if="item.modelId"
                 :label="item.devName"
                 :value="item.modelId"
               ></el-option>
@@ -99,6 +118,7 @@
 <script>
 import qiniuUpdate from "@/components/qiniuUpdate";
 import pagination from "@/components/pagination";
+import otaTable from "@/components/otaTable";
 
 import {
   managerConfig,
@@ -106,7 +126,8 @@ import {
   getMd5,
   managerList,
   addManager,
-  updateManager
+  updateManager,
+  otaPush
 } from "@/api/otaUpgrade";
 import { mapGetters } from "vuex";
 
@@ -133,6 +154,8 @@ export default {
       urlPath: "",
       //表格展示数据
       tableData: [],
+      //Table 目前的展开行
+      expands: [],
       //是否是修改数据
       isUpdate: false,
       //弹窗的显示隐藏
@@ -151,7 +174,9 @@ export default {
       //用于验证是否修改
       cloneGrade: "",
       rules: {
-        version: [{ validator: validateVersion, trigger: "blur" }],
+        version: [
+          { required: true, validator: validateVersion, trigger: "blur" }
+        ],
         modelId: [
           { required: true, message: "请选择设备类型", trigger: "change" }
         ],
@@ -162,7 +187,8 @@ export default {
   },
   components: {
     qiniuUpdate,
-    pagination
+    pagination,
+    otaTable
   },
   computed: {
     ...mapGetters(["userId", "id"]),
@@ -174,17 +200,18 @@ export default {
     isEmpty() {
       return this.tableData.length === 0 ? true : false;
     },
-    //根据modelId获取设备类型名称
-    getOtaTypeName() {
+    //根据modelId获取设备类型名称和id
+    getOtaTypeItem() {
       return function(modelId) {
-        let devName = "";
+        let devItem = {};
         this.otaTypeList.forEach(item => {
           if (item.modelId == modelId) {
-            devName = item.devName;
+            devItem.devName = item.devName;
+            devItem.id = item.id;
           }
         });
 
-        return devName;
+        return devItem;
       };
     }
   },
@@ -192,10 +219,53 @@ export default {
     this._getOtaType();
     this._managerList();
   },
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {
+    getRowKeys: function(row) {
+      return row.id;
+    },
+    //某一行展开或者关闭的时候会触发该事件
+    expandChange(row, expandedRows) {
+      // console.log(row, expandedRows);
+      var that = this;
+      if (expandedRows.length) {
+        that.expands = [];
+        if (row) {
+          that.expands.push(row.id);
+        }
+      } else {
+        that.expands = [];
+      }
+    },
+    //全部更新
+    updaeAll(index, item) {
+      this.$confirm("当前操作将对已注册的所有设备进行更新，是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          let options = {
+            userId: this.userId,
+            modelId: item.modelId
+          };
+          otaPush(options).then(res => {
+            let { code } = res.data;
+            if (code === 200) {
+              this.$message({
+                type: "success",
+                message: "更新成功!"
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消更新"
+          });
+        });
+    },
     //分页状态改变时重新请求数据
     currentChange(index) {
       this.pageNum = index;
@@ -291,10 +361,6 @@ export default {
     //七牛状态改变，重新上传时触发
     fileChange(oldUrl) {
       this.key7 = oldUrl.split("/").pop() || null;
-    },
-    //获取md5
-    _getMd5() {
-      getMd5(url).then;
     },
     //编辑用户
     handleEdit(index, row) {

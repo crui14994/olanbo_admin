@@ -4,9 +4,6 @@
 
 import axios from "./../utils/axios";
 
-//本地服务器地址
-// const baseUrl = "http://192.168.101.129:8888"
-
 
 //配置条件
 export const managerConfig = {
@@ -55,5 +52,22 @@ export function getMd5(url) {
     return axios({
         url: url + "?hash/md5",
         method: "GET"
+    })
+}
+
+// 获取用户设备列表
+export function userDevsList(options) {
+    return axios({
+        url:"web/userDevs/list",
+        method: "GET",
+        params: options
+    })
+}
+//发送OTA升级信息
+export function otaPush(options) {
+    return axios({
+        url: "/smart/ota/push",
+        method: "GET",
+        params: options
     })
 }

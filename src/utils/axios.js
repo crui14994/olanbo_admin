@@ -46,7 +46,7 @@ service.interceptors.response.use(
         let loading = Loading.service({});
         loading.close();
 
-        console.log("3:" + res)
+        // console.log("3:" + res)
 
         if (res.code != 200 && res.desc != undefined) {
             Message({
