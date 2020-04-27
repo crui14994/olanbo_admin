@@ -74,7 +74,7 @@
             <!-- //七牛文件上传 -->
             <qiniu-update
               :oldFileUrl="urlPath"
-              fileType="zip/rar"
+              fileType="zip/rar/tar"
               @qiniuSucc="qiniuSucc"
               @getFileSize="getFileSize"
               @fileChange="fileChange"

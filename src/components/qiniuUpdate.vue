@@ -4,7 +4,7 @@
     *** 文件状态改变时触发 fileChange,回调参数fileUrl
     *** oldFileUrl为重新上传图片时需要传入旧的文件url，格式需和配置的一致
     *** fileType默认值为img，表示上传的文件为jpg/png图片。
-             值为 zip/rar 表示上传文件必须是这两种格式的压缩文件；
+             值为 zip/rar/tar 表示上传文件必须是这两种格式的压缩文件；
              值为 apk 表示上传文件必须apk文件； 
              other表示除图片/zip/rar格式外的文件 
     *** preview为true表示以预览图代替按钮
@@ -106,9 +106,9 @@ export default {
         !isJPG && this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
         !isLt2M && this.$message.error("上传头像图片大小不能超过 2MB!");
         return isJPG && isLt2M;
-      } else if (this.fileType === "zip/rar") {
+      } else if (this.fileType === "zip/rar/tar") {
         const compressedFiles = fileType === "zip" || fileType === "rar";
-        !compressedFiles && this.$message.error("上传文件只能是 zip/rar 格式!");
+        !compressedFiles && this.$message.error("上传文件只能是 zip/rar/tar 格式!");
         return compressedFiles;
       } else if (this.fileType === "apk") {
         const compressedFiles = fileType === "apk";
