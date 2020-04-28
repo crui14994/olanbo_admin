@@ -15,13 +15,14 @@
             <span>{{scope.row.nickName}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="version" label="版本号" width="180"  align="center"></el-table-column>
+         <el-table-column prop="urlPath" label="urlPath" align="center"></el-table-column>
+        <el-table-column prop="version" label="版本号" width="100"  align="center"></el-table-column>
         <el-table-column prop="timeStamp" label="更新时间" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.timeStamp | timeFormat}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="220" align="center">
+        <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button
               style="color:rgba(118,112,217,1)"

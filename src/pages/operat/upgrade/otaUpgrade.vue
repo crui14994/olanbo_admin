@@ -23,7 +23,8 @@
             <span>{{getOtaTypeItem(scope.row.modelId).devName}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="version" label="版本号" width="180" align="center"></el-table-column>
+        <el-table-column prop="filePath" label="filePath" align="center"></el-table-column>
+        <el-table-column prop="version" label="版本号" width="100" align="center"></el-table-column>
         <el-table-column prop="timeStamp" label="更新时间" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.timeStamp | timeFormat}}</span>
@@ -381,11 +382,11 @@ export default {
       this.cloneGrade = JSON.stringify(this.formLabelAlign) + this.urlPath;
     },
     submitForm(formName) {
-      // 先判断有没有上传apk文件
+      // 先判断有没有上传文件
       if (!this.urlPath) {
         this.$message({
           type: "error",
-          message: "请先上传apk文件！"
+          message: "请先上传文件！"
         });
       }
       this.$refs[formName].validate(valid => {
