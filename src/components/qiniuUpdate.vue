@@ -6,7 +6,7 @@
     *** fileType默认值为img，表示上传的文件为jpg/png图片。
              值为 zip/rar/tar 表示上传文件必须是这两种格式的压缩文件；
              值为 apk 表示上传文件必须apk文件； 
-             other表示除图片/zip/rar格式外的文件 
+             other表示除图片/zip/rar/tar格式外的文件 
     *** preview为true表示以预览图代替按钮
  -->
 <template>
@@ -107,7 +107,7 @@ export default {
         !isLt2M && this.$message.error("上传头像图片大小不能超过 2MB!");
         return isJPG && isLt2M;
       } else if (this.fileType === "zip/rar/tar") {
-        const compressedFiles = fileType === "zip" || fileType === "rar";
+        const compressedFiles = fileType === "zip" || fileType === "rar" || fileType === "tar";
         !compressedFiles && this.$message.error("上传文件只能是 zip/rar/tar 格式!");
         return compressedFiles;
       } else if (this.fileType === "apk") {
