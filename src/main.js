@@ -1,9 +1,10 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
+
+// import Vue from 'vue'
 import App from './App'
 import router from './router'
-import axios from 'axios'
+// import axios from 'axios'
 import store from "./store/index";
 import utils from "./utils/index" //导入工具函数
 import * as filters from './filters' // 全局过滤器
@@ -19,10 +20,10 @@ Vue.prototype.getFilePreview = utils.getFilePreview;
 Vue.prototype.axios = axios;
 
 // 引入ElementUI
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
 
-Vue.use(ElementUI)
+// Vue.use(ElementUI)
 
 //引入富文本编辑器
 import VueQuillEditor from 'vue-quill-editor'
@@ -30,16 +31,15 @@ Vue.use(VueQuillEditor)
 
 // 全局注册过滤器
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+    Vue.filter(key, filters[key])
 })
 
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    router,
+    store,
+    components: { App },
+    template: '<App/>'
 })
-

@@ -1,6 +1,5 @@
-import axios from 'axios'
+// import axios from 'axios'
 import { Loading, Message } from 'element-ui';
-import router from './../router'
 import { devType } from "../api/user"
 
 // 创建axios实例
@@ -12,14 +11,12 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(config => {
     //请求前到请求到数据这段时间用加载动画来代替，以服务方式调用
-    Loading.service(
-        {
-            fullscreen: true,
-            text: '拼命加载中...',
-            spinner: "el-icon-loading",
-            background: "rgba(0, 0, 0, 0.8)"
-        }
-    );
+    Loading.service({
+        fullscreen: true,
+        text: '拼命加载中...',
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.8)"
+    });
 
     //全局添加请求头
     config.headers['type'] = devType.WEB.type;
